@@ -37,22 +37,6 @@
         </v-card>
       </v-col>
       <v-col cols="auto" align-self="center">
-        <v-tooltip bottom close-delay="100">
-          <template v-slot:activator="{ on, attrs }">
-            <v-card class="pa-2" v-on="on" v-bind="attrs" elevation="0">
-              <v-btn
-                medium
-                color="primary"
-                :disabled="true"
-                @click="overlay_custom_section = !overlay_custom_section"
-                >{{ $t("report_new_section") }}</v-btn
-              >
-            </v-card>
-          </template>
-          <span>{{ $t("feature_not_available_1") }}</span>
-        </v-tooltip>
-      </v-col>
-      <v-col cols="auto" align-self="center">
         <v-card class="pa-2" elevation="0">
           <v-tooltip bottom close-delay="100">
             <template v-slot:activator="{ on, attrs }">
