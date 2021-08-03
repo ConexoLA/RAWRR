@@ -24,7 +24,7 @@ If you need to create the directory you can easily run <span style="color:grey">
 
    ```Shell
    # Cloning base repository
-   git clone https://github.com/ConexoLA/Rawrr_dev.git
+   git clone https://github.com/ConexoLA/RAWRR.git
    ```
 
 3. Install dependencies
