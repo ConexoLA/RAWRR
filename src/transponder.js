@@ -1,0 +1,1212 @@
+/* eslint-disable no-console */
+import { ipcMain } from "electron";
+
+import * as init from "./db/00_initdb";
+import * as asset_categories from "./db/assets/01_asset_categories";
+import * as assets from "./db/assets/02_assets";
+import * as assessment_activities from "./db/assessment activities/03_assessment_activities";
+import * as assessment_activity_asset_associations from "./db/assessment activities/04_assessment_activity_asset_associations";
+import * as threat_types from "./db/threats/05_threat_types";
+import * as threats from "./db/threats/06_threats";
+import * as vulnerabilities from "./db/vulnerabilities/07_vulnerabilities";
+import * as vulnerability_threat_associations from "./db/vulnerabilities/08_vulnerability_threat_associations";
+import * as recommendations from "./db/recommendations/09_recommendations";
+import * as recommendation_vulnerability_associations from "./db/recommendations/10_recommendation_vulnerability_associations";
+import * as assessment_reports from "./db/reports/11_assessment_reports";
+import * as assessment_report_sections from "./db/reports/12_assessment_report_sections";
+import * as export_report from "./exportReport/file_extensions";
+import * as database_management from "./db/fs_management";
+
+export function setIPCMainListeners() {
+  //data is sent as arg from a synchronous call made in whichever file is contained in the views folder.
+  //PARAMETERS:
+  //  arg is an array with the following structure: ["table_name", {row}].
+  //    table_name is the keyword identifying a database table
+  //    row is an object containing all necesary atributes to insert said row into a table
+  //      there's aditional information regarding these atributes in the db folder for each table
+  //EXPECTED OUTPUT:
+  //  Returns an array containing the inserted row or an empty array.
+  ipcMain.on("insert", (event, arg) => {
+    let arr = [];
+    switch (arg[0]) {
+      case "asset_categories":
+        try {
+          arr = [arg[1].name, arg[1].description];
+          asset_categories.insert(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assets":
+        try {
+          arr = [arg[1].name, arg[1].asset_category_id, arg[1].description];
+          assets.insert(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assessment_activities":
+        try {
+          arr = [arg[1].name, arg[1].description];
+          assessment_activities.insert(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assessment_activity_asset_associations":
+        try {
+          arr = [arg[1].assessment_activity_id, arg[1].asset_id];
+          assessment_activity_asset_associations.insert(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "threat_types":
+        try {
+          arr = [arg[1].name, arg[1].description, arg[1].color];
+          threat_types.insert(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "threats":
+        try {
+          arr = [
+            arg[1].threat_type_id,
+            arg[1].name,
+            arg[1].description,
+            arg[1].asset_id,
+            arg[1].impact,
+            arg[1].likelihood,
+          ];
+          threats.insert(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "vulnerabilities":
+        try {
+          arr = [
+            arg[1].name,
+            arg[1].description,
+            arg[1].assessment_activity_id,
+            arg[1].asset_id,
+          ];
+          vulnerabilities.insert(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "vulnerability_threat_associations":
+        try {
+          arr = [arg[1].vulnerability_id, arg[1].threat_id];
+          vulnerability_threat_associations.insert(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "recommendations":
+        try {
+          arr = [
+            arg[1].name,
+            arg[1].description,
+            arg[1].implementation_cost,
+            arg[1].implementation_time,
+          ];
+          recommendations.insert(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "recommendation_vulnerability_associations":
+        try {
+          arr = [arg[1].recommendation_id, arg[1].vulnerability_id];
+          recommendation_vulnerability_associations.insert(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assessment_reports":
+        try {
+          arr = [
+            arg[1].name,
+            arg[1].description,
+            arg[1].threat_order,
+            arg[1].assessment_activities_order,
+            arg[1].assessment_activity_results_order,
+            arg[1].vulnerabilities_order,
+            arg[1].recommendation_order,
+            arg[1].assets_order,
+          ];
+          assessment_reports.insert(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assessment_report_sections":
+        try {
+          arr = [arg[1].name, arg[1].description];
+          assessment_report_sections.insert(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      default:
+        console.log(arg[0], " does not have a valid insert method.");
+        event.returnValue = [];
+    }
+  });
+
+  //data is sent as arg from a synchronous call made in whichever file is contained in the views folder.
+  //PARAMETERS:
+  //  arg is an array with the following structure: ["table_name"].
+  //    table_name is the keyword identifying a database table
+  //EXPECTED OUTPUT:
+  //  Returns an array containing all rows inside a table,
+  //          a SQLite error code,
+  //          or an empty array if the table does not exist.
+  ipcMain.on("queryAll", (event, arg) => {
+    switch (arg[0]) {
+      case "asset_categories":
+        try {
+          asset_categories.queryAll().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assets":
+        try {
+          assets.queryAll().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assessment_activities":
+        try {
+          assessment_activities.queryAll().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assessment_activity_asset_associations":
+        try {
+          assessment_activity_asset_associations.queryAll().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "threat_types":
+        try {
+          threat_types.queryAll().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "threats":
+        try {
+          threats.queryAll().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "vulnerabilities":
+        try {
+          vulnerabilities.queryAll().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "vulnerability_threat_associations":
+        try {
+          vulnerability_threat_associations.queryAll().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "recommendations":
+        try {
+          recommendations.queryAll().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "recommendation_vulnerability_associations":
+        try {
+          recommendation_vulnerability_associations.queryAll().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assessment_reports":
+        try {
+          assessment_reports.queryAll().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assessment_report_sections":
+        try {
+          assessment_report_sections.queryAll().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      default:
+        console.log(arg[0], " does not have a valid query all method.");
+        event.returnValue = [];
+    }
+  });
+
+  //data is sent as arg from a synchronous call made in whichever file is contained in the views folder.
+  //PARAMETERS:
+  //  arg is an array with the following structure: ["table_name", id].
+  //    table_name is the keyword identifying a database table
+  //    id is the identifier for a row in a table
+  //EXPECTED OUTPUT:
+  //  Returns a row inside a table or an empty array if the table does not exist.
+  ipcMain.on("queryById", (event, arg) => {
+    switch (arg[0]) {
+      case "assessment_reports":
+        try {
+          assessment_reports.queryById(arg[1]).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      default:
+        console.log(arg[0], " does not have a valid query by id method.");
+        event.returnValue = [];
+    }
+  });
+
+  //data is sent as arg from a synchronous call made in whichever file is contained in the views folder.
+  //PARAMETERS:
+  //  arg is an array with the following structure: ["table_name", {row}].
+  //    table_name is the keyword identifying a database table
+  //    row is an object containing all necesary atributes to update said row from a table
+  //      there's aditional information regarding these atributes in the db folder for each table
+  //EXPECTED OUTPUT:
+  //  Returns an array containing row or an empty one.
+  ipcMain.on("update", (event, arg) => {
+    let arr = [];
+    switch (arg[0]) {
+      case "asset_categories":
+        try {
+          arr = [arg[1].name, arg[1].description, arg[1].id];
+          asset_categories.update(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assets":
+        try {
+          arr = [
+            arg[1].name,
+            arg[1].asset_category_id,
+            arg[1].description,
+            arg[1].id,
+          ];
+          assets.update(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assessment_activities":
+        try {
+          arr = [arg[1].name, arg[1].description, arg[1].id];
+          assessment_activities.update(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "threat_types":
+        try {
+          arr = [arg[1].name, arg[1].description, arg[1].color, arg[1].id];
+          threat_types.update(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "threats":
+        try {
+          arr = [
+            arg[1].threat_type_id,
+            arg[1].name,
+            arg[1].description,
+            arg[1].asset_id,
+            arg[1].impact,
+            arg[1].likelihood,
+            arg[1].id,
+          ];
+          threats.update(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "vulnerabilities":
+        try {
+          arr = [
+            arg[1].name,
+            arg[1].description,
+            arg[1].assessment_activity_id,
+            arg[1].asset_id,
+            arg[1].id,
+          ];
+          vulnerabilities.update(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "recommendations":
+        try {
+          arr = [
+            arg[1].name,
+            arg[1].description,
+            arg[1].implementation_cost,
+            arg[1].implementation_time,
+            arg[1].id,
+          ];
+          recommendations.update(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assessment_reports":
+        try {
+          arr = [
+            arg[1].name,
+            arg[1].description,
+            arg[1].threat_order,
+            arg[1].assessment_activities_order,
+            arg[1].assessment_activity_results_order,
+            arg[1].vulnerabilities_order,
+            arg[1].recommendation_order,
+            arg[1].assets_order,
+            arg[1].id,
+          ];
+          assessment_reports.update(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assessment_report_sections":
+        try {
+          arr = [arg[1].name, arg[1].description, arg[1].id];
+          assessment_report_sections.update(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      default:
+        console.log(arg[0], " does not have a valid update method.");
+        event.returnValue = [];
+    }
+  });
+
+  //data is sent as arg from a synchronous call made in whichever file is contained in the views folder.
+  //PARAMETERS:
+  //  arg is an array with the following structure: ["table_name", {row}].
+  //    table_name is the keyword identifying a database table
+  //    row is an object containing all necesary atributes to remove said row from a table
+  //      there's aditional information regarding these atributes in the db folder for each table
+  //EXPECTED OUTPUT:
+  //  Returns an array containing row or an empty one.
+  ipcMain.on("remove", (event, arg) => {
+    let arr = [];
+    switch (arg[0]) {
+      case "asset_categories":
+        try {
+          arr = [arg[1].id];
+          asset_categories.remove(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assets":
+        try {
+          arr = [arg[1].id];
+          assets.remove(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assessment_activities":
+        try {
+          arr = [arg[1].id];
+          assessment_activities.remove(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assessment_activity_asset_associations":
+        try {
+          arr = [arg[1].assessment_activity_id, arg[1].asset_id];
+          assessment_activity_asset_associations.remove(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "threat_types":
+        try {
+          arr = [arg[1].id];
+          threat_types.remove(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "threats":
+        try {
+          arr = [arg[1].id];
+          threats.remove(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "vulnerabilities":
+        try {
+          arr = [arg[1].id];
+          vulnerabilities.remove(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "vulnerability_threat_associations":
+        try {
+          arr = [arg[1].vulnerability_id, arg[1].threat_id];
+          vulnerability_threat_associations.remove(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "recommendations":
+        try {
+          arr = [arg[1].id];
+          recommendations.remove(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "recommendation_vulnerability_associations":
+        try {
+          arr = [arg[1].recommendation_id, arg[1].vulnerability_id];
+          recommendation_vulnerability_associations.remove(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assessment_reports":
+        try {
+          arr = [arg[1].id];
+          assessment_reports.remove(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assessment_report_sections":
+        try {
+          arr = [arg[1].id];
+          assessment_report_sections.remove(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      default:
+        console.log(arg[0], " does not have a valid remove method.");
+        event.returnValue = [];
+    }
+  });
+
+  ipcMain.on("import", (event, arg) => {
+    console.log(arg[0]);
+    switch (arg[0]) {
+      case "db":
+        try {
+          database_management
+            .import_database(
+              arg[1], // Title
+              arg[2], // Message
+              arg[3] // backup file or not
+            )
+            .then(
+              function (data) {
+                event.returnValue = ["resolve", data];
+              },
+              function (err) {
+                console.log(err);
+                if (err == "no path selected") {
+                  event.returnValue = ["ignore", err];
+                } else {
+                  event.returnValue = ["reject", err];
+                }
+              }
+            );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = ["error", error];
+        }
+        break;
+      default:
+        console.log(arg[0], " does not have a valid import method.");
+        event.returnValue = ["error", ""];
+    }
+  });
+
+  ipcMain.on("export", (event, arg) => {
+    console.log(arg[0]);
+    switch (arg[0]) {
+      case "db":
+        try {
+          database_management
+            .export_database(
+              arg[1], // Title
+              arg[2], // Message
+              arg[3],
+              arg[4]
+            )
+            .then(
+              function (data) {
+                event.returnValue = ["resolve", data];
+              },
+              function (err) {
+                console.log(err);
+                event.returnValue = ["reject", err];
+              }
+            );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = ["error", error];
+        }
+        break;
+      case "txt":
+        try {
+          export_report
+            .txt(
+              arg[1],
+              arg[2],
+              arg[3],
+              arg[4],
+              arg[5],
+              arg[6],
+              arg[7],
+              arg[8],
+              arg[9],
+              arg[10]
+            )
+            .then(
+              function (data) {
+                event.returnValue = ["resolve", data];
+              },
+              function (err) {
+                console.log(err);
+                event.returnValue = ["reject", err];
+              }
+            );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = ["error", error];
+        }
+        break;
+      case "md":
+        try {
+          export_report
+            .md(
+              arg[1],
+              arg[2],
+              arg[3],
+              arg[4],
+              arg[5],
+              arg[6],
+              arg[7],
+              arg[8],
+              arg[9],
+              arg[10]
+            )
+            .then(
+              function (data) {
+                event.returnValue = ["resolve", data];
+              },
+              function (err) {
+                console.log(err);
+                event.returnValue = ["reject", err];
+              }
+            );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = ["error", error];
+        }
+        break;
+      case "json":
+        try {
+          export_report
+            .json(
+              arg[1],
+              arg[2],
+              arg[3],
+              arg[4],
+              arg[5],
+              arg[6],
+              arg[7],
+              arg[8],
+              arg[9],
+              arg[10]
+            )
+            .then(
+              function (data) {
+                event.returnValue = ["resolve", data];
+              },
+              function (err) {
+                console.log(err);
+                event.returnValue = ["reject", err];
+              }
+            );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = ["error", error];
+        }
+        break;
+      default:
+        console.log(arg[0], " does not have a valid export method.");
+        event.returnValue = ["error", ""];
+    }
+  });
+
+  ipcMain.on("backupDatabase", (event, arg) => {
+    try {
+      database_management.backup_database().then(
+        function (data) {
+          event.returnValue = ["resolve", data];
+        },
+        function (err) {
+          console.log(err);
+          event.returnValue = ["reject", err];
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      event.returnValue = ["error", error];
+    }
+  });
+
+  ipcMain.on("loadTestValues", (event, arg) => {
+    try {
+      init.loadTestValues().then(
+        function (data) {
+          event.returnValue = ["resolve", data];
+        },
+        function (err) {
+          console.log(err);
+          event.returnValue = ["reject", err];
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      event.returnValue = ["error", error];
+    }
+  });
+}

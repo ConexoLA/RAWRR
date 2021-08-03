@@ -1,0 +1,164 @@
+<template>
+  <div>
+    <b>{{ formDataTemp.title }}</b>
+    <div class="assessmentActivityForm">
+      <v-container>
+        <v-form ref="form" v-model="valid">
+          <v-row v-if="formDataTemp.resetFormValidation === true">
+            {{ resetFormValidation() }}
+          </v-row>
+          <v-row no-gutters>
+            <v-text-field
+              class="mb-3"
+              v-model="formDataTemp.assessmentActivity.name"
+              :rules="nameRules"
+              :label="$t('generic_form_name_label')"
+              required
+            ></v-text-field>
+          </v-row>
+          <v-row no-gutters>
+            <v-textarea
+              v-model="formDataTemp.assessmentActivity.description"
+              :label="$t('generic_form_description_label')"
+              outlined
+              rows="5"
+              no-resize
+            ></v-textarea>
+          </v-row>
+          <v-row no-gutters>
+            <v-select
+              class="mb-3"
+              v-model="formDataTemp.assessmentActivity.newAssetsId"
+              clearable
+              :items="getAllAssets()"
+              :label="$t('generic_form_assets_label')"
+              multiple
+              chips
+              deletable-chips
+              item-text="name"
+              item-value="id"
+            ></v-select>
+          </v-row>
+          <v-row
+            no-gutters
+            class="text-end"
+            v-if="formDataTemp.type === 'Edit'"
+          >
+            <v-col>
+              <v-btn
+                class="mr-4 v-btn v-btn--contained theme--light v-size--default"
+                color="primary"
+                :disabled="!valid"
+                @click="updateElement(formDataTemp.assessmentActivity)"
+                >{{ $t("generic_form_update_button") }}
+              </v-btn>
+            </v-col>
+          </v-row>
+          <v-row
+            no-gutters
+            class="text-end"
+            v-if="formDataTemp.type === 'Create'"
+          >
+            <v-col>
+              <v-btn
+                class="mr-4 v-btn v-btn--contained theme--light v-size--default"
+                color="primary"
+                :disabled="!valid"
+                @click="insertElement(formDataTemp.assessmentActivity)"
+                >{{ $t("generic_form_insert_button") }}
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-container>
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapActions, mapGetters } from "vuex";
+
+export default {
+  name: "AssessmentActivityForm",
+  props: ["formData"],
+  created() {
+    this.formDataTemp = this.formData;
+  },
+  computed: {
+    nameRules() {
+      return [
+        (v) => !!v || this.$t("generic_form_name_restriction_1"),
+        (v) =>
+          (v && v.length <= 150) || this.$t("generic_form_name_restriction_2"),
+      ];
+    },
+  },
+  data: () => ({
+    valid: true,
+    alertType: null,
+    formDataTemp: null,
+  }),
+  methods: {
+    ...mapActions([
+      "fetchAllAssessmentActivities",
+      "addAssessmentActivity",
+      "updateAssessmentActivity",
+      "deleteAssessmentActivityAssetAssociation",
+      "addAssessmentActivityAssetAssociation",
+      "fetchAllAssessmentActivityAssetAssociations",
+    ]),
+    ...mapGetters(["getAllAssets", "getFirstAssessmentActivity"]),
+    resetFormValidation() {
+      if (this.$refs.form) {
+        this.$refs.form.resetValidation();
+        this.formDataTemp.resetFormValidation = false;
+      }
+    },
+    updateElement(assessmentActivity) {
+      if (assessmentActivity.newAssetsId != assessmentActivity.oldAssetsId) {
+        let _activityAssetAssociation = {
+          assessment_activity_id: assessmentActivity.id,
+          asset_id: null,
+        };
+        assessmentActivity.oldAssetsId.forEach((oldAssetId) => {
+          _activityAssetAssociation.asset_id = oldAssetId;
+          this.deleteAssessmentActivityAssetAssociation(
+            _activityAssetAssociation
+          );
+        });
+        assessmentActivity.newAssetsId.forEach((newAssetId) => {
+          _activityAssetAssociation.asset_id = newAssetId;
+          this.addAssessmentActivityAssetAssociation(_activityAssetAssociation);
+        });
+        this.fetchAllAssessmentActivityAssetAssociations();
+      }
+      this.updateAssessmentActivity(assessmentActivity);
+      this.fetchAllAssessmentActivities();
+      this.$emit("toggle");
+    },
+    async insertElement(assessmentActivity) {
+      this.addAssessmentActivity(assessmentActivity);
+      await this.fetchAllAssessmentActivities();
+      if (
+        assessmentActivity.newAssetsId &&
+        assessmentActivity.newAssetsId.length > 0
+      ) {
+        let _activityAssetAssociation = {
+          //return first element in array since it is returned sorted from "backend" by last modified
+          assessment_activity_id: this.getFirstAssessmentActivity().id,
+          asset_id: null,
+        };
+        await assessmentActivity.newAssetsId.forEach((newAssetId) => {
+          _activityAssetAssociation.asset_id = newAssetId;
+          this.addAssessmentActivityAssetAssociation(_activityAssetAssociation);
+        });
+        await this.fetchAllAssessmentActivityAssetAssociations();
+        await this.fetchAllAssessmentActivities();
+      }
+      await this.$refs.form.reset();
+    },
+  },
+};
+</script>
+
+<style scoped></style>

@@ -1,0 +1,75 @@
+{
+  "name": "RAWRR",
+  "author": {
+    "name": "Conexo",
+    "email": "rawrr@conexo.org"
+  },
+  "description": "Risk Assessment Workflow for Recommendation Roadmaps",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "electron:build": "vue-cli-service electron:build",
+    "electron:serve": "vue-cli-service electron:serve",
+    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
+    "postinstall": "electron-builder install-app-deps",
+    "postuninstall": "electron-builder install-app-deps"
+  },
+  "main": "background.js",
+  "dependencies": {
+    "sqlite3": "5.0.2",
+    "vue": "2.6.12",
+    "vue-i18n": "8.24.4",
+    "vue-router": "3.5.1",
+    "vuedraggable": "2.24.3",
+    "vuetify": "2.5.0",
+    "vuex": "3.6.2"
+  },
+  "devDependencies": {
+    "@kazupon/vue-i18n-loader": "0.5.0",
+    "@mdi/font": "5.9.55",
+    "@vue/cli-plugin-babel": "4.5.13",
+    "@vue/cli-plugin-eslint": "4.5.13",
+    "@vue/cli-service": "4.5.13",
+    "@vue/eslint-config-prettier": "6.0.0",
+    "babel-eslint": "10.1.0",
+    "electron": "12.0.6",
+    "electron-builder": "22.10.5",
+    "electron-devtools-installer": "3.2.0",
+    "eslint": "6.8.0",
+    "eslint-plugin-prettier": "3.4.0",
+    "eslint-plugin-vue": "7.9.0",
+    "sass": "1.32.13",
+    "sass-loader": "10.2.0",
+    "vue-cli-plugin-electron-builder": "2.0.0",
+    "vue-cli-plugin-i18n": "2.1.0",
+    "vue-cli-plugin-vuetify": "2.4.0",
+    "vue-template-compiler": "2.6.12",
+    "vuetify-loader": "1.7.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "@vue/prettier"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}
