@@ -1209,4 +1209,21 @@ export function setIPCMainListeners() {
       event.returnValue = ["error", error];
     }
   });
+
+  ipcMain.on("deleteDatabase", (event, arg) => {
+    try {
+      init.deleteDatabase().then(
+        function (data) {
+          event.returnValue = ["resolve", data];
+        },
+        function (err) {
+          console.log(err);
+          event.returnValue = ["reject", err];
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      event.returnValue = ["error", error];
+    }
+  });
 }

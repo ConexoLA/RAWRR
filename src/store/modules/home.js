@@ -82,6 +82,22 @@ const actions = {
       }
     }
   },
+  async deleteDatabase({ dispatch }) {
+    const response = await ipcRenderer.sendSync("deleteDatabase");
+    if (response[0] === "error" || response[0] === "reject") {
+      dispatch("setNotification", {
+        text: i18n.t("database_delete_error"),
+        color: "error",
+      });
+    } else {
+      if (response[1]) {
+        dispatch("setNotification", {
+          text: i18n.t("database_delete_success"),
+          timeout: "2000",
+        });
+      }
+    }
+  },
 };
 
 const mutations = {

@@ -1764,3 +1764,60 @@ export function loadTestValues() {
     }
   });
 }
+
+export function deleteDatabase() {
+  return new Promise(function (resolve, reject) {
+    try {
+      db = open();
+      db.serialize(function () {
+        db.get("PRAGMA foreign_keys = OFF");
+        db.run("DROP TABLE IF EXISTS assets");
+        db.run("DROP TABLE IF EXISTS assessment_activities");
+        db.run("DROP TABLE IF EXISTS assessment_activity_asset_associations");
+        db.run("DROP TABLE IF EXISTS threats");
+        db.run("DROP TABLE IF EXISTS vulnerabilities");
+        db.run("DROP TABLE IF EXISTS vulnerability_threat_associations");
+        db.run("DROP TABLE IF EXISTS recommendations");
+        db.run(
+          "DROP TABLE IF EXISTS recommendation_vulnerability_associations"
+        );
+        db.run("DROP TABLE IF EXISTS assessment_reports");
+        db.run("DROP TABLE IF EXISTS assessment_report_sections");
+        db.run(
+          "CREATE TABLE IF NOT EXISTS assets (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, asset_category_id INTEGER, description TEXT, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (asset_category_id) REFERENCES asset_categories(id) ON DELETE SET NULL)"
+        );
+        db.run(
+          "CREATE TABLE IF NOT EXISTS assessment_activities (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, description TEXT, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL)"
+        );
+        db.run(
+          "CREATE TABLE IF NOT EXISTS assessment_activity_asset_associations (assessment_activity_id INTEGER NOT NULL, asset_id INTEGER NOT NULL, PRIMARY KEY (assessment_activity_id, asset_id), FOREIGN KEY (assessment_activity_id) REFERENCES assessment_activities(id) ON DELETE CASCADE, FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE CASCADE)"
+        );
+        db.run(
+          "CREATE TABLE IF NOT EXISTS threats (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, threat_type_id INTEGER, name TEXT NOT NULL UNIQUE, description TEXT, asset_id INTEGER, impact INTEGER, likelihood INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (threat_type_id) REFERENCES threat_types(id) ON DELETE SET NULL, FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE SET NULL, CHECK(impact BETWEEN 0 AND 10), CHECK(likelihood BETWEEN 0 AND 10))"
+        );
+        db.run(
+          "CREATE TABLE IF NOT EXISTS vulnerabilities (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, description TEXT, assessment_activity_id INTEGER, asset_id INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (assessment_activity_id) REFERENCES assessment_activities(id) ON DELETE SET NULL, FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE SET NULL)"
+        );
+        db.run(
+          "CREATE TABLE IF NOT EXISTS vulnerability_threat_associations (threat_id INTEGER NOT NULL, vulnerability_id INTEGER NOT NULL, PRIMARY KEY (threat_id, vulnerability_id), FOREIGN KEY (threat_id) REFERENCES threats(id) ON DELETE CASCADE, FOREIGN KEY (vulnerability_id) REFERENCES vulnerabilities(id) ON DELETE CASCADE)"
+        );
+        db.run(
+          "CREATE TABLE IF NOT EXISTS recommendations (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, description TEXT, implementation_cost TEXT, implementation_time, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL)"
+        );
+        db.run(
+          "CREATE TABLE IF NOT EXISTS recommendation_vulnerability_associations (recommendation_id INTEGER NOT NULL, vulnerability_id INTEGER NOT NULL, PRIMARY KEY (recommendation_id, vulnerability_id), FOREIGN KEY (recommendation_id) REFERENCES recommendations(id) ON DELETE CASCADE, FOREIGN KEY (vulnerability_id) REFERENCES vulnerabilities(id) ON DELETE CASCADE)"
+        );
+        db.run(
+          "CREATE TABLE IF NOT EXISTS assessment_reports (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, description TEXT, threat_order INTEGER, assessment_activities_order INTEGER, assessment_activity_results_order INTEGER, vulnerabilities_order INTEGER, recommendation_order INTEGER, assets_order INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL)"
+        );
+        db.run(
+          "CREATE TABLE IF NOT EXISTS assessment_report_sections (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, description TEXT, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL)"
+        );
+        db.get("PRAGMA foreign_keys = ON");
+      });
+      resolve("Database successfully deleted");
+    } catch (err) {
+      reject(err.message);
+    }
+  });
+}
