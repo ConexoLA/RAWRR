@@ -35,8 +35,10 @@
                   v-bind="attrs"
                   v-on="on"
                   @click="onLoadTestValues()"
-                  >{{ $t("database_test") }}</v-btn
                 >
+                  <v-icon class="mr-2">mdi-test-tube</v-icon>
+                  {{ $t("database_test") }}
+                </v-btn>
               </template>
 
               <span>{{ $t("database_tooltip_test") }} </span>
@@ -53,8 +55,9 @@
                   v-bind="attrs"
                   v-on="on"
                   @click="onImportDatabase()"
-                  >{{ $t("database_import") }}</v-btn
-                >
+                  ><v-icon class="mr-2">mdi-import</v-icon> {{ ""
+                  }}{{ $t("database_import") }}
+                </v-btn>
               </template>
 
               <span>{{ $t("database_tooltip_import") }} </span>
@@ -71,11 +74,31 @@
                   v-bind="attrs"
                   v-on="on"
                   @click="onExportDatabase()"
-                  >{{ $t("database_export") }}</v-btn
-                >
+                  ><v-icon class="mr-2">mdi-export</v-icon>
+                  {{ $t("database_export") }}
+                </v-btn>
               </template>
 
               <span>{{ $t("database_tooltip_export") }} </span>
+            </v-tooltip>
+          </v-card>
+        </v-col>
+        <v-col cols="auto" align-self="center">
+          <v-card class="pa-2" elevation="0">
+            <v-tooltip bottom close-delay="100">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  medium
+                  color="error"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="onDeleteDatabase()"
+                  ><v-icon class="mr-2">mdi-delete-forever</v-icon>
+                  {{ $t("database_delete") }}
+                </v-btn>
+              </template>
+
+              <span>{{ $t("database_tooltip_delete") }} </span>
             </v-tooltip>
           </v-card>
         </v-col>
@@ -99,6 +122,7 @@ export default {
       "importDatabase",
       "loadTestValues",
       "backupDatabase",
+      "deleteDatabase",
       "fetchAllAssetCategories",
       "fetchAllAssets",
       "fetchAllAssessmentActivities",
@@ -179,6 +203,24 @@ export default {
     onLoadTestValues: function () {
       if (window.confirm(this.$t("database_write_confirm"))) {
         this.loadTestValues();
+
+        this.fetchAllAssessmentActivities();
+        this.fetchAllAssessmentActivityAssetAssociations();
+        this.fetchAllAssessmentReports();
+        this.fetchAllAssessmentReportSections();
+        this.fetchAllAssets();
+        this.fetchAllAssetCategories();
+        this.fetchAllRecommendations();
+        this.fetchAllRecommendationVulnerabilityAssociations();
+        this.fetchAllThreatTypes();
+        this.fetchAllThreats();
+        this.fetchAllVulnerabilities();
+        this.fetchAllVulnerabilityThreatAssociations();
+      }
+    },
+    onDeleteDatabase: function () {
+      if (window.confirm(this.$t("database_delete_confirm"))) {
+        this.deleteDatabase();
 
         this.fetchAllAssessmentActivities();
         this.fetchAllAssessmentActivityAssetAssociations();
