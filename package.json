@@ -12,6 +12,10 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "electron:build": "vue-cli-service electron:build",
+    "electron:build:mac": "vue-cli-service electron:build --mac",
+    "electron:build:windows": "vue-cli-service electron:build --win",
+    "electron:build:linux": "vue-cli-service electron:build --linux",
+    "electron:build:all": "vue-cli-service electron:build --mac --win --linux",
     "electron:serve": "vue-cli-service electron:serve",
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
     "postinstall": "electron-builder install-app-deps",
@@ -19,6 +23,7 @@
   },
   "main": "background.js",
   "dependencies": {
+    "@mapbox/node-pre-gyp": "1.0.5",
     "sqlite3": "5.0.2",
     "vue": "2.6.12",
     "vue-i18n": "8.24.4",

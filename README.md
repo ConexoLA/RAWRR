@@ -90,11 +90,63 @@ After the server is launched, you will realize the application is being tested i
 
 ### Create the RAWRR executable
 
-If you want to generate the executable of RAWRR, use the following command:
+If you want to generate the executable of RAWRR for your current OS, run:
 
 ```Shell
+# Creates a build targeting the current OS
 npm run electron:build
 ```
+
+---
+
+If you want to generate the executable of RAWRR for a platform that's different from your current OS:
+
+1. For each platform you want to create a build, run the following command:
+
+   ```Shell
+   # Line breaks are just to provide clarity, you have to remove them prior to execution
+   ./node_modules/.bin/node-pre-gyp install
+   --directory=./node_modules/sqlite3
+   --target_platform={OS}
+   --target_arch={OS architecture}
+   --target={Node version}
+   ```
+
+   For example:
+
+   - Linux x64 and Node 15.14.0:
+
+     ```Shell
+     ./node_modules/.bin/node-pre-gyp install --directory=./node_modules/sqlite3 --target_platform=linux --target_arch=x64 --target=15.14.0
+     ```
+
+   - Mac x64 and Node 15.14.0:
+
+     ```Shell
+     ./node_modules/.bin/node-pre-gyp install --directory=./node_modules/sqlite3 --target_platform=darwin --target_arch=x64 --target=15.14.0
+     ```
+
+   - Windows x86 and Node 15.14.0:
+
+     ```Shell
+     ./node_modules/.bin/node-pre-gyp install --directory=./node_modules/sqlite3 --target_platform=win32 --target_arch=x86 --target=15.14.0
+     ```
+
+2. Create your build(s) with one or a combination of the following:
+
+   ```Shell
+   # Linux, Windows and Mac
+   npm run electron:build:all
+
+   # Linux
+   npm run electron:build:linux
+
+   # Windows
+   npm run electron:build:windows
+
+   # Mac
+   npm run electron:build:mac
+   ```
 
 ### Run your tests
 
