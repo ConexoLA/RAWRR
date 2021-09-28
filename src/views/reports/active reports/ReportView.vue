@@ -203,6 +203,12 @@ export default {
           name: this.$t("report_export_json"),
           disabled: false,
         },
+        {
+          id: 4,
+          type: "docx",
+          name: this.$t("report_export_docx"),
+          disabled: false,
+        },
       ],
       showSections: {
         Assets: true,
@@ -258,6 +264,7 @@ export default {
       this.showSections[section] = !this.showSections[section];
     },
     onExportReport: function (format) {
+      console.log("hola");
       let export_aux = [];
       switch (format) {
         case "txt":
@@ -300,6 +307,20 @@ export default {
             this.getAllMergedRecommendations,
             this.$t("report_export_json_title"),
             this.$t("report_export_json_message"),
+          ];
+          break;
+        case "docx":
+          export_aux = [
+            format,
+            this.secciones_report,
+            this.getMain,
+            this.getAllMergedAssets,
+            this.getAllMergedAssessmentActivities,
+            this.getAllMergedThreats,
+            this.getAllMergedVulnerabilities,
+            this.getAllMergedRecommendations,
+            this.$t("report_export_docx_title"),
+            this.$t("report_export_docx_message"),
           ];
           break;
         default:
