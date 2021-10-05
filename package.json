@@ -24,6 +24,7 @@
   "main": "background.js",
   "dependencies": {
     "@mapbox/node-pre-gyp": "1.0.5",
+    "docx": "^6.0.3",
     "sqlite3": "5.0.2",
     "vue": "2.6.12",
     "vue-i18n": "8.24.4",
