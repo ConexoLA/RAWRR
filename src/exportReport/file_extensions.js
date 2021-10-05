@@ -1,6 +1,15 @@
 const fs = require("fs");
 const { dialog } = require("electron");
-import { Document, Packer, Paragraph, TextRun, AlignmentType, HeadingLevel, TableOfContents, SectionType} from "docx";
+import {
+  Document,
+  Packer,
+  Paragraph,
+  TextRun,
+  AlignmentType,
+  HeadingLevel,
+  TableOfContents,
+  SectionType,
+} from "docx";
 
 export function txt(
   secciones_report,
@@ -1055,9 +1064,6 @@ export function docx(
   message
 ) {
   return new Promise(function (resolve, reject) {
-    console.log(
-      "Example"
-    );
     try {
       var options = {
         title: titletxt,
@@ -1072,26 +1078,24 @@ export function docx(
         path = path + ".docx";
 
         var fileContents = [];
-        var docxChildren = []
+        var docxChildren = [];
 
         docxChildren.push(
           new Paragraph({
-              text: "Report",
-              heading: HeadingLevel.TITLE,
+            text: "Report",
+            heading: HeadingLevel.TITLE,
           })
-        )
+        );
 
         docxChildren.push(
-          new TableOfContents(
-            "Summary", {
-              hyperlink: true,
-              headingStyleRange: "1-5"
-            }
-          )
-        )
+          new TableOfContents("Summary", {
+            hyperlink: true,
+            headingStyleRange: "1-5",
+          })
+        );
 
         let keys = Object.keys(secciones_report);
-       
+
         keys.forEach((key) => {
           let item = secciones_report[key];
           const n = getMain[item.interest][0].tasks.length;
@@ -1101,15 +1105,15 @@ export function docx(
             if (i == 0) {
               docxChildren.push(
                 new Paragraph({
-                    text: item.name,
-                    heading: HeadingLevel.HEADING_1,
-                    pageBreakBefore: true,
-                    numbering: {
-                      reference: "rawrr-numbering",
-                      level: 0,
-                  }
+                  text: item.name,
+                  heading: HeadingLevel.HEADING_1,
+                  pageBreakBefore: true,
+                  numbering: {
+                    reference: "rawrr-numbering",
+                    level: 0,
+                  },
                 })
-              )
+              );
             }
             let description = getMain[item.interest][0].tasks[i].description;
             if (description === null) {
@@ -1119,32 +1123,32 @@ export function docx(
             const j = i + 1;
             docxChildren.push(
               new Paragraph({
-                  text: title,
-                  heading: HeadingLevel.HEADING_2,
-                  numbering: {
-                      reference: "rawrr-numbering",
-                      level: 1,
-                  }
+                text: title,
+                heading: HeadingLevel.HEADING_2,
+                numbering: {
+                  reference: "rawrr-numbering",
+                  level: 1,
+                },
               })
-            )
+            );
             docxChildren.push(
               new Paragraph({
-                  text: "Title: " + title,
-                  numbering: {
-                      reference: "rawrr-numbering",
-                      level: 2,
-                  },
+                text: "Title: " + title,
+                numbering: {
+                  reference: "rawrr-numbering",
+                  level: 2,
+                },
               })
-            )
+            );
             docxChildren.push(
               new Paragraph({
-                  text: "Description: " + description,
-                  numbering: {
-                      reference: "rawrr-numbering",
-                      level: 2,
-                  },
+                text: "Description: " + description,
+                numbering: {
+                  reference: "rawrr-numbering",
+                  level: 2,
+                },
               })
-            )
+            );
 
             switch (item.name) {
               case "Assets":
@@ -1159,13 +1163,15 @@ export function docx(
 
                     docxChildren.push(
                       new Paragraph({
-                          text: "Asset category name: " + assets[k].asset_category_name,
-                          numbering: {
-                              reference: "rawrr-numbering",
-                              level: 2,
-                          },
+                        text:
+                          "Asset category name: " +
+                          assets[k].asset_category_name,
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 2,
+                        },
                       })
-                    )
+                    );
                   }
                 }
                 break;
@@ -1194,24 +1200,24 @@ export function docx(
                           if (related_assets == 1) {
                             docxChildren.push(
                               new Paragraph({
-                                  text: "Related assets:",
-                                  numbering: {
-                                      reference: "rawrr-numbering",
-                                      level: 2,
-                                  },
+                                text: "Related assets:",
+                                numbering: {
+                                  reference: "rawrr-numbering",
+                                  level: 2,
+                                },
                               })
-                            )
+                            );
                           }
 
                           docxChildren.push(
                             new Paragraph({
-                                text: activities[k].asset_name[z],
-                                numbering: {
-                                    reference: "rawrr-numbering",
-                                    level: 3,
-                                },
+                              text: activities[k].asset_name[z],
+                              numbering: {
+                                reference: "rawrr-numbering",
+                                level: 3,
+                              },
                             })
-                          )
+                          );
                         }
                       }
                     }
@@ -1219,13 +1225,13 @@ export function docx(
                     if (related_assets == 0) {
                       docxChildren.push(
                         new Paragraph({
-                            text: "Related assets: None",
-                            numbering: {
-                                reference: "rawrr-numbering",
-                                level: 2,
-                            },
+                          text: "Related assets: None",
+                          numbering: {
+                            reference: "rawrr-numbering",
+                            level: 2,
+                          },
                         })
-                      )
+                      );
                     }
                   }
                 }
@@ -1241,13 +1247,13 @@ export function docx(
                     }
                     docxChildren.push(
                       new Paragraph({
-                          text: "Threat type: " + threats[k].threat_type_name,
-                          numbering: {
-                              reference: "rawrr-numbering",
-                              level: 2,
-                          },
+                        text: "Threat type: " + threats[k].threat_type_name,
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 2,
+                        },
                       })
-                    )
+                    );
                     var related_asset = 0;
                     for (
                       var p = 0;
@@ -1261,53 +1267,53 @@ export function docx(
                         related_asset = 1;
                         docxChildren.push(
                           new Paragraph({
-                              text: "Asset: " + threats[k].asset_name ,
-                              numbering: {
-                                  reference: "rawrr-numbering",
-                                  level: 2,
-                              },
+                            text: "Asset: " + threats[k].asset_name,
+                            numbering: {
+                              reference: "rawrr-numbering",
+                              level: 2,
+                            },
                           })
-                        )
+                        );
                       }
                     }
 
                     if (related_asset == 0) {
                       docxChildren.push(
                         new Paragraph({
-                            text: "Asset: None" ,
-                            numbering: {
-                                reference: "rawrr-numbering",
-                                level: 2,
-                            },
+                          text: "Asset: None",
+                          numbering: {
+                            reference: "rawrr-numbering",
+                            level: 2,
+                          },
                         })
-                      )
+                      );
                     }
 
                     docxChildren.push(
                       new Paragraph({
-                          text: "Impact: " + threats[k].impact,
-                          numbering: {
-                              reference: "rawrr-numbering",
-                              level: 2,
-                          },
+                        text: "Impact: " + threats[k].impact,
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 2,
+                        },
                       })
-                    )
+                    );
 
                     docxChildren.push(
                       new Paragraph({
-                          text: "Likelihood: " + threats[k].likelihood ,
-                          numbering: {
-                              reference: "rawrr-numbering",
-                              level: 2,
-                          },
+                        text: "Likelihood: " + threats[k].likelihood,
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 2,
+                        },
                       })
-                    )
+                    );
                   }
                 }
                 break;
               case "Vulnerabilities":
                 let reportAct = getMain.report_activities[0].tasks;
-                
+
                 for (var k = 0; k < vulnerabilities.length; k++) {
                   if (
                     vulnerabilities[k].id ==
@@ -1327,27 +1333,28 @@ export function docx(
 
                         docxChildren.push(
                           new Paragraph({
-                              text: "Activity: " +
-                              vulnerabilities[k].assessment_activity_name ,
-                              numbering: {
-                                  reference: "rawrr-numbering",
-                                  level: 2,
-                              },
+                            text:
+                              "Activity: " +
+                              vulnerabilities[k].assessment_activity_name,
+                            numbering: {
+                              reference: "rawrr-numbering",
+                              level: 2,
+                            },
                           })
-                        )
+                        );
                       }
                     }
 
                     if (related_activity == 0) {
                       docxChildren.push(
                         new Paragraph({
-                            text: "Likelihood: " + threats[k].likelihood ,
-                            numbering: {
-                                reference: "rawrr-numbering",
-                                level: 2,
-                            },
+                          text: "Likelihood: " + threats[k].likelihood,
+                          numbering: {
+                            reference: "rawrr-numbering",
+                            level: 2,
+                          },
                         })
-                      )
+                      );
                       fileContents.push("     Activity: None\n");
                     }
 
@@ -1364,26 +1371,26 @@ export function docx(
                         related_asset = 1;
                         docxChildren.push(
                           new Paragraph({
-                              text: "Asset: " + vulnerabilities[k].asset_name ,
-                              numbering: {
-                                  reference: "rawrr-numbering",
-                                  level: 2,
-                              },
+                            text: "Asset: " + vulnerabilities[k].asset_name,
+                            numbering: {
+                              reference: "rawrr-numbering",
+                              level: 2,
+                            },
                           })
-                        )
+                        );
                       }
                     }
 
                     if (related_asset == 0) {
                       docxChildren.push(
                         new Paragraph({
-                            text: "Asset: None",
-                            numbering: {
-                                reference: "rawrr-numbering",
-                                level: 2,
-                            },
+                          text: "Asset: None",
+                          numbering: {
+                            reference: "rawrr-numbering",
+                            level: 2,
+                          },
                         })
-                      )
+                      );
                     }
 
                     // Adding related threats
@@ -1403,23 +1410,23 @@ export function docx(
                           if (related_threats == 1) {
                             docxChildren.push(
                               new Paragraph({
-                                  text: "Related threats:",
-                                  numbering: {
-                                      reference: "rawrr-numbering",
-                                      level: 2,
-                                  },
+                                text: "Related threats:",
+                                numbering: {
+                                  reference: "rawrr-numbering",
+                                  level: 2,
+                                },
                               })
-                            )
+                            );
                           }
                           docxChildren.push(
                             new Paragraph({
-                                text: reportThreatName[z] ,
-                                numbering: {
-                                    reference: "rawrr-numbering",
-                                    level: 3,
-                                },
+                              text: reportThreatName[z],
+                              numbering: {
+                                reference: "rawrr-numbering",
+                                level: 3,
+                              },
                             })
-                          )
+                          );
                         }
                       }
                     }
@@ -1427,13 +1434,13 @@ export function docx(
                     if (related_threats == 0) {
                       docxChildren.push(
                         new Paragraph({
-                            text: "Related threats: None",
-                            numbering: {
-                                reference: "rawrr-numbering",
-                                level: 2,
-                            },
+                          text: "Related threats: None",
+                          numbering: {
+                            reference: "rawrr-numbering",
+                            level: 2,
+                          },
                         })
-                      )
+                      );
                     }
                   }
                 }
@@ -1452,26 +1459,28 @@ export function docx(
                     }
                     docxChildren.push(
                       new Paragraph({
-                          text: "Implementation cost: " +
+                        text:
+                          "Implementation cost: " +
                           recommentations[k].implementation_cost,
-                          numbering: {
-                              reference: "rawrr-numbering",
-                              level: 2,
-                          },
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 2,
+                        },
                       })
-                    )
+                    );
 
                     docxChildren.push(
                       new Paragraph({
-                          text: "Implementation time: " +
+                        text:
+                          "Implementation time: " +
                           recommentations[k].implementation_time,
-                          numbering: {
-                              reference: "rawrr-numbering",
-                              level: 2,
-                          },
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 2,
+                        },
                       })
-                    )
-                    
+                    );
+
                     let reportVulnerabilityName =
                       recommentations[k].vulnerability_name;
                     let reportVulnerabilitiesTasks =
@@ -1497,23 +1506,23 @@ export function docx(
                           if (related_vulnerabilities == 1) {
                             docxChildren.push(
                               new Paragraph({
-                                  text: "Related vulnerabilities:",
-                                  numbering: {
-                                      reference: "rawrr-numbering",
-                                      level: 2,
-                                  },
+                                text: "Related vulnerabilities:",
+                                numbering: {
+                                  reference: "rawrr-numbering",
+                                  level: 2,
+                                },
                               })
-                            )
+                            );
                           }
                           docxChildren.push(
                             new Paragraph({
-                                text: reportVulnerabilityName[z],
-                                numbering: {
-                                    reference: "rawrr-numbering",
-                                    level: 3,
-                                },
+                              text: reportVulnerabilityName[z],
+                              numbering: {
+                                reference: "rawrr-numbering",
+                                level: 3,
+                              },
                             })
-                          )
+                          );
                         }
                       }
                     }
@@ -1521,13 +1530,13 @@ export function docx(
                     if (related_vulnerabilities == 0) {
                       docxChildren.push(
                         new Paragraph({
-                            text: "Related vulnerabilities: None",
-                            numbering: {
-                                reference: "rawrr-numbering",
-                                level: 2,
-                            },
+                          text: "Related vulnerabilities: None",
+                          numbering: {
+                            reference: "rawrr-numbering",
+                            level: 2,
+                          },
                         })
-                      )
+                      );
                     }
                   }
                 }
@@ -1546,75 +1555,72 @@ export function docx(
 
         try {
           const doc = new Document({
-          
             numbering: {
-                config: [
+              config: [
+                {
+                  reference: "rawrr-numbering",
+                  levels: [
                     {
-                        reference: "rawrr-numbering",
-                        levels: [
-                            {
-                                level: 0,
-                                format: "upperRoman",
-                                text: "%1",
-                                alignment: AlignmentType.START,
-                                style: {
-                                    paragraph: {
-                                        indent: { left: 260, hanging: 260 },
-                                    },
-                                },
-                            },
-                            {
-                                level: 1,
-                                format: "decimal",
-                                text: "%2.",
-                                alignment: AlignmentType.DISTRIBUTE,
-                                style: {
-                                    paragraph: {
-                                        indent: { left: 520, hanging: 260},
-                                    },
-                                },
-                            },
-                            {
-                                level: 2,
-                                format: "lowerLetter",
-                                text: "%3)",
-                                alignment: AlignmentType.DISTRIBUTE,
-                                style: {
-                                    paragraph: {
-                                        indent: { left: 780, hanging: 260 },
-                                    },
-                                },
-                            },
-                            {
-                                level: 3,
-                                format: "upperLetter",
-                                text: "%4)",
-                                alignment: AlignmentType.START,
-                                style: {
-                                    paragraph: {
-                                        indent: { left: 1050, hanging: 260},
-                                    },
-                                },
-                            },
-                        ],
+                      level: 0,
+                      format: "upperRoman",
+                      text: "%1",
+                      alignment: AlignmentType.START,
+                      style: {
+                        paragraph: {
+                          indent: { left: 260, hanging: 260 },
+                        },
+                      },
                     },
-                ],
+                    {
+                      level: 1,
+                      format: "decimal",
+                      text: "%2.",
+                      alignment: AlignmentType.DISTRIBUTE,
+                      style: {
+                        paragraph: {
+                          indent: { left: 520, hanging: 260 },
+                        },
+                      },
+                    },
+                    {
+                      level: 2,
+                      format: "lowerLetter",
+                      text: "%3)",
+                      alignment: AlignmentType.DISTRIBUTE,
+                      style: {
+                        paragraph: {
+                          indent: { left: 780, hanging: 260 },
+                        },
+                      },
+                    },
+                    {
+                      level: 3,
+                      format: "upperLetter",
+                      text: "%4)",
+                      alignment: AlignmentType.START,
+                      style: {
+                        paragraph: {
+                          indent: { left: 1050, hanging: 260 },
+                        },
+                      },
+                    },
+                  ],
+                },
+              ],
             },
             features: {
               updateFields: true,
             },
-            sections: [{
-                children: 
-                  docxChildren
-                
-            }],
-
-        });    
-           // Used to export the file into a .docx file
-            Packer.toBuffer(doc).then((buffer) => {
-              fs.writeFileSync(path, buffer);
+            sections: [
+              {
+                children: docxChildren,
+              },
+            ],
           });
-
+          // Used to export the file into a .docx file
+          Packer.toBuffer(doc).then((buffer) => {
+            fs.writeFileSync(path, buffer);
+          });
         } catch (e) {
           console.log(err);
           reject(err);
@@ -1626,6 +1632,5 @@ export function docx(
     } catch (err) {
       reject(err);
     }
-  
   });
 }

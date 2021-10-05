@@ -1170,35 +1170,35 @@ export function setIPCMainListeners() {
           event.returnValue = ["error", error];
         }
         break;
-        case "docx":
-          try {
-            export_report
-              .docx(
-                arg[1],
-                arg[2],
-                arg[3],
-                arg[4],
-                arg[5],
-                arg[6],
-                arg[7],
-                arg[8],
-                arg[9],
-                arg[10]
-              )
-              .then(
-                function (data) {
-                  event.returnValue = ["resolve", data];
-                },
-                function (err) {
-                  console.log(err);
-                  event.returnValue = ["reject", err];
-                }
-              );
-          } catch (error) {
-            console.log(error);
-            event.returnValue = ["error", error];
-          }
-          break;
+      case "docx":
+        try {
+          export_report
+            .docx(
+              arg[1],
+              arg[2],
+              arg[3],
+              arg[4],
+              arg[5],
+              arg[6],
+              arg[7],
+              arg[8],
+              arg[9],
+              arg[10]
+            )
+            .then(
+              function (data) {
+                event.returnValue = ["resolve", data];
+              },
+              function (err) {
+                console.log(err);
+                event.returnValue = ["reject", err];
+              }
+            );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = ["error", error];
+        }
+        break;
       default:
         console.log(arg[0], " does not have a valid export method.");
         event.returnValue = ["error", ""];
