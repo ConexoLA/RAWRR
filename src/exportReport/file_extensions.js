@@ -1,6 +1,6 @@
 const fs = require("fs");
 const { dialog } = require("electron");
-import { Document, Packer, Paragraph, TextRun, AlignmentType, HeadingLevel, TableOfContents} from "docx";
+import { Document, Packer, Paragraph, TextRun, AlignmentType, HeadingLevel, TableOfContents, SectionType} from "docx";
 
 export function txt(
   secciones_report,
@@ -1103,6 +1103,7 @@ export function docx(
                 new Paragraph({
                     text: item.name,
                     heading: HeadingLevel.HEADING_1,
+                    pageBreakBefore: true,
                     numbering: {
                       reference: "rawrr-numbering",
                       level: 0,
@@ -1471,7 +1472,6 @@ export function docx(
                       })
                     )
                     
-
                     let reportVulnerabilityName =
                       recommentations[k].vulnerability_name;
                     let reportVulnerabilitiesTasks =
@@ -1545,27 +1545,8 @@ export function docx(
         });
 
         try {
-          const doco = new Document({
-            creator: "RAWRR",
-            title: "Report",
-            description: "Rawrr brief report",
-            sections: [{
-                children: [
-                    new Paragraph({
-                        children: [
-                          new TextRun({
-                            text: fileContents.join(""),
-                            font: {
-                                name: "Monospace",
-                            },
-                        }),
-                        ]
-                        
-                    }),
-                ],
-            }]
-          });
           const doc = new Document({
+          
             numbering: {
                 config: [
                     {
@@ -1619,11 +1600,15 @@ export function docx(
                     },
                 ],
             },
+            features: {
+              updateFields: true,
+            },
             sections: [{
                 children: 
                   docxChildren
                 
-            }]
+            }],
+
         });    
            // Used to export the file into a .docx file
             Packer.toBuffer(doc).then((buffer) => {
