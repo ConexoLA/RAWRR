@@ -7,9 +7,7 @@ import Activities from "./views/ActivitiesView.vue";
 import Threats from "./views/ThreatsView.vue";
 import Vulnerabilities from "./views/VulnerabilitiesView.vue";
 import Recommendations from "./views/RecommendationsView.vue";
-import Sections from "./views/reports/sections/AssessmentReportSectionsView.vue";
 import Report from "./views/reports/active reports/ReportView";
-//import ActiveReport from "./views/ActiveReport.vue";
 
 Vue.use(Router);
 
@@ -48,11 +46,6 @@ const router = new Router({
       component: Recommendations,
     },
     {
-      path: "/sections",
-      name: "sections",
-      component: Sections,
-    },
-    {
       path: "/reports",
       name: "reports",
       component: Report,
@@ -62,7 +55,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   if (from.name == "reports") {
-    if (window.confirm(i18n.t("report_confirm_leave"))) {
+    if (window.confirm(i18n.t("reports.leave"))) {
       next();
     } else {
       next(false);

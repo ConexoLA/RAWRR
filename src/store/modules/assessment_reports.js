@@ -2,15 +2,11 @@ const { ipcRenderer } = window.require("electron");
 import i18n from "../../i18n.js";
 
 const state = {
-  assessment_reports: [],
-  active_assessment_report: null,
-  assessment_report_sections: [],
   main: {},
   created: false,
 };
 
 const getters = {
-  getAllAssessmentReports: (state) => state.assessment_reports,
   getMain: (state, rootState) => {
     if (state.created) {
       return state.main;
@@ -79,8 +75,6 @@ const getters = {
       return state.main;
     }
   },
-  getActiveReport: (state) => state.active_assessment_report,
-  getAllAssessmentReportSections: (state) => state.assessment_report_sections,
 };
 
 const actions = {
@@ -147,192 +141,6 @@ const actions = {
   async removeAllReportRecommendation({ commit }, recommendations) {
     commit("mutationRemoveAllReportRecommendation", recommendations);
   },
-  async fetchAllAssessmentReports({ commit }) {
-    const response = await ipcRenderer.sendSync("queryAll", [
-      "assessment_reports",
-    ]);
-    if (Number.isFinite(response)) {
-      switch (response) {
-        //Table does not exist
-        case 1:
-          this.dispatch("setNotification", {
-            text: i18n.t("home.import_error_1"),
-            color: "error",
-          });
-          commit("backup", true);
-          break;
-        //File is not a DB
-        case 26:
-          this.dispatch("setNotification", {
-            text: i18n.t("home.import_error_26"),
-            color: "error",
-          });
-          commit("backup", true);
-          break;
-        //Unkown error
-        default:
-          this.dispatch("setNotification", {
-            text: i18n.t("home.import_error_unkown"),
-            color: "error",
-          });
-          commit("backup", true);
-          break;
-      }
-    } else {
-      commit("setAssessmentReports", response);
-    }
-  },
-  setActiveReport({ commit }, report) {
-    commit("SETACTIVEREPORT", report);
-  },
-  //DELETE
-  async addAssessmentReport({ commit }, assessment_report) {
-    const response = await ipcRenderer.sendSync("insert", [
-      "assessment_reports",
-      assessment_report,
-    ]);
-    const result = await ipcRenderer.sendSync("queryById", [
-      "assessment_reports",
-      response,
-    ]);
-    if (response.length == 0) {
-      this.dispatch("setNotification", {
-        text: i18n.t("assessment_report_insert_error"),
-        color: "error",
-      });
-    } else {
-      this.dispatch("setNotification", {
-        text: i18n.t("assessment_report_insert_success"),
-      });
-    }
-    commit("newAssessmentReport", result);
-  },
-  //DELETE
-  async deleteAssessmentReport({ commit }, assessment_report) {
-    const response = await ipcRenderer.sendSync("remove", [
-      "assessment_reports",
-      assessment_report,
-    ]);
-    if (response.length == 0) {
-      this.dispatch("setNotification", {
-        text: i18n.t("generic_delete_error"),
-        color: "error",
-      });
-    } else {
-      this.dispatch("setNotification", {
-        text: i18n.t("generic_delete_success"),
-      });
-    }
-    commit("removeAssessmentReport", response);
-  },
-  //DELETE
-  async updateAssessmentReport({ commit }, assessment_report) {
-    const response = await ipcRenderer.sendSync("update", [
-      "assessment_reports",
-      assessment_report,
-    ]);
-    if (response.length == 0) {
-      this.dispatch("setNotification", {
-        text: i18n.t("assessment_report_edit_error"),
-        color: "error",
-      });
-    } else {
-      this.dispatch("setNotification", {
-        text: i18n.t("assessment_report_edit_success"),
-      });
-    }
-    commit("changeAssessmentReport", response);
-  },
-  //DELETE
-  async fetchAllAssessmentReportSections({ commit }) {
-    const response = await ipcRenderer.sendSync("queryAll", [
-      "assessment_report_sections",
-    ]);
-    if (Number.isFinite(response)) {
-      switch (response) {
-        //Table does not exist
-        case 1:
-          this.dispatch("setNotification", {
-            text: i18n.t("home.import_error_1"),
-            color: "error",
-          });
-          commit("backup", true);
-          break;
-        //File is not a DB
-        case 26:
-          this.dispatch("setNotification", {
-            text: i18n.t("home.import_error_26"),
-            color: "error",
-          });
-          commit("backup", true);
-          break;
-        //Unkown error
-        default:
-          this.dispatch("setNotification", {
-            text: i18n.t("home.import_error_unkown"),
-            color: "error",
-          });
-          commit("backup", true);
-          break;
-      }
-    } else {
-      commit("setAssessmentReportSections", response);
-    }
-  },
-  //DELETE
-  async addAssessmentReportSection({ commit }, assessment_report_section) {
-    const response = await ipcRenderer.sendSync("insert", [
-      "assessment_report_sections",
-      assessment_report_section,
-    ]);
-    if (response.length == 0) {
-      this.dispatch("setNotification", {
-        text: i18n.t("assessment_report_section_insert_error"),
-        color: "error",
-      });
-    } else {
-      this.dispatch("setNotification", {
-        text: i18n.t("assessment_report_section_insert_success"),
-      });
-    }
-    commit("newAssessmentReportSection", response);
-  },
-  //DELETE
-  async deleteAssessmentReportSection({ commit }, assessment_report_section) {
-    const response = await ipcRenderer.sendSync("remove", [
-      "assessment_report_sections",
-      assessment_report_section,
-    ]);
-    if (response.length == 0) {
-      this.dispatch("setNotification", {
-        text: i18n.t("generic_delete_error"),
-        color: "error",
-      });
-    } else {
-      this.dispatch("setNotification", {
-        text: i18n.t("generic_delete_success"),
-      });
-    }
-    commit("removeAssessmentReportSection", response);
-  },
-  //DELETE
-  async updateAssessmentReportSection({ commit }, assessment_report_section) {
-    const response = await ipcRenderer.sendSync("update", [
-      "assessment_report_sections",
-      assessment_report_section,
-    ]);
-    if (response.length == 0) {
-      this.dispatch("setNotification", {
-        text: i18n.t("assessment_report_section_edit_error"),
-        color: "error",
-      });
-    } else {
-      this.dispatch("setNotification", {
-        text: i18n.t("assessment_report_section_edit_success"),
-      });
-    }
-    commit("changeAssessmentReportSection", response);
-  },
   async exportReport({ dispatch }, report) {
     const response = await ipcRenderer.sendSync("export", report);
     if (response[0] === "error" || response[0] === "reject") {
@@ -351,9 +159,6 @@ const actions = {
 };
 
 const mutations = {
-  setAssessmentReports: (state, assessment_reports) =>
-    (state.assessment_reports = assessment_reports),
-  SETACTIVEREPORT: (state, report) => (state.active_assessment_report = report),
   mutationMain: (state) => {
     state.created = false;
     state.main = {
@@ -549,43 +354,6 @@ const mutations = {
     state.main.recommendations[0].tasks =
       state.main.recommendations[0].tasks.concat(recommendations);
     state.main.report_recommendations[0].tasks = [];
-  },
-  newAssessmentReport: (state, assessment_report) => {
-    state.assessment_reports.push(assessment_report);
-    state.active_assessment_report = assessment_report;
-  },
-  removeAssessmentReport: (state, id) =>
-    state.assessment_reports.filter(
-      (assessment_report) => assessment_report.id !== id
-    ),
-  changeAssessmentReport: (state, updAssessmentReport) => {
-    const index = state.assessment_reports.findIndex(
-      (AssessmentReport) => AssessmentReport.id === updAssessmentReport.id
-    );
-    if (index !== -1) {
-      state.assessment_reports.splice(index, 1, updAssessmentReport);
-    }
-  },
-  setAssessmentReportSections: (state, assessment_report_sections) =>
-    (state.assessment_report_sections = assessment_report_sections),
-  newAssessmentReportSection: (state, assessment_report_section) =>
-    state.assessment_report_sections.push(assessment_report_section),
-  removeAssessmentReportSection: (state, id) =>
-    state.assessment_report_sections.filter(
-      (assessment_report_section) => assessment_report_section.id !== id
-    ),
-  changeAssessmentReportSection: (state, updAssessmentReportSection) => {
-    const index = state.assessment_report_sections.findIndex(
-      (AssessmentReportSection) =>
-        AssessmentReportSection.id === updAssessmentReportSection.id
-    );
-    if (index !== -1) {
-      state.assessment_report_sections.splice(
-        index,
-        1,
-        updAssessmentReportSection
-      );
-    }
   },
   backup: (rootState, value) => (rootState.backup = value),
 };

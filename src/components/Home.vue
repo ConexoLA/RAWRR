@@ -133,8 +133,6 @@ export default {
       "fetchAllVulnerabilityThreatAssociations",
       "fetchAllRecommendations",
       "fetchAllRecommendationVulnerabilityAssociations",
-      "fetchAllAssessmentReports",
-      "fetchAllAssessmentReportSections",
       "setBackup",
     ]),
     onExportDatabase: function () {
@@ -166,8 +164,6 @@ export default {
             await this.fetchAllVulnerabilityThreatAssociations();
             await this.fetchAllRecommendations();
             await this.fetchAllRecommendationVulnerabilityAssociations();
-            await this.fetchAllAssessmentReports();
-            await this.fetchAllAssessmentReportSections();
 
             this.backup = await this.getBackup;
 
@@ -191,8 +187,6 @@ export default {
               await this.fetchAllVulnerabilityThreatAssociations();
               await this.fetchAllRecommendations();
               await this.fetchAllRecommendationVulnerabilityAssociations();
-              await this.fetchAllAssessmentReports();
-              await this.fetchAllAssessmentReportSections();
             }
           }
         }
@@ -204,8 +198,6 @@ export default {
 
         this.fetchAllAssessmentActivities();
         this.fetchAllAssessmentActivityAssetAssociations();
-        this.fetchAllAssessmentReports();
-        this.fetchAllAssessmentReportSections();
         this.fetchAllAssets();
         this.fetchAllAssetCategories();
         this.fetchAllRecommendations();
@@ -222,8 +214,6 @@ export default {
 
         this.fetchAllAssessmentActivities();
         this.fetchAllAssessmentActivityAssetAssociations();
-        this.fetchAllAssessmentReports();
-        this.fetchAllAssessmentReportSections();
         this.fetchAllAssets();
         this.fetchAllAssetCategories();
         this.fetchAllRecommendations();
