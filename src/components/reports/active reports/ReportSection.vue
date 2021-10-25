@@ -43,10 +43,8 @@
                   <v-icon> mdi-collapse-all </v-icon>
                 </v-btn>
               </template>
-              <span v-if="!isReport">{{ $t("report_tooltip_add_all") }} </span>
-              <span v-if="isReport"
-                >{{ $t("report_tooltip_remove_all") }}
-              </span>
+              <span v-if="!isReport">{{ $t("global.add_all") }} </span>
+              <span v-if="isReport">{{ $t("global.remove_all") }} </span>
             </v-tooltip>
             <v-tooltip top close-delay="100">
               <template v-slot:activator="{ on, attrs }">
@@ -67,10 +65,10 @@
                 </v-btn>
               </template>
               <span v-if="showSections[asset.showClass]"
-                >{{ $t("report_tooltip_collapse_all") }}
+                >{{ $t("global.collapse") }}
               </span>
               <span v-if="!showSections[asset.showClass]"
-                >{{ $t("report_tooltip_expand_all") }}
+                >{{ $t("global.expand") }}
               </span>
             </v-tooltip>
           </div>
@@ -96,14 +94,14 @@
             style="text-align: center; font-style: italic"
             class="text-gray-700 font-sans tracking-wide text-sm"
           >
-            {{ $t("report_no_data") }}
+            {{ $t("reports.to_add_empty") }}
           </div>
           <div
             v-else-if="asset.tasks.length === 0 && isReport === true"
             style="text-align: center; font-style: italic"
             class="text-gray-700 font-sans tracking-wide text-sm"
           >
-            {{ $t("report_no_data_2") }}
+            {{ $t("reports.added_empty") }}
           </div>
         </draggable>
       </div>

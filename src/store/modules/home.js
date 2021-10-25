@@ -18,13 +18,13 @@ const actions = {
     const response = await ipcRenderer.sendSync("export", database);
     if (response[0] === "error" || response[0] === "reject") {
       dispatch("setNotification", {
-        text: i18n.t("database_export_error"),
+        text: i18n.t("home.export_error"),
         color: "error",
       });
     } else {
       if (response[1]) {
         dispatch("setNotification", {
-          text: i18n.t("database_export_success"),
+          text: i18n.t("home.export_success"),
         });
       }
     }
@@ -33,7 +33,7 @@ const actions = {
     const response = await ipcRenderer.sendSync("import", database);
     if (response[0] === "error" || response[0] === "reject") {
       dispatch("setNotification", {
-        text: i18n.t("database_import_error"),
+        text: i18n.t("home.import_error"),
         color: "error",
       });
     } else {
@@ -42,7 +42,7 @@ const actions = {
       } else {
         if (!database[3]) {
           dispatch("setNotification", {
-            text: i18n.t("database_import_success"),
+            text: i18n.t("home.import_success"),
             timeout: "2000",
           });
         }
@@ -53,14 +53,14 @@ const actions = {
     const response = await ipcRenderer.sendSync("loadTestValues");
     if (response[0] === "error" || response[0] === "reject") {
       dispatch("setNotification", {
-        text: i18n.t("database_test_error"),
+        text: i18n.t("home.test_error"),
         color: "error",
       });
       return "error";
     } else {
       if (response[1]) {
         dispatch("setNotification", {
-          text: i18n.t("database_test_success"),
+          text: i18n.t("home.test_success"),
           timeout: "2000",
         });
       }
@@ -70,13 +70,13 @@ const actions = {
     const response = await ipcRenderer.sendSync("backupDatabase");
     if (response[0] === "error" || response[0] === "reject") {
       dispatch("setNotification", {
-        text: i18n.t("database_test_error"), // TODO: ADD MESSAGE OF BACKUP
+        text: i18n.t("home.test_error"), // TODO: ADD MESSAGE OF BACKUP
         color: "error",
       });
     } else {
       if (response[1]) {
         dispatch("setNotification", {
-          text: i18n.t("database_test_success"),
+          text: i18n.t("home.test_success"),
           timeout: "2000",
         });
       }
@@ -86,13 +86,13 @@ const actions = {
     const response = await ipcRenderer.sendSync("deleteDatabase");
     if (response[0] === "error" || response[0] === "reject") {
       dispatch("setNotification", {
-        text: i18n.t("database_delete_error"),
+        text: i18n.t("home.delete_error"),
         color: "error",
       });
     } else {
       if (response[1]) {
         dispatch("setNotification", {
-          text: i18n.t("database_delete_success"),
+          text: i18n.t("home.delete_success"),
           timeout: "2000",
         });
       }

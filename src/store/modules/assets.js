@@ -35,7 +35,7 @@ const actions = {
         //Table does not exist
         case 1:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_1"),
+            text: i18n.t("home.import_error_1"),
             color: "error",
           });
           commit("backup", true);
@@ -43,7 +43,7 @@ const actions = {
         //File is not a DB
         case 26:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_26"),
+            text: i18n.t("home.import_error_26"),
             color: "error",
           });
           commit("backup", true);
@@ -51,7 +51,7 @@ const actions = {
         //Unkown error
         default:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_unkown"),
+            text: i18n.t("home.import_error_unkown"),
             color: "error",
           });
           commit("backup", true);
@@ -65,12 +65,12 @@ const actions = {
     const response = await ipcRenderer.sendSync("insert", ["assets", asset]);
     if (response.length == 0) {
       this.dispatch("setNotification", {
-        text: i18n.t("asset_insert_error"),
+        text: i18n.t("assets.insert_error"),
         color: "error",
       });
     } else {
       this.dispatch("setNotification", {
-        text: i18n.t("asset_insert_success"),
+        text: i18n.t("assets.insert_success"),
       });
     }
     commit("newAsset", response);
@@ -79,12 +79,12 @@ const actions = {
     const response = await ipcRenderer.sendSync("remove", ["assets", asset]);
     if (response.length == 0) {
       this.dispatch("setNotification", {
-        text: i18n.t("generic_delete_error"),
+        text: i18n.t("global.delete_error"),
         color: "error",
       });
     } else {
       this.dispatch("setNotification", {
-        text: i18n.t("generic_delete_success"),
+        text: i18n.t("global.delete_success"),
       });
     }
     commit("removeAsset", response);
@@ -93,12 +93,12 @@ const actions = {
     const response = await ipcRenderer.sendSync("update", ["assets", asset]);
     if (response.length == 0) {
       this.dispatch("setNotification", {
-        text: i18n.t("asset_edit_error"),
+        text: i18n.t("assets.edit_error"),
         color: "error",
       });
     } else {
       this.dispatch("setNotification", {
-        text: i18n.t("asset_edit_success"),
+        text: i18n.t("assets.edit_success"),
       });
     }
     commit("changeAsset", response);
@@ -112,7 +112,7 @@ const actions = {
         //Table does not exist
         case 1:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_1"),
+            text: i18n.t("home.import_error_1"),
             color: "error",
           });
           commit("backup", true);
@@ -120,7 +120,7 @@ const actions = {
         //File is not a DB
         case 26:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_26"),
+            text: i18n.t("home.import_error_26"),
             color: "error",
           });
           commit("backup", true);
@@ -128,7 +128,7 @@ const actions = {
         //Unkown error
         default:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_unkown"),
+            text: i18n.t("home.import_error_unkown"),
             color: "error",
           });
           commit("backup", true);

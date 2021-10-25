@@ -156,7 +156,7 @@ const actions = {
         //Table does not exist
         case 1:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_1"),
+            text: i18n.t("home.import_error_1"),
             color: "error",
           });
           commit("backup", true);
@@ -164,7 +164,7 @@ const actions = {
         //File is not a DB
         case 26:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_26"),
+            text: i18n.t("home.import_error_26"),
             color: "error",
           });
           commit("backup", true);
@@ -172,7 +172,7 @@ const actions = {
         //Unkown error
         default:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_unkown"),
+            text: i18n.t("home.import_error_unkown"),
             color: "error",
           });
           commit("backup", true);
@@ -185,6 +185,7 @@ const actions = {
   setActiveReport({ commit }, report) {
     commit("SETACTIVEREPORT", report);
   },
+  //DELETE
   async addAssessmentReport({ commit }, assessment_report) {
     const response = await ipcRenderer.sendSync("insert", [
       "assessment_reports",
@@ -206,6 +207,7 @@ const actions = {
     }
     commit("newAssessmentReport", result);
   },
+  //DELETE
   async deleteAssessmentReport({ commit }, assessment_report) {
     const response = await ipcRenderer.sendSync("remove", [
       "assessment_reports",
@@ -223,6 +225,7 @@ const actions = {
     }
     commit("removeAssessmentReport", response);
   },
+  //DELETE
   async updateAssessmentReport({ commit }, assessment_report) {
     const response = await ipcRenderer.sendSync("update", [
       "assessment_reports",
@@ -240,6 +243,7 @@ const actions = {
     }
     commit("changeAssessmentReport", response);
   },
+  //DELETE
   async fetchAllAssessmentReportSections({ commit }) {
     const response = await ipcRenderer.sendSync("queryAll", [
       "assessment_report_sections",
@@ -249,7 +253,7 @@ const actions = {
         //Table does not exist
         case 1:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_1"),
+            text: i18n.t("home.import_error_1"),
             color: "error",
           });
           commit("backup", true);
@@ -257,7 +261,7 @@ const actions = {
         //File is not a DB
         case 26:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_26"),
+            text: i18n.t("home.import_error_26"),
             color: "error",
           });
           commit("backup", true);
@@ -265,7 +269,7 @@ const actions = {
         //Unkown error
         default:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_unkown"),
+            text: i18n.t("home.import_error_unkown"),
             color: "error",
           });
           commit("backup", true);
@@ -275,6 +279,7 @@ const actions = {
       commit("setAssessmentReportSections", response);
     }
   },
+  //DELETE
   async addAssessmentReportSection({ commit }, assessment_report_section) {
     const response = await ipcRenderer.sendSync("insert", [
       "assessment_report_sections",
@@ -292,6 +297,7 @@ const actions = {
     }
     commit("newAssessmentReportSection", response);
   },
+  //DELETE
   async deleteAssessmentReportSection({ commit }, assessment_report_section) {
     const response = await ipcRenderer.sendSync("remove", [
       "assessment_report_sections",
@@ -309,6 +315,7 @@ const actions = {
     }
     commit("removeAssessmentReportSection", response);
   },
+  //DELETE
   async updateAssessmentReportSection({ commit }, assessment_report_section) {
     const response = await ipcRenderer.sendSync("update", [
       "assessment_report_sections",
@@ -330,13 +337,13 @@ const actions = {
     const response = await ipcRenderer.sendSync("export", report);
     if (response[0] === "error" || response[0] === "reject") {
       dispatch("setNotification", {
-        text: i18n.t("report_export_error"),
+        text: i18n.t("reports.export_error"),
         color: "error",
       });
     } else {
       if (response[1]) {
         dispatch("setNotification", {
-          text: i18n.t("report_export_success"),
+          text: i18n.t("reports.export_success"),
         });
       }
     }
@@ -350,6 +357,7 @@ const mutations = {
   mutationMain: (state) => {
     state.created = false;
     state.main = {
+      //TO-DO Localizar titles
       report_assets: [
         {
           title: "Report Assets",

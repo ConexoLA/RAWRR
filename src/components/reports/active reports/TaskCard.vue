@@ -29,7 +29,7 @@
           @click="clickAdd(task)"
         >
           <v-icon dark> mdi-plus </v-icon>
-          {{ $t("report_add_card") }}
+          {{ $t("global.add") }}
         </v-btn>
 
         <v-btn
@@ -41,7 +41,7 @@
           @click="clickRemove(task, index)"
         >
           <v-icon dark> mdi-minus </v-icon>
-          {{ $t("report_remove_card") }}
+          {{ $t("global.remove") }}
         </v-btn>
       </div>
     </div>

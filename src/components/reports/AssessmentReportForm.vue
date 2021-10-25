@@ -14,14 +14,14 @@
                   class="mb-3"
                   v-model="formDataTemp.assessmentReport.name"
                   :rules="nameRules"
-                  :label="$t('generic_form_name_label')"
+                  :label="$t('forms.name')"
                   required
                 ></v-text-field>
               </v-row>
               <v-row>
                 <v-textarea
                   v-model="formDataTemp.assessmentReport.description"
-                  :label="$t('generic_form_description_label')"
+                  :label="$t('global.description')"
                   outlined
                   rows="5"
                   no-resize
@@ -37,7 +37,7 @@
                   "
                   :disabled="!valid"
                   @click="updateElement(formDataTemp.assessmentReport)"
-                  >{{ $t("generic_form_update_button") }}
+                  >{{ $t("global.update") }}
                 </v-btn>
               </v-row>
               <v-row v-if="formDataTemp.type === 'Create'">
@@ -50,7 +50,7 @@
                   "
                   :disabled="!valid"
                   @click="insertElement(formDataTemp.assessmentReport)"
-                  >{{ $t("generic_form_insert_button") }}
+                  >{{ $t("global.insert") }}
                 </v-btn>
               </v-row>
             </v-col>
@@ -73,9 +73,8 @@ export default {
   computed: {
     nameRules() {
       return [
-        (v) => !!v || this.$t("generic_form_name_restriction_1"),
-        (v) =>
-          (v && v.length <= 150) || this.$t("generic_form_name_restriction_2"),
+        (v) => !!v || this.$t("forms.name_restriction_1"),
+        (v) => (v && v.length <= 150) || this.$t("forms.name_restriction_2"),
       ];
     },
   },
