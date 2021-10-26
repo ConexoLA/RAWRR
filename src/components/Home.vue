@@ -192,36 +192,36 @@ export default {
         }
       }
     },
-    onLoadTestValues: function () {
+    onLoadTestValues: async function () {
       if (window.confirm(this.$t("home.write_confirm"))) {
-        this.loadTestValues();
+        await this.loadTestValues();
 
-        this.fetchAllAssessmentActivities();
-        this.fetchAllAssessmentActivityAssetAssociations();
-        this.fetchAllAssets();
-        this.fetchAllAssetCategories();
-        this.fetchAllRecommendations();
-        this.fetchAllRecommendationVulnerabilityAssociations();
-        this.fetchAllThreatTypes();
-        this.fetchAllThreats();
-        this.fetchAllVulnerabilities();
-        this.fetchAllVulnerabilityThreatAssociations();
+        await this.fetchAllAssessmentActivities();
+        await this.fetchAllAssessmentActivityAssetAssociations();
+        await this.fetchAllAssets();
+        await this.fetchAllAssetCategories();
+        await this.fetchAllRecommendations();
+        await this.fetchAllRecommendationVulnerabilityAssociations();
+        await this.fetchAllThreatTypes();
+        await this.fetchAllThreats();
+        await this.fetchAllVulnerabilities();
+        await this.fetchAllVulnerabilityThreatAssociations();
       }
     },
-    onDeleteDatabase: function () {
+    onDeleteDatabase: async function () {
       if (window.confirm(this.$t("home.delete_confirm"))) {
-        this.deleteDatabase();
+        await this.deleteDatabase();
 
-        this.fetchAllAssessmentActivities();
-        this.fetchAllAssessmentActivityAssetAssociations();
-        this.fetchAllAssets();
-        this.fetchAllAssetCategories();
-        this.fetchAllRecommendations();
-        this.fetchAllRecommendationVulnerabilityAssociations();
-        this.fetchAllThreatTypes();
-        this.fetchAllThreats();
-        this.fetchAllVulnerabilities();
-        this.fetchAllVulnerabilityThreatAssociations();
+        await this.fetchAllAssessmentActivities();
+        await this.fetchAllAssessmentActivityAssetAssociations();
+        await this.fetchAllAssets();
+        await this.fetchAllAssetCategories();
+        await this.fetchAllRecommendations();
+        await this.fetchAllRecommendationVulnerabilityAssociations();
+        await this.fetchAllThreatTypes();
+        await this.fetchAllThreats();
+        await this.fetchAllVulnerabilities();
+        await this.fetchAllVulnerabilityThreatAssociations();
       }
     },
   },

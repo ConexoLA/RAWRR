@@ -185,5 +185,26 @@
     "report_threats": "Report threats",
     "report_vulnerabilities": "Report vulnerabilities",
     "report_recommendations": "Report recommendations"
+  },
+  "fixtures": {
+    "asset_categories": {
+      "1": "User equipment",
+      "2": "Organization equipment and services",
+      "3": "Organization members",
+      "4": "Beneficiaries",
+      "5": "Reputational",
+      "6": "Financial",
+      "7": "Digital assets",
+      "8": "Physical assets"
+    },
+    "threat_types": {
+      "1": "Physical",
+      "2": "Digital-Information",
+      "3": "Psychosocial",
+      "4": "Financial",
+      "5": "Administrative-Legal",
+      "6": "Judicial",
+      "7": "Reputational"
+    }
   }
 }
