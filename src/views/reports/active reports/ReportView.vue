@@ -169,6 +169,7 @@
 import draggable from "vuedraggable";
 import ReportSection from "../../../components/reports/active reports/ReportSection.vue";
 import { mapGetters, mapActions } from "vuex";
+import i18n from "../../../i18n.js";
 
 export default {
   components: {
@@ -230,30 +231,35 @@ export default {
           name: "Assets",
           interest: "report_assets",
           group_name: "asset",
+          title: i18n.t("reports.assets"),
         },
         {
           id: "2",
           name: "Activities",
           interest: "report_activities",
           group_name: "activity",
+          title: i18n.t("reports.activities"),
         },
         {
           id: "3",
           name: "Threats",
           interest: "report_threats",
           group_name: "threat",
+          title: i18n.t("reports.threats"),
         },
         {
           id: "4",
           name: "Vulnerabilities",
           interest: "report_vulnerabilities",
           group_name: "vulnerability",
+          title: i18n.t("reports.vulnerabilities"),
         },
         {
           id: "5",
           name: "Recommendations",
           interest: "report_recommendations",
           group_name: "recommendation",
+          title: i18n.t("reports.recommendations"),
         },
       ],
     };

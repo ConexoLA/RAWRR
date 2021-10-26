@@ -52,7 +52,7 @@
         style="margin-right: 5px; text-indent: 5px"
         >{{ task.description }}</span
       >
-      <badge v-if="task.type" :color="badgeColor">{{ task.type }}</badge>
+      <badge v-if="task.type" :color="badgeColor">{{ task.type_name }}</badge>
     </div>
   </div>
 </template>

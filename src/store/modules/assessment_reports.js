@@ -19,6 +19,7 @@ const getters = {
           identifier: rootState.getAllAssets[asset].id,
           description: rootState.getAllAssets[asset].description,
           type: "Assets",
+          type_name: i18n.t("reports.assets"),
         });
         last_id += 1;
       }
@@ -31,6 +32,7 @@ const getters = {
           description:
             rootState.getAllAssessmentActivities[activity].description,
           type: "Activities",
+          type_name: i18n.t("reports.activities"),
         });
         last_id += 1;
       }
@@ -42,6 +44,7 @@ const getters = {
           identifier: rootState.getAllThreats[threat].id,
           description: rootState.getAllThreats[threat].description,
           type: "Threats",
+          type_name: i18n.t("reports.threats"),
         });
         last_id += 1;
       }
@@ -54,6 +57,7 @@ const getters = {
           description:
             rootState.getAllVulnerabilities[vulnerability].description,
           type: "Vulnerabilities",
+          type_name: i18n.t("reports.vulnerabilities"),
         });
         last_id += 1;
       }
@@ -66,6 +70,7 @@ const getters = {
           description:
             rootState.getAllRecommendations[recommendation].description,
           type: "Recommendations",
+          type_name: i18n.t("reports.recommendations"),
         });
         last_id += 1;
       }

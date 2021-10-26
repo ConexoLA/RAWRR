@@ -48,7 +48,7 @@ export function txt(
           for (var i = 0; i < n; i++) {
             wrote += 1;
             if (i == 0) {
-              fileContents.push(item.name + "\n");
+              fileContents.push(item.title + "\n");
             }
             let description = getMain[item.interest][0].tasks[i].description;
             if (description === null) {
@@ -445,12 +445,12 @@ export function md(
           for (var i = 0; i < n; i++) {
             wrote += 1;
             if (i == 0) {
-              fileContents.push("## " + item.name + "\n\n");
+              fileContents.push("## " + item.title + "\n\n");
               toc.push(
                 "- [" +
-                  item.name +
+                  item.title +
                   "](#" +
-                  item.name.toLowerCase().split(" ").join("-") +
+                  item.title.toLowerCase().split(" ").join("-") +
                   ")\n"
               );
             }
@@ -924,7 +924,7 @@ export function json(
               reportJson["sections"] = [];
             }
             if (i == 0) {
-              jsonSection["sectionName"] = item.name;
+              jsonSection["sectionName"] = item.title;
             }
             let description = getMain[item.interest][0].tasks[i].description;
             if (description === null) {
@@ -1243,7 +1243,7 @@ export function docx(
             if (i == 0) {
               docxChildren.push(
                 new Paragraph({
-                  text: item.name,
+                  text: item.title,
                   heading: HeadingLevel.HEADING_1,
                   pageBreakBefore: true,
                   numbering: {
