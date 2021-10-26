@@ -162,73 +162,72 @@ const mutations = {
   mutationMain: (state) => {
     state.created = false;
     state.main = {
-      //TO-DO Localizar titles
       report_assets: [
         {
-          title: "Report Assets",
+          title: i18n.t("reports.report_assets"),
           showClass: "reportAssets",
           tasks: [],
         },
       ],
       report_activities: [
         {
-          title: "Report Activities",
+          title: i18n.t("reports.report_activities"),
           showClass: "reportActivities",
           tasks: [],
         },
       ],
       report_recommendations: [
         {
-          title: "Report Recommendations",
+          title: i18n.t("reports.report_recommendations"),
           showClass: "reportRecommendations",
           tasks: [],
         },
       ],
       report_vulnerabilities: [
         {
-          title: "Report Vulnerabilities",
+          title: i18n.t("reports.report_vulnerabilities"),
           showClass: "reportVulnerabilities",
           tasks: [],
         },
       ],
       report_threats: [
         {
-          title: "Report Threats",
+          title: i18n.t("reports.report_threats"),
           showClass: "reportThreats",
           tasks: [],
         },
       ],
       assets: [
         {
-          title: "Assets",
+          title: i18n.t("reports.assets"),
           showClass: "Assets",
           tasks: [],
         },
       ],
       activities: [
         {
-          title: "Activities",
+          title: i18n.t("reports.activities"),
           showClass: "Activities",
           tasks: [],
         },
       ],
       recommendations: [
         {
-          title: "Recommendations",
+          title: i18n.t("reports.recommendations"),
           showClass: "Recommendations",
           tasks: [],
         },
       ],
       vulnerabilities: [
         {
-          title: "Vulnerabilities",
+          title: i18n.t("reports.vulnerabilities"),
           showClass: "Vulnerabilities",
           tasks: [],
         },
       ],
       threats: [
         {
-          title: "Threats",
+          title: i18n.t("reports.threats"),
           showClass: "Threats",
           tasks: [],
         },

@@ -32,7 +32,8 @@
     "vulnerabilities": "Related vulnerabilities",
     "report_save": "Choose a location where you would like to save your report",
     "delete_success": "Successfully deleted",
-    "delete_error": "An error occured while trying to delete"
+    "delete_error": "An error occured while trying to delete",
+    "none": "None"
   },
   "header": {
     "home": "Home",
@@ -145,7 +146,7 @@
     "insert_error": "Recommendation could not be inserted. Please make sure the name is unique"
   },
   "reports": {
-    "title": "Listing all assessment reports",
+    "title": "Report content selection",
     "subtitle": "You can reorder and remove elements in the report content section",
     "to_add": "Content not in report",
     "to_add_info": "Toggle between hidding or showing the 'Content not in report' column",
@@ -173,6 +174,16 @@
     "added_empty": "No element added (this section won't appear in the exported report)",
     "export_error": "Report could not be exported",
     "export_success": "Report exported successfully",
-    "leave": "If you leave this page you'll lose all progress on the report"
+    "leave": "If you leave this page you'll lose all progress on the report",
+    "assets": "Assets",
+    "activities": "Activities",
+    "threats": "Threats",
+    "vulnerabilities": "Vulnerabilities",
+    "recommendations": "Recommendations",
+    "report_assets": "Report assets",
+    "report_activities": "Report activities",
+    "report_threats": "Report threats",
+    "report_vulnerabilities": "Report vulnerabilities",
+    "report_recommendations": "Report recommendations"
   }
 }
