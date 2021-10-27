@@ -12,7 +12,7 @@
       <v-row align="center" justify="center">
         <v-col cols="auto">
           <h1 class="display-1 font-weight-bold">
-            {{ $t("welcome_message_1") }}
+            {{ $t("home.welcome_message_1") }}
           </h1>
         </v-col>
       </v-row>
@@ -20,7 +20,7 @@
       <v-row align-content="center" justify="center" class="ml-2 mr-2">
         <v-col cols="auto" align-self="center">
           <p justify-center align-center style="white-space: pre-line">
-            {{ $t("welcome_message_2") }}
+            {{ $t("home.welcome_message_2") }}
           </p>
         </v-col>
       </v-row>
@@ -37,11 +37,11 @@
                   @click="onLoadTestValues()"
                 >
                   <v-icon class="mr-2">mdi-test-tube</v-icon>
-                  {{ $t("database_test") }}
+                  {{ $t("home.test") }}
                 </v-btn>
               </template>
 
-              <span>{{ $t("database_tooltip_test") }} </span>
+              <span>{{ $t("home.test_tooltip") }} </span>
             </v-tooltip>
           </v-card>
         </v-col>
@@ -56,11 +56,11 @@
                   v-on="on"
                   @click="onImportDatabase()"
                   ><v-icon class="mr-2">mdi-import</v-icon> {{ ""
-                  }}{{ $t("database_import") }}
+                  }}{{ $t("home.import") }}
                 </v-btn>
               </template>
 
-              <span>{{ $t("database_tooltip_import") }} </span>
+              <span>{{ $t("home.import_tooltip") }} </span>
             </v-tooltip>
           </v-card>
         </v-col>
@@ -75,11 +75,11 @@
                   v-on="on"
                   @click="onExportDatabase()"
                   ><v-icon class="mr-2">mdi-export</v-icon>
-                  {{ $t("database_export") }}
+                  {{ $t("home.export") }}
                 </v-btn>
               </template>
 
-              <span>{{ $t("database_tooltip_export") }} </span>
+              <span>{{ $t("home.export_tooltip") }} </span>
             </v-tooltip>
           </v-card>
         </v-col>
@@ -94,11 +94,11 @@
                   v-on="on"
                   @click="onDeleteDatabase()"
                   ><v-icon class="mr-2">mdi-delete-forever</v-icon>
-                  {{ $t("database_delete") }}
+                  {{ $t("home.delete") }}
                 </v-btn>
               </template>
 
-              <span>{{ $t("database_tooltip_delete") }} </span>
+              <span>{{ $t("home.delete_tooltip") }} </span>
             </v-tooltip>
           </v-card>
         </v-col>
@@ -133,27 +133,23 @@ export default {
       "fetchAllVulnerabilityThreatAssociations",
       "fetchAllRecommendations",
       "fetchAllRecommendationVulnerabilityAssociations",
-      "fetchAllAssessmentReports",
-      "fetchAllAssessmentReportSections",
       "setBackup",
     ]),
     onExportDatabase: function () {
       this.exportDatabase([
         "db",
-        this.$t("database_export_open_title"),
-        this.$t("database_export_open_message"),
-        this.$t("database_export_save_title"),
-        this.$t("database_export_save_message"),
+        this.$t("home.export_window_title"),
+        this.$t("home.export_window_message"),
       ]);
     },
     onImportDatabase: async function () {
-      if (window.confirm(this.$t("database_write_confirm"))) {
+      if (window.confirm(this.$t("home.write_confirm"))) {
         let backup_state = await this.backupDatabase();
         if (backup_state != "error") {
           let answer = await this.importDatabase([
             "db",
-            this.$t("database_import_open_title"),
-            this.$t("database_import_open_message"),
+            this.$t("home.import_window_title"),
+            this.$t("home.import_window_message"),
             false,
           ]);
 
@@ -168,16 +164,14 @@ export default {
             await this.fetchAllVulnerabilityThreatAssociations();
             await this.fetchAllRecommendations();
             await this.fetchAllRecommendationVulnerabilityAssociations();
-            await this.fetchAllAssessmentReports();
-            await this.fetchAllAssessmentReportSections();
 
             this.backup = await this.getBackup;
 
             if (this.backup == true) {
               let answer = await this.importDatabase([
                 "db",
-                this.$t("database_import_open_title"),
-                this.$t("database_import_open_message"),
+                this.$t("home.import_window_title"),
+                this.$t("home.import_window_message"),
                 true,
               ]);
 
@@ -193,47 +187,41 @@ export default {
               await this.fetchAllVulnerabilityThreatAssociations();
               await this.fetchAllRecommendations();
               await this.fetchAllRecommendationVulnerabilityAssociations();
-              await this.fetchAllAssessmentReports();
-              await this.fetchAllAssessmentReportSections();
             }
           }
         }
       }
     },
-    onLoadTestValues: function () {
-      if (window.confirm(this.$t("database_write_confirm"))) {
-        this.loadTestValues();
+    onLoadTestValues: async function () {
+      if (window.confirm(this.$t("home.write_confirm"))) {
+        await this.loadTestValues();
 
-        this.fetchAllAssessmentActivities();
-        this.fetchAllAssessmentActivityAssetAssociations();
-        this.fetchAllAssessmentReports();
-        this.fetchAllAssessmentReportSections();
-        this.fetchAllAssets();
-        this.fetchAllAssetCategories();
-        this.fetchAllRecommendations();
-        this.fetchAllRecommendationVulnerabilityAssociations();
-        this.fetchAllThreatTypes();
-        this.fetchAllThreats();
-        this.fetchAllVulnerabilities();
-        this.fetchAllVulnerabilityThreatAssociations();
+        await this.fetchAllAssessmentActivities();
+        await this.fetchAllAssessmentActivityAssetAssociations();
+        await this.fetchAllAssets();
+        await this.fetchAllAssetCategories();
+        await this.fetchAllRecommendations();
+        await this.fetchAllRecommendationVulnerabilityAssociations();
+        await this.fetchAllThreatTypes();
+        await this.fetchAllThreats();
+        await this.fetchAllVulnerabilities();
+        await this.fetchAllVulnerabilityThreatAssociations();
       }
     },
-    onDeleteDatabase: function () {
-      if (window.confirm(this.$t("database_delete_confirm"))) {
-        this.deleteDatabase();
+    onDeleteDatabase: async function () {
+      if (window.confirm(this.$t("home.delete_confirm"))) {
+        await this.deleteDatabase();
 
-        this.fetchAllAssessmentActivities();
-        this.fetchAllAssessmentActivityAssetAssociations();
-        this.fetchAllAssessmentReports();
-        this.fetchAllAssessmentReportSections();
-        this.fetchAllAssets();
-        this.fetchAllAssetCategories();
-        this.fetchAllRecommendations();
-        this.fetchAllRecommendationVulnerabilityAssociations();
-        this.fetchAllThreatTypes();
-        this.fetchAllThreats();
-        this.fetchAllVulnerabilities();
-        this.fetchAllVulnerabilityThreatAssociations();
+        await this.fetchAllAssessmentActivities();
+        await this.fetchAllAssessmentActivityAssetAssociations();
+        await this.fetchAllAssets();
+        await this.fetchAllAssetCategories();
+        await this.fetchAllRecommendations();
+        await this.fetchAllRecommendationVulnerabilityAssociations();
+        await this.fetchAllThreatTypes();
+        await this.fetchAllThreats();
+        await this.fetchAllVulnerabilities();
+        await this.fetchAllVulnerabilityThreatAssociations();
       }
     },
   },

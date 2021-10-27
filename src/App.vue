@@ -33,8 +33,6 @@ export default {
     ...mapActions([
       "fetchAllAssessmentActivities",
       "fetchAllAssessmentActivityAssetAssociations",
-      "fetchAllAssessmentReports",
-      "fetchAllAssessmentReportSections",
       "fetchAllAssets",
       "fetchAllAssetCategories",
       "fetchAllRecommendations",
@@ -49,8 +47,6 @@ export default {
     //Loading Vuex initial state
     this.fetchAllAssessmentActivities;
     this.fetchAllAssessmentActivityAssetAssociations;
-    this.fetchAllAssessmentReports;
-    this.fetchAllAssessmentReportSections;
     this.fetchAllAssets;
     this.fetchAllAssetCategories;
     this.fetchAllRecommendations;

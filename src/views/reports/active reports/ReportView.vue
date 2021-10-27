@@ -6,10 +6,10 @@
         <v-row>
           <v-card elevation="0">
             <v-card-title>
-              {{ $t("report_title") }}
+              {{ $t("reports.title") }}
             </v-card-title>
             <v-card-subtitle>
-              {{ $t("report_tooltip_brief_explanation") }}
+              {{ $t("reports.subtitle") }}
             </v-card-subtitle>
           </v-card>
         </v-row>
@@ -29,10 +29,10 @@
                   >mdi-eye-off</v-icon
                 >
                 <v-icon v-if="hide_left_column" class="pr-2">mdi-eye </v-icon>
-                {{ $t("report_tooltip_to_add") }}
+                {{ $t("reports.to_add") }}
               </v-btn>
             </template>
-            <span>{{ $t("report_tooltip_toggle_content") }} </span>
+            <span>{{ $t("reports.to_add_info") }} </span>
           </v-tooltip>
         </v-card>
       </v-col>
@@ -46,11 +46,11 @@
                 v-bind="attrs"
                 v-on="on"
                 @click="overlay_export = true"
-                >{{ $t("report_export") }}</v-btn
+                >{{ $t("reports.export") }}</v-btn
               >
             </template>
 
-            <span>{{ $t("report_tooltip_export") }} </span>
+            <span>{{ $t("reports.export_info") }} </span>
           </v-tooltip>
         </v-card>
       </v-col>
@@ -58,7 +58,7 @@
     <v-row justify="center">
       <v-col cols="5" v-if="!hide_left_column">
         <p align-center class="title text-center">
-          {{ $t("report_tooltip_to_add") }}
+          {{ $t("reports.to_add") }}
         </p>
       </v-col>
       <v-col cols="auto" v-if="!hide_left_column">
@@ -66,7 +66,7 @@
       </v-col>
       <v-col style="align-content: center" align-self="center" cols="5">
         <p class="title text-center">
-          {{ $t("report_tooltip_added") }}
+          {{ $t("reports.added") }}
         </p>
       </v-col>
     </v-row>
@@ -142,7 +142,7 @@
       <v-card outlined>
         <v-card-text>
           <p class="display-2 text--secondary">
-            {{ $t("report_export_format_1") }}
+            {{ $t("reports.choose") }}
           </p>
           <div v-for="item in supportedFiles" :key="item.id">
             <v-btn
@@ -157,7 +157,7 @@
         </v-card-text>
         <v-card-actions>
           <v-btn text plain color="accent" @click="overlay_export = false">
-            {{ $t("report_export_format_2") }}
+            {{ $t("global.return") }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -169,6 +169,7 @@
 import draggable from "vuedraggable";
 import ReportSection from "../../../components/reports/active reports/ReportSection.vue";
 import { mapGetters, mapActions } from "vuex";
+import i18n from "../../../i18n.js";
 
 export default {
   components: {
@@ -188,25 +189,25 @@ export default {
         {
           id: 1,
           type: "md",
-          name: this.$t("report_export_md"),
+          name: this.$t("reports.md.name"),
           disabled: false,
         },
         {
           id: 2,
-          type: "txt",
-          name: this.$t("report_export_txt"),
+          type: "docx",
+          name: this.$t("reports.docx.name"),
           disabled: false,
         },
         {
           id: 3,
           type: "json",
-          name: this.$t("report_export_json"),
+          name: this.$t("reports.json.name"),
           disabled: false,
         },
         {
           id: 4,
-          type: "docx",
-          name: this.$t("report_export_docx"),
+          type: "txt",
+          name: this.$t("reports.txt.name"),
           disabled: false,
         },
       ],
@@ -230,30 +231,35 @@ export default {
           name: "Assets",
           interest: "report_assets",
           group_name: "asset",
+          title: i18n.t("reports.assets"),
         },
         {
           id: "2",
           name: "Activities",
           interest: "report_activities",
           group_name: "activity",
+          title: i18n.t("reports.activities"),
         },
         {
           id: "3",
           name: "Threats",
           interest: "report_threats",
           group_name: "threat",
+          title: i18n.t("reports.threats"),
         },
         {
           id: "4",
           name: "Vulnerabilities",
           interest: "report_vulnerabilities",
           group_name: "vulnerability",
+          title: i18n.t("reports.vulnerabilities"),
         },
         {
           id: "5",
           name: "Recommendations",
           interest: "report_recommendations",
           group_name: "recommendation",
+          title: i18n.t("reports.recommendations"),
         },
       ],
     };
@@ -264,23 +270,8 @@ export default {
       this.showSections[section] = !this.showSections[section];
     },
     onExportReport: function (format) {
-      console.log("hola");
       let export_aux = [];
       switch (format) {
-        case "txt":
-          export_aux = [
-            format,
-            this.secciones_report,
-            this.getMain,
-            this.getAllMergedAssets,
-            this.getAllMergedAssessmentActivities,
-            this.getAllMergedThreats,
-            this.getAllMergedVulnerabilities,
-            this.getAllMergedRecommendations,
-            this.$t("report_export_txt_title"),
-            this.$t("report_export_txt_message"),
-          ];
-          break;
         case "md":
           export_aux = [
             format,
@@ -291,22 +282,8 @@ export default {
             this.getAllMergedThreats,
             this.getAllMergedVulnerabilities,
             this.getAllMergedRecommendations,
-            this.$t("report_export_md_title"),
-            this.$t("report_export_md_message"),
-          ];
-          break;
-        case "json":
-          export_aux = [
-            format,
-            this.secciones_report,
-            this.getMain,
-            this.getAllMergedAssets,
-            this.getAllMergedAssessmentActivities,
-            this.getAllMergedThreats,
-            this.getAllMergedVulnerabilities,
-            this.getAllMergedRecommendations,
-            this.$t("report_export_json_title"),
-            this.$t("report_export_json_message"),
+            this.$t("reports.md.title"),
+            this.$t("global.report_save"),
           ];
           break;
         case "docx":
@@ -319,8 +296,36 @@ export default {
             this.getAllMergedThreats,
             this.getAllMergedVulnerabilities,
             this.getAllMergedRecommendations,
-            this.$t("report_export_docx_title"),
-            this.$t("report_export_docx_message"),
+            this.$t("reports.docx.title"),
+            this.$t("global.report_save"),
+          ];
+          break;
+        case "json":
+          export_aux = [
+            format,
+            this.secciones_report,
+            this.getMain,
+            this.getAllMergedAssets,
+            this.getAllMergedAssessmentActivities,
+            this.getAllMergedThreats,
+            this.getAllMergedVulnerabilities,
+            this.getAllMergedRecommendations,
+            this.$t("reports.json.title"),
+            this.$t("global.report_save"),
+          ];
+          break;
+        case "txt":
+          export_aux = [
+            format,
+            this.secciones_report,
+            this.getMain,
+            this.getAllMergedAssets,
+            this.getAllMergedAssessmentActivities,
+            this.getAllMergedThreats,
+            this.getAllMergedVulnerabilities,
+            this.getAllMergedRecommendations,
+            this.$t("reports.txt.title"),
+            this.$t("global.report_save"),
           ];
           break;
         default:

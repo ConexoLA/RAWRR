@@ -43,7 +43,7 @@ const actions = {
         //Table does not exist
         case 1:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_1"),
+            text: i18n.t("home.import_error_1"),
             color: "error",
           });
           commit("backup", true);
@@ -51,7 +51,7 @@ const actions = {
         //File is not a DB
         case 26:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_26"),
+            text: i18n.t("home.import_error_26"),
             color: "error",
           });
           commit("backup", true);
@@ -59,7 +59,7 @@ const actions = {
         //Unkown error
         default:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_unkown"),
+            text: i18n.t("home.import_error_unkown"),
             color: "error",
           });
           commit("backup", true);
@@ -97,7 +97,7 @@ const actions = {
         //Table does not exist
         case 1:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_1"),
+            text: i18n.t("home.import_error_1"),
             color: "error",
           });
           commit("backup", true);
@@ -105,7 +105,7 @@ const actions = {
         //File is not a DB
         case 26:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_26"),
+            text: i18n.t("home.import_error_26"),
             color: "error",
           });
           commit("backup", true);
@@ -113,7 +113,7 @@ const actions = {
         //Unkown error
         default:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_unkown"),
+            text: i18n.t("home.import_error_unkown"),
             color: "error",
           });
           commit("backup", true);
@@ -127,12 +127,12 @@ const actions = {
     const response = await ipcRenderer.sendSync("insert", ["threats", threat]);
     if (response.length == 0) {
       this.dispatch("setNotification", {
-        text: i18n.t("threat_insert_error"),
+        text: i18n.t("threats.insert_error"),
         color: "error",
       });
     } else {
       this.dispatch("setNotification", {
-        text: i18n.t("threat_insert_success"),
+        text: i18n.t("threats.insert_success"),
       });
     }
     commit("newThreat", response);
@@ -141,12 +141,12 @@ const actions = {
     const response = await ipcRenderer.sendSync("remove", ["threats", threat]);
     if (response.length == 0) {
       this.dispatch("setNotification", {
-        text: i18n.t("generic_delete_error"),
+        text: i18n.t("global.delete_error"),
         color: "error",
       });
     } else {
       this.dispatch("setNotification", {
-        text: i18n.t("generic_delete_success"),
+        text: i18n.t("global.delete_success"),
       });
     }
     commit("removeThreat", response);
@@ -155,12 +155,12 @@ const actions = {
     const response = await ipcRenderer.sendSync("update", ["threats", threat]);
     if (response.length == 0) {
       this.dispatch("setNotification", {
-        text: i18n.t("threat_edit_error"),
+        text: i18n.t("threats.edit_error"),
         color: "error",
       });
     } else {
       this.dispatch("setNotification", {
-        text: i18n.t("threat_edit_success"),
+        text: i18n.t("threats.edit_success"),
       });
     }
     commit("changeThreat", response);

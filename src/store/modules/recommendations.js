@@ -55,7 +55,7 @@ const actions = {
         //Table does not exist
         case 1:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_1"),
+            text: i18n.t("home.import_error_1"),
             color: "error",
           });
           commit("backup", true);
@@ -63,7 +63,7 @@ const actions = {
         //File is not a DB
         case 26:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_26"),
+            text: i18n.t("home.import_error_26"),
             color: "error",
           });
           commit("backup", true);
@@ -71,7 +71,7 @@ const actions = {
         //Unkown error
         default:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_unkown"),
+            text: i18n.t("home.import_error_unkown"),
             color: "error",
           });
           commit("backup", true);
@@ -88,12 +88,12 @@ const actions = {
     ]);
     if (response.length == 0) {
       this.dispatch("setNotification", {
-        text: i18n.t("recommendation_insert_error"),
+        text: i18n.t("recommendations.insert_error"),
         color: "error",
       });
     } else {
       this.dispatch("setNotification", {
-        text: i18n.t("recommendation_insert_success"),
+        text: i18n.t("recommendations.insert_success"),
       });
     }
     commit("newRecommendation", response);
@@ -105,12 +105,12 @@ const actions = {
     ]);
     if (response.length == 0) {
       this.dispatch("setNotification", {
-        text: i18n.t("generic_delete_error"),
+        text: i18n.t("global.delete_error"),
         color: "error",
       });
     } else {
       this.dispatch("setNotification", {
-        text: i18n.t("generic_delete_success"),
+        text: i18n.t("global.delete_success"),
       });
     }
     commit("removeRecommendation", response);
@@ -122,12 +122,12 @@ const actions = {
     ]);
     if (response.length == 0) {
       this.dispatch("setNotification", {
-        text: i18n.t("recommendation_edit_error"),
+        text: i18n.t("recommendations.edit_error"),
         color: "error",
       });
     } else {
       this.dispatch("setNotification", {
-        text: i18n.t("recommendation_edit_success"),
+        text: i18n.t("recommendations.edit_success"),
       });
     }
     commit("changeRecommendation", response);
@@ -141,7 +141,7 @@ const actions = {
         //Table does not exist
         case 1:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_1"),
+            text: i18n.t("home.import_error_1"),
             color: "error",
           });
           commit("backup", true);
@@ -149,7 +149,7 @@ const actions = {
         //File is not a DB
         case 26:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_26"),
+            text: i18n.t("home.import_error_26"),
             color: "error",
           });
           commit("backup", true);
@@ -157,7 +157,7 @@ const actions = {
         //Unkown error
         default:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_unkown"),
+            text: i18n.t("home.import_error_unkown"),
             color: "error",
           });
           commit("backup", true);

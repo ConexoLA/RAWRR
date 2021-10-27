@@ -10,6 +10,7 @@ import {
   TableOfContents,
   SectionType,
 } from "docx";
+import i18n from "../i18n.js";
 
 export function txt(
   secciones_report,
@@ -39,8 +40,7 @@ export function txt(
         var fileContents = [];
 
         let keys = Object.keys(secciones_report);
-        fileContents.push("Report");
-        fileContents.push("\n");
+        fileContents.push(i18n.t("header.report") + "\n");
         keys.forEach((key) => {
           let item = secciones_report[key];
           const n = getMain[item.interest][0].tasks.length;
@@ -48,8 +48,7 @@ export function txt(
           for (var i = 0; i < n; i++) {
             wrote += 1;
             if (i == 0) {
-              fileContents.push(item.name);
-              fileContents.push("\n");
+              fileContents.push(item.title + "\n");
             }
             let description = getMain[item.interest][0].tasks[i].description;
             if (description === null) {
@@ -57,10 +56,12 @@ export function txt(
             }
             let title = getMain[item.interest][0].tasks[i].title;
             const j = i + 1;
-            fileContents.push("  " + j + ") Title: " + title);
-            fileContents.push("\n");
-            fileContents.push("     Description: " + description);
-            fileContents.push("\n");
+            fileContents.push(
+              "  " + j + ") " + i18n.t("global.name") + ": " + title + "\n"
+            );
+            fileContents.push(
+              "     " + i18n.t("global.description") + ": " + description + "\n"
+            );
 
             switch (item.name) {
               case "Assets":
@@ -70,13 +71,15 @@ export function txt(
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
                     if (assets[k].asset_category_name === undefined) {
-                      assets[k].asset_category_name = "None";
+                      assets[k].asset_category_name = i18n.t("global.none");
                     }
                     fileContents.push(
-                      "     Asset category name: " +
-                        assets[k].asset_category_name
+                      "     " +
+                        i18n.t("global.asset_category") +
+                        ": " +
+                        assets[k].asset_category_name +
+                        "\n"
                     );
-                    fileContents.push("\n");
                   }
                 }
                 break;
@@ -103,7 +106,9 @@ export function txt(
                         ) {
                           related_assets += 1;
                           if (related_assets == 1) {
-                            fileContents.push("     Related assets:\n");
+                            fileContents.push(
+                              "     " + i18n.t("global.assets") + ":\n"
+                            );
                           }
                           fileContents.push(
                             "       - " + activities[k].asset_name[z] + "\n"
@@ -113,7 +118,13 @@ export function txt(
                     }
 
                     if (related_assets == 0) {
-                      fileContents.push("     Related assets: None\n");
+                      fileContents.push(
+                        "     " +
+                          i18n.t("global.assets") +
+                          ": " +
+                          i18n.t("global.none") +
+                          "\n"
+                      );
                     }
                   }
                 }
@@ -125,12 +136,15 @@ export function txt(
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
                     if (threats[k].threat_type_name === undefined) {
-                      threats[k].threat_type_name = "None";
+                      threats[k].threat_type_name = i18n.t("global.none");
                     }
                     fileContents.push(
-                      "     Threat type: " + threats[k].threat_type_name
+                      "     " +
+                        i18n.t("global.threat_type") +
+                        ": " +
+                        threats[k].threat_type_name +
+                        "\n"
                     );
-                    fileContents.push("\n");
                     var related_asset = 0;
                     for (
                       var p = 0;
@@ -143,20 +157,38 @@ export function txt(
                       ) {
                         related_asset = 1;
                         fileContents.push(
-                          "     Asset: " + threats[k].asset_name + "\n"
+                          "     " +
+                            i18n.t("global.asset") +
+                            ": " +
+                            threats[k].asset_name +
+                            "\n"
                         );
                       }
                     }
 
                     if (related_asset == 0) {
-                      fileContents.push("     Asset: None\n");
+                      fileContents.push(
+                        "     " +
+                          i18n.t("global.asset") +
+                          ": " +
+                          i18n.t("global.none") +
+                          "\n"
+                      );
                     }
-                    fileContents.push("     Impact: " + threats[k].impact);
-                    fileContents.push("\n");
                     fileContents.push(
-                      "     Likelihood: " + threats[k].likelihood
+                      "     " +
+                        i18n.t("global.impact") +
+                        ": " +
+                        threats[k].impact +
+                        "\n"
                     );
-                    fileContents.push("\n");
+                    fileContents.push(
+                      "     " +
+                        i18n.t("global.likelihood") +
+                        ": " +
+                        threats[k].likelihood +
+                        "\n"
+                    );
                   }
                 }
                 break;
@@ -180,15 +212,22 @@ export function txt(
                       ) {
                         related_activity = 1;
                         fileContents.push(
-                          "     Activity: " +
+                          "     " +
+                            i18n.t("global.assessment_activity") +
+                            ": " +
                             vulnerabilities[k].assessment_activity_name +
                             "\n"
                         );
                       }
                     }
-
                     if (related_activity == 0) {
-                      fileContents.push("     Activity: None\n");
+                      fileContents.push(
+                        "     " +
+                          i18n.t("global.assessment_activity") +
+                          ": " +
+                          i18n.t("global.none") +
+                          "\n"
+                      );
                     }
 
                     // Adding related asset
@@ -203,13 +242,23 @@ export function txt(
                       ) {
                         related_asset = 1;
                         fileContents.push(
-                          "     Asset: " + vulnerabilities[k].asset_name + "\n"
+                          "     " +
+                            i18n.t("global.asset") +
+                            ": " +
+                            vulnerabilities[k].asset_name +
+                            "\n"
                         );
                       }
                     }
 
                     if (related_asset == 0) {
-                      fileContents.push("     Asset: None\n");
+                      fileContents.push(
+                        "     " +
+                          i18n.t("global.asset") +
+                          ": " +
+                          i18n.t("global.none") +
+                          "\n"
+                      );
                     }
 
                     // Adding related threats
@@ -227,7 +276,9 @@ export function txt(
                         if (reportThreats[p].title == reportThreatName[z]) {
                           related_threats += 1;
                           if (related_threats == 1) {
-                            fileContents.push("     Related threats:\n");
+                            fileContents.push(
+                              "     " + i18n.t("global.threats") + ":\n"
+                            );
                           }
                           fileContents.push(
                             "       - " + reportThreatName[z] + "\n"
@@ -237,7 +288,13 @@ export function txt(
                     }
 
                     if (related_threats == 0) {
-                      fileContents.push("     Related threats: None\n");
+                      fileContents.push(
+                        "     " +
+                          i18n.t("global.threats") +
+                          ": " +
+                          i18n.t("global.none") +
+                          "\n"
+                      );
                     }
                   }
                 }
@@ -255,15 +312,19 @@ export function txt(
                       recommentations[k].implementation_time = "";
                     }
                     fileContents.push(
-                      "     Implementation cost: " +
-                        recommentations[k].implementation_cost
+                      "     " +
+                        i18n.t("global.implementation_cost") +
+                        ": " +
+                        recommentations[k].implementation_cost +
+                        "\n"
                     );
-                    fileContents.push("\n");
                     fileContents.push(
-                      "     Implementation time: " +
-                        recommentations[k].implementation_time
+                      "     " +
+                        i18n.t("global.implementation_time") +
+                        ": " +
+                        recommentations[k].implementation_time +
+                        "\n"
                     );
-                    fileContents.push("\n");
 
                     let reportVulnerabilityName =
                       recommentations[k].vulnerability_name;
@@ -289,7 +350,7 @@ export function txt(
                           related_vulnerabilities += 1;
                           if (related_vulnerabilities == 1) {
                             fileContents.push(
-                              "     Related vulnerabilities:\n"
+                              "     " + i18n.t("global.vulnerabilities") + ":\n"
                             );
                           }
                           fileContents.push(
@@ -300,7 +361,13 @@ export function txt(
                     }
 
                     if (related_vulnerabilities == 0) {
-                      fileContents.push("     Related vulnerabilities: None\n");
+                      fileContents.push(
+                        "     " +
+                          i18n.t("global.vulnerabilities") +
+                          ": " +
+                          i18n.t("global.none") +
+                          "\n"
+                      );
                     }
                   }
                 }
@@ -364,7 +431,7 @@ export function md(
       if (path) {
         path = path + ".md";
 
-        var title = "# Report" + "\n\n";
+        var title = "# " + i18n.t("header.report") + "\n\n";
         var separator = "---\n";
         var fileContents = [];
         var toc = [];
@@ -378,12 +445,12 @@ export function md(
           for (var i = 0; i < n; i++) {
             wrote += 1;
             if (i == 0) {
-              fileContents.push("## " + item.name + "\n\n");
+              fileContents.push("## " + item.title + "\n\n");
               toc.push(
                 "- [" +
-                  item.name +
+                  item.title +
                   "](#" +
-                  item.name.toLowerCase().split(" ").join("-") +
+                  item.title.toLowerCase().split(" ").join("-") +
                   ")\n"
               );
             }
@@ -401,7 +468,13 @@ export function md(
                 title.toLowerCase().split(" ").join("-") +
                 ")\n"
             );
-            fileContents.push("\t * **Description:** " + description + "\n");
+            fileContents.push(
+              "\t * **" +
+                i18n.t("global.description") +
+                ":** " +
+                description +
+                "\n"
+            );
 
             switch (item.name) {
               case "Assets":
@@ -411,10 +484,12 @@ export function md(
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
                     if (assets[k].asset_category_name === undefined) {
-                      assets[k].asset_category_name = "None";
+                      assets[k].asset_category_name = i18n.t("global.none");
                     }
                     fileContents.push(
-                      "\t * **Asset category name:** " +
+                      "\t * **" +
+                        i18n.t("global.asset_category") +
+                        ":** " +
                         assets[k].asset_category_name +
                         "\n"
                     );
@@ -444,7 +519,9 @@ export function md(
                         ) {
                           related_assets += 1;
                           if (related_assets == 1) {
-                            fileContents.push("\t * **Related assets:**\n");
+                            fileContents.push(
+                              "\t * **" + i18n.t("global.assets") + ":**\n"
+                            );
                           }
                           fileContents.push(
                             "\t   - [" +
@@ -461,7 +538,13 @@ export function md(
                     }
 
                     if (related_assets == 0) {
-                      fileContents.push("\t * **Related assets:** None\n");
+                      fileContents.push(
+                        "\t * **" +
+                          i18n.t("global.assets") +
+                          ":** " +
+                          i18n.t("global.none") +
+                          "\n"
+                      );
                     }
                   }
                 }
@@ -473,10 +556,12 @@ export function md(
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
                     if (threats[k].threat_type_name === undefined) {
-                      threats[k].threat_type_name = "None";
+                      threats[k].threat_type_name = i18n.t("global.none");
                     }
                     fileContents.push(
-                      "\t * **Threat type:** " +
+                      "\t * **" +
+                        i18n.t("global.threat_type") +
+                        ":** " +
                         threats[k].threat_type_name +
                         "\n"
                     );
@@ -493,7 +578,9 @@ export function md(
                       ) {
                         related_asset = 1;
                         fileContents.push(
-                          "\t * **Asset:** " +
+                          "\t * **" +
+                            i18n.t("global.asset") +
+                            ":** " +
                             "[" +
                             threats[k].asset_name +
                             "](#" +
@@ -507,14 +594,28 @@ export function md(
                     }
 
                     if (related_asset == 0) {
-                      fileContents.push("\t * **Asset:** None\n");
+                      fileContents.push(
+                        "\t * **" +
+                          i18n.t("global.asset") +
+                          ":** " +
+                          i18n.t("global.none") +
+                          "\n"
+                      );
                     }
 
                     fileContents.push(
-                      "\t * **Impact:** " + threats[k].impact + "\n"
+                      "\t * **" +
+                        i18n.t("global.impact") +
+                        ":** " +
+                        threats[k].impact +
+                        "\n"
                     );
                     fileContents.push(
-                      "\t * **Likelihood:** " + threats[k].likelihood + "\n"
+                      "\t * **" +
+                        i18n.t("global.likelihood") +
+                        ":** " +
+                        threats[k].likelihood +
+                        "\n"
                     );
                   }
                 }
@@ -538,7 +639,9 @@ export function md(
                       ) {
                         related_activity = 1;
                         fileContents.push(
-                          "\t * **Activity:** [" +
+                          "\t * **" +
+                            i18n.t("global.assessment_activity") +
+                            ":** [" +
                             vulnerabilities[k].assessment_activity_name +
                             "](#" +
                             vulnerabilities[k].assessment_activity_name
@@ -551,7 +654,13 @@ export function md(
                     }
 
                     if (related_activity == 0) {
-                      fileContents.push("\t * **Activity:**  None\n");
+                      fileContents.push(
+                        "\t * **" +
+                          i18n.t("global.assessment_activity") +
+                          ":**  " +
+                          i18n.t("global.none") +
+                          "\n"
+                      );
                     }
 
                     // Adding related asset
@@ -566,7 +675,9 @@ export function md(
                       ) {
                         related_asset = 1;
                         fileContents.push(
-                          "\t * **Asset:** [" +
+                          "\t * **" +
+                            i18n.t("global.asset") +
+                            ":** [" +
                             vulnerabilities[k].asset_name +
                             "](#" +
                             vulnerabilities[k].asset_name
@@ -579,7 +690,13 @@ export function md(
                     }
 
                     if (related_asset == 0) {
-                      fileContents.push("\t * **Asset:** None\n");
+                      fileContents.push(
+                        "\t * **" +
+                          i18n.t("global.asset") +
+                          ":** " +
+                          i18n.t("global.none") +
+                          "\n"
+                      );
                     }
 
                     let reportThreats = getMain.report_threats[0].tasks;
@@ -597,7 +714,9 @@ export function md(
                         if (reportThreats[p].title == reportThreatName[z]) {
                           related_threats += 1;
                           if (related_threats == 1) {
-                            fileContents.push("\t * **Related threats:**\n");
+                            fileContents.push(
+                              "\t * **" + i18n.t("global.threats") + ":**\n"
+                            );
                           }
                           fileContents.push(
                             "\t   - [" +
@@ -614,7 +733,13 @@ export function md(
                     }
 
                     if (related_threats == 0) {
-                      fileContents.push("\t * **Related threats:** None\n");
+                      fileContents.push(
+                        "\t * **" +
+                          i18n.t("global.threats") +
+                          ":** " +
+                          i18n.t("global.none") +
+                          "\n"
+                      );
                     }
                   }
                 }
@@ -632,12 +757,16 @@ export function md(
                       recommentations[k].implementation_time = "";
                     }
                     fileContents.push(
-                      "\t * **Implementation cost:** " +
+                      "\t * **" +
+                        i18n.t("global.implementation_cost") +
+                        ":** " +
                         recommentations[k].implementation_cost +
                         "\n"
                     );
                     fileContents.push(
-                      "\t * **Implementation time:** " +
+                      "\t * **" +
+                        i18n.t("global.implementation_time") +
+                        ":** " +
                         recommentations[k].implementation_time +
                         "\n"
                     );
@@ -667,7 +796,9 @@ export function md(
                           related_vulnerabilities += 1;
                           if (related_vulnerabilities == 1) {
                             fileContents.push(
-                              "\t * **Related vulnerabilities:**\n"
+                              "\t * **" +
+                                i18n.t("global.vulnerabilities") +
+                                ":**\n"
                             );
                           }
                           fileContents.push(
@@ -686,7 +817,11 @@ export function md(
 
                     if (related_vulnerabilities == 0) {
                       fileContents.push(
-                        "\t * **Related vulnerabilities:** None\n"
+                        "\t * **" +
+                          i18n.t("global.vulnerabilities") +
+                          ":** " +
+                          i18n.t("global.none") +
+                          "\n"
                       );
                     }
                   }
@@ -763,7 +898,7 @@ export function json(
           sections: [],
         };
 
-        reportJson["reportTitle"] = "Report";
+        reportJson["reportTitle"] = i18n.t("header.report");
         var fileContents = [];
         var toc = [];
 
@@ -789,7 +924,7 @@ export function json(
               reportJson["sections"] = [];
             }
             if (i == 0) {
-              jsonSection["sectionName"] = item.name;
+              jsonSection["sectionName"] = item.title;
             }
             let description = getMain[item.interest][0].tasks[i].description;
             if (description === null) {
@@ -807,7 +942,7 @@ export function json(
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
                     if (assets[k].asset_category_name === undefined) {
-                      assets[k].asset_category_name = "None";
+                      assets[k].asset_category_name = i18n.t("global.none");
                     }
                     jsonEntry["assetCategoryName"] =
                       assets[k].asset_category_name;
@@ -836,7 +971,9 @@ export function json(
                         ) {
                           related_assets += 1;
                           if (related_assets == 1) {
-                            fileContents.push("\t * **Related assets:**\n");
+                            fileContents.push(
+                              "\t * **" + i18n.t("global.assets") + ":**\n"
+                            );
                             jsonEntry["relatedAssets"] = [];
                           }
                           jsonEntry["relatedAssets"].push({
@@ -847,7 +984,7 @@ export function json(
                     }
 
                     if (related_assets == 0) {
-                      jsonEntry["relatedAssets"] = "None";
+                      jsonEntry["relatedAssets"] = i18n.t("global.none");
                     }
                   }
                 }
@@ -859,7 +996,7 @@ export function json(
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
                     if (threats[k].threat_type_name === undefined) {
-                      threats[k].threat_type_name = "None";
+                      threats[k].threat_type_name = i18n.t("global.none");
                     }
                     jsonEntry["threadType"] = threats[k].threat_type_name;
 
@@ -879,7 +1016,7 @@ export function json(
                     }
 
                     if (related_asset == 0) {
-                      jsonEntry["relatedAsset"] = "None";
+                      jsonEntry["relatedAsset"] = i18n.t("global.none");
                     }
 
                     jsonEntry["impact"] = threats[k].impact;
@@ -911,7 +1048,7 @@ export function json(
                     }
 
                     if (related_activity == 0) {
-                      jsonEntry["relatedAcivity"] = "None";
+                      jsonEntry["relatedAcivity"] = i18n.t("global.none");
                     }
 
                     // Adding related asset
@@ -931,7 +1068,7 @@ export function json(
                     }
 
                     if (related_asset == 0) {
-                      jsonEntry["relatedAsset"] = "None";
+                      jsonEntry["relatedAsset"] = i18n.t("global.none");
                     }
 
                     let reportThreats = getMain.report_threats[0].tasks;
@@ -959,7 +1096,7 @@ export function json(
                     }
 
                     if (related_threats == 0) {
-                      jsonEntry["relatedThreats"] = "None";
+                      jsonEntry["relatedThreats"] = i18n.t("global.none");
                     }
                   }
                 }
@@ -1015,7 +1152,8 @@ export function json(
                     }
 
                     if (related_vulnerabilities == 0) {
-                      jsonEntry["relatedVulnerabilities"] = "None";
+                      jsonEntry["relatedVulnerabilities"] =
+                        i18n.t("global.none");
                     }
                   }
                 }
@@ -1082,7 +1220,7 @@ export function docx(
 
         docxChildren.push(
           new Paragraph({
-            text: "Report",
+            text: i18n.t("header.report"),
             heading: HeadingLevel.TITLE,
           })
         );
@@ -1105,7 +1243,7 @@ export function docx(
             if (i == 0) {
               docxChildren.push(
                 new Paragraph({
-                  text: item.name,
+                  text: item.title,
                   heading: HeadingLevel.HEADING_1,
                   pageBreakBefore: true,
                   numbering: {
@@ -1133,16 +1271,7 @@ export function docx(
             );
             docxChildren.push(
               new Paragraph({
-                text: "Title: " + title,
-                numbering: {
-                  reference: "rawrr-numbering",
-                  level: 2,
-                },
-              })
-            );
-            docxChildren.push(
-              new Paragraph({
-                text: "Description: " + description,
+                text: i18n.t("global.description") + ": " + description,
                 numbering: {
                   reference: "rawrr-numbering",
                   level: 2,
@@ -1158,13 +1287,13 @@ export function docx(
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
                     if (assets[k].asset_category_name === undefined) {
-                      assets[k].asset_category_name = "None";
+                      assets[k].asset_category_name = i18n.t("global.none");
                     }
-
                     docxChildren.push(
                       new Paragraph({
                         text:
-                          "Asset category name: " +
+                          i18n.t("global.asset_category") +
+                          ": " +
                           assets[k].asset_category_name,
                         numbering: {
                           reference: "rawrr-numbering",
@@ -1200,7 +1329,7 @@ export function docx(
                           if (related_assets == 1) {
                             docxChildren.push(
                               new Paragraph({
-                                text: "Related assets:",
+                                text: i18n.t("global.assets") + ":",
                                 numbering: {
                                   reference: "rawrr-numbering",
                                   level: 2,
@@ -1225,7 +1354,10 @@ export function docx(
                     if (related_assets == 0) {
                       docxChildren.push(
                         new Paragraph({
-                          text: "Related assets: None",
+                          text:
+                            i18n.t("global.assets") +
+                            ": " +
+                            i18n.t("global.none"),
                           numbering: {
                             reference: "rawrr-numbering",
                             level: 2,
@@ -1243,11 +1375,14 @@ export function docx(
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
                     if (threats[k].threat_type_name === undefined) {
-                      threats[k].threat_type_name = "None";
+                      threats[k].threat_type_name = i18n.t("global.none");
                     }
                     docxChildren.push(
                       new Paragraph({
-                        text: "Threat type: " + threats[k].threat_type_name,
+                        text:
+                          i18n.t("global.threat_type") +
+                          ": " +
+                          threats[k].threat_type_name,
                         numbering: {
                           reference: "rawrr-numbering",
                           level: 2,
@@ -1267,7 +1402,10 @@ export function docx(
                         related_asset = 1;
                         docxChildren.push(
                           new Paragraph({
-                            text: "Asset: " + threats[k].asset_name,
+                            text:
+                              i18n.t("global.asset") +
+                              ": " +
+                              threats[k].asset_name,
                             numbering: {
                               reference: "rawrr-numbering",
                               level: 2,
@@ -1280,7 +1418,10 @@ export function docx(
                     if (related_asset == 0) {
                       docxChildren.push(
                         new Paragraph({
-                          text: "Asset: None",
+                          text:
+                            i18n.t("global.asset") +
+                            ": " +
+                            i18n.t("global.none"),
                           numbering: {
                             reference: "rawrr-numbering",
                             level: 2,
@@ -1291,7 +1432,8 @@ export function docx(
 
                     docxChildren.push(
                       new Paragraph({
-                        text: "Impact: " + threats[k].impact,
+                        text:
+                          i18n.t("global.impact") + ": " + threats[k].impact,
                         numbering: {
                           reference: "rawrr-numbering",
                           level: 2,
@@ -1301,7 +1443,10 @@ export function docx(
 
                     docxChildren.push(
                       new Paragraph({
-                        text: "Likelihood: " + threats[k].likelihood,
+                        text:
+                          i18n.t("global.likelihood") +
+                          ": " +
+                          threats[k].likelihood,
                         numbering: {
                           reference: "rawrr-numbering",
                           level: 2,
@@ -1334,7 +1479,8 @@ export function docx(
                         docxChildren.push(
                           new Paragraph({
                             text:
-                              "Activity: " +
+                              i18n.t("global.assessment_activity") +
+                              ": " +
                               vulnerabilities[k].assessment_activity_name,
                             numbering: {
                               reference: "rawrr-numbering",
@@ -1348,14 +1494,23 @@ export function docx(
                     if (related_activity == 0) {
                       docxChildren.push(
                         new Paragraph({
-                          text: "Likelihood: " + threats[k].likelihood,
+                          text:
+                            i18n.t("global.likelihood") +
+                            ": " +
+                            threats[k].likelihood,
                           numbering: {
                             reference: "rawrr-numbering",
                             level: 2,
                           },
                         })
                       );
-                      fileContents.push("     Activity: None\n");
+                      fileContents.push(
+                        "     " +
+                          i18n.t("global.assessment_activity") +
+                          ": " +
+                          i18n.t("global.none") +
+                          "\n"
+                      );
                     }
 
                     // Adding related asset
@@ -1371,7 +1526,10 @@ export function docx(
                         related_asset = 1;
                         docxChildren.push(
                           new Paragraph({
-                            text: "Asset: " + vulnerabilities[k].asset_name,
+                            text:
+                              i18n.t("global.asset") +
+                              ": " +
+                              vulnerabilities[k].asset_name,
                             numbering: {
                               reference: "rawrr-numbering",
                               level: 2,
@@ -1384,7 +1542,10 @@ export function docx(
                     if (related_asset == 0) {
                       docxChildren.push(
                         new Paragraph({
-                          text: "Asset: None",
+                          text:
+                            i18n.t("global.asset") +
+                            ": " +
+                            i18n.t("global.none"),
                           numbering: {
                             reference: "rawrr-numbering",
                             level: 2,
@@ -1410,7 +1571,7 @@ export function docx(
                           if (related_threats == 1) {
                             docxChildren.push(
                               new Paragraph({
-                                text: "Related threats:",
+                                text: i18n.t("global.threats") + ":",
                                 numbering: {
                                   reference: "rawrr-numbering",
                                   level: 2,
@@ -1434,7 +1595,10 @@ export function docx(
                     if (related_threats == 0) {
                       docxChildren.push(
                         new Paragraph({
-                          text: "Related threats: None",
+                          text:
+                            i18n.t("global.threats") +
+                            ": " +
+                            i18n.t("global.none"),
                           numbering: {
                             reference: "rawrr-numbering",
                             level: 2,
@@ -1460,7 +1624,8 @@ export function docx(
                     docxChildren.push(
                       new Paragraph({
                         text:
-                          "Implementation cost: " +
+                          i18n.t("global.implementation_cost") +
+                          ": " +
                           recommentations[k].implementation_cost,
                         numbering: {
                           reference: "rawrr-numbering",
@@ -1468,11 +1633,11 @@ export function docx(
                         },
                       })
                     );
-
                     docxChildren.push(
                       new Paragraph({
                         text:
-                          "Implementation time: " +
+                          i18n.t("global.implementation_time") +
+                          ": " +
                           recommentations[k].implementation_time,
                         numbering: {
                           reference: "rawrr-numbering",
@@ -1506,7 +1671,7 @@ export function docx(
                           if (related_vulnerabilities == 1) {
                             docxChildren.push(
                               new Paragraph({
-                                text: "Related vulnerabilities:",
+                                text: i18n.t("global.vulnerabilities") + ":",
                                 numbering: {
                                   reference: "rawrr-numbering",
                                   level: 2,
@@ -1530,7 +1695,10 @@ export function docx(
                     if (related_vulnerabilities == 0) {
                       docxChildren.push(
                         new Paragraph({
-                          text: "Related vulnerabilities: None",
+                          text:
+                            i18n.t("global.vulnerabilities") +
+                            ": " +
+                            i18n.t("global.none"),
                           numbering: {
                             reference: "rawrr-numbering",
                             level: 2,

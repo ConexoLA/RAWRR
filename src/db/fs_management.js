@@ -1,12 +1,7 @@
 const fs = require("fs");
 const { dialog } = require("electron");
 
-export function export_database(
-  title_open,
-  message_open,
-  title_save,
-  message_save
-) {
+export function export_database(title_save, message_save) {
   return new Promise(function (resolve, reject) {
     try {
       var pathlib = require("path");
@@ -41,20 +36,11 @@ export function export_database(
         var dbPath = pathlib.resolve(".", "rawrr.db");
       }
 
-      var options_open = {
-        title: title_open,
-        message: message_open,
-        filters: [{ name: "Databases", extensions: ["db"] }],
-        //nameFieldLabel: "Project Name:"
-        defaultPath: dbPath,
-      };
-
       var options_save = {
         title: title_save,
         message: message_save,
         filters: [{ name: "Databases", extensions: ["db"] }],
-        //nameFieldLabel: "Project Name:"
-        // defaultPath:  directory to show (optional)
+        defaultPath: dbPath,
       };
 
       let path_original = dbPath;

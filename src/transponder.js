@@ -12,8 +12,6 @@ import * as vulnerabilities from "./db/vulnerabilities/07_vulnerabilities";
 import * as vulnerability_threat_associations from "./db/vulnerabilities/08_vulnerability_threat_associations";
 import * as recommendations from "./db/recommendations/09_recommendations";
 import * as recommendation_vulnerability_associations from "./db/recommendations/10_recommendation_vulnerability_associations";
-import * as assessment_reports from "./db/reports/11_assessment_reports";
-import * as assessment_report_sections from "./db/reports/12_assessment_report_sections";
 import * as export_report from "./exportReport/file_extensions";
 import * as database_management from "./db/fs_management";
 
@@ -236,53 +234,6 @@ export function setIPCMainListeners() {
           event.returnValue = [];
         }
         break;
-      case "assessment_reports":
-        try {
-          arr = [
-            arg[1].name,
-            arg[1].description,
-            arg[1].threat_order,
-            arg[1].assessment_activities_order,
-            arg[1].assessment_activity_results_order,
-            arg[1].vulnerabilities_order,
-            arg[1].recommendation_order,
-            arg[1].assets_order,
-          ];
-          assessment_reports.insert(arr).then(
-            function (data) {
-              //resolve
-              event.returnValue = data;
-            },
-            function (err) {
-              //reject
-              console.log(err);
-              event.returnValue = [];
-            }
-          );
-        } catch (error) {
-          console.log(error);
-          event.returnValue = [];
-        }
-        break;
-      case "assessment_report_sections":
-        try {
-          arr = [arg[1].name, arg[1].description];
-          assessment_report_sections.insert(arr).then(
-            function (data) {
-              //resolve
-              event.returnValue = data;
-            },
-            function (err) {
-              //reject
-              console.log(err);
-              event.returnValue = [];
-            }
-          );
-        } catch (error) {
-          console.log(error);
-          event.returnValue = [];
-        }
-        break;
       default:
         console.log(arg[0], " does not have a valid insert method.");
         event.returnValue = [];
@@ -479,77 +430,8 @@ export function setIPCMainListeners() {
           event.returnValue = [];
         }
         break;
-      case "assessment_reports":
-        try {
-          assessment_reports.queryAll().then(
-            function (data) {
-              //resolve
-              event.returnValue = data;
-            },
-            function (err) {
-              //reject
-              console.log(err);
-              event.returnValue = err.errno;
-            }
-          );
-        } catch (error) {
-          console.log(error);
-          event.returnValue = [];
-        }
-        break;
-      case "assessment_report_sections":
-        try {
-          assessment_report_sections.queryAll().then(
-            function (data) {
-              //resolve
-              event.returnValue = data;
-            },
-            function (err) {
-              //reject
-              console.log(err);
-              event.returnValue = err.errno;
-            }
-          );
-        } catch (error) {
-          console.log(error);
-          event.returnValue = [];
-        }
-        break;
       default:
         console.log(arg[0], " does not have a valid query all method.");
-        event.returnValue = [];
-    }
-  });
-
-  //data is sent as arg from a synchronous call made in whichever file is contained in the views folder.
-  //PARAMETERS:
-  //  arg is an array with the following structure: ["table_name", id].
-  //    table_name is the keyword identifying a database table
-  //    id is the identifier for a row in a table
-  //EXPECTED OUTPUT:
-  //  Returns a row inside a table or an empty array if the table does not exist.
-  ipcMain.on("queryById", (event, arg) => {
-    switch (arg[0]) {
-      case "assessment_reports":
-        try {
-          assessment_reports.queryById(arg[1]).then(
-            function (data) {
-              //resolve
-              event.returnValue = data;
-            },
-            function (err) {
-              //reject
-              console.log(err);
-              event.returnValue = [];
-            }
-          );
-        } catch (error) {
-          console.log(error);
-          event.returnValue = [];
-        }
-        break;
-      default:
-        console.log(arg[0], " does not have a valid query by id method.");
         event.returnValue = [];
     }
   });
@@ -708,54 +590,6 @@ export function setIPCMainListeners() {
             arg[1].id,
           ];
           recommendations.update(arr).then(
-            function (data) {
-              //resolve
-              event.returnValue = data;
-            },
-            function (err) {
-              //reject
-              console.log(err);
-              event.returnValue = [];
-            }
-          );
-        } catch (error) {
-          console.log(error);
-          event.returnValue = [];
-        }
-        break;
-      case "assessment_reports":
-        try {
-          arr = [
-            arg[1].name,
-            arg[1].description,
-            arg[1].threat_order,
-            arg[1].assessment_activities_order,
-            arg[1].assessment_activity_results_order,
-            arg[1].vulnerabilities_order,
-            arg[1].recommendation_order,
-            arg[1].assets_order,
-            arg[1].id,
-          ];
-          assessment_reports.update(arr).then(
-            function (data) {
-              //resolve
-              event.returnValue = data;
-            },
-            function (err) {
-              //reject
-              console.log(err);
-              event.returnValue = [];
-            }
-          );
-        } catch (error) {
-          console.log(error);
-          event.returnValue = [];
-        }
-        break;
-      case "assessment_report_sections":
-        try {
-          arr = [arg[1].name, arg[1].description, arg[1].id];
-          assessment_report_sections.update(arr).then(
             function (data) {
               //resolve
               event.returnValue = data;
@@ -978,44 +812,6 @@ export function setIPCMainListeners() {
           event.returnValue = [];
         }
         break;
-      case "assessment_reports":
-        try {
-          arr = [arg[1].id];
-          assessment_reports.remove(arr).then(
-            function (data) {
-              //resolve
-              event.returnValue = data;
-            },
-            function (err) {
-              //reject
-              console.log(err);
-              event.returnValue = [];
-            }
-          );
-        } catch (error) {
-          console.log(error);
-          event.returnValue = [];
-        }
-        break;
-      case "assessment_report_sections":
-        try {
-          arr = [arg[1].id];
-          assessment_report_sections.remove(arr).then(
-            function (data) {
-              //resolve
-              event.returnValue = data;
-            },
-            function (err) {
-              //reject
-              console.log(err);
-              event.returnValue = [];
-            }
-          );
-        } catch (error) {
-          console.log(error);
-          event.returnValue = [];
-        }
-        break;
       default:
         console.log(arg[0], " does not have a valid remove method.");
         event.returnValue = [];
@@ -1062,22 +858,15 @@ export function setIPCMainListeners() {
     switch (arg[0]) {
       case "db":
         try {
-          database_management
-            .export_database(
-              arg[1], // Title
-              arg[2], // Message
-              arg[3],
-              arg[4]
-            )
-            .then(
-              function (data) {
-                event.returnValue = ["resolve", data];
-              },
-              function (err) {
-                console.log(err);
-                event.returnValue = ["reject", err];
-              }
-            );
+          database_management.export_database(arg[1], arg[2]).then(
+            function (data) {
+              event.returnValue = ["resolve", data];
+            },
+            function (err) {
+              console.log(err);
+              event.returnValue = ["reject", err];
+            }
+          );
         } catch (error) {
           console.log(error);
           event.returnValue = ["error", error];

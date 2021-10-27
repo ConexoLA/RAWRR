@@ -29,7 +29,7 @@
           @click="clickAdd(task)"
         >
           <v-icon dark> mdi-plus </v-icon>
-          {{ $t("report_add_card") }}
+          {{ $t("global.add") }}
         </v-btn>
 
         <v-btn
@@ -41,7 +41,7 @@
           @click="clickRemove(task, index)"
         >
           <v-icon dark> mdi-minus </v-icon>
-          {{ $t("report_remove_card") }}
+          {{ $t("global.remove") }}
         </v-btn>
       </div>
     </div>
@@ -52,7 +52,7 @@
         style="margin-right: 5px; text-indent: 5px"
         >{{ task.description }}</span
       >
-      <badge v-if="task.type" :color="badgeColor">{{ task.type }}</badge>
+      <badge v-if="task.type" :color="badgeColor">{{ task.type_name }}</badge>
     </div>
   </div>
 </template>
