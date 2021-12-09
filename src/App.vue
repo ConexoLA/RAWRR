@@ -41,10 +41,12 @@ export default {
       "fetchAllThreats",
       "fetchAllVulnerabilities",
       "fetchAllVulnerabilityThreatAssociations",
+      "fetchAllConfig",
     ]),
   },
   created() {
     //Loading Vuex initial state
+    this.fetchAllConfig;
     this.fetchAllAssessmentActivities;
     this.fetchAllAssessmentActivityAssetAssociations;
     this.fetchAllAssets;
