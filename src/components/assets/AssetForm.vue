@@ -30,7 +30,7 @@
               class="mb-3"
               v-model="formDataTemp.asset.asset_category_id"
               :items="getAllAssetCategories"
-              item-text="name"
+              item-text="name_translation"
               item-value="id"
               :label="$t('global.asset_category')"
               clearable

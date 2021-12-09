@@ -120,7 +120,7 @@ export default {
     backup: false,
   }),
   computed: {
-    ...mapGetters(["getBackup"]),
+    ...mapGetters(["getBackup", "getAllConfig"]),
   },
   methods: {
     ...mapActions([
@@ -129,6 +129,7 @@ export default {
       "loadTestValues",
       "backupDatabase",
       "deleteDatabase",
+      "fetchAllConfig",
       "fetchAllAssetCategories",
       "fetchAllAssets",
       "fetchAllAssessmentActivities",
@@ -160,6 +161,7 @@ export default {
           ]);
 
           if (answer != "ignore") {
+            await this.fetchAllConfig();
             await this.fetchAllAssetCategories();
             await this.fetchAllAssets();
             await this.fetchAllAssessmentActivities();
@@ -183,6 +185,7 @@ export default {
 
               await this.setBackup(false);
 
+              await this.fetchAllConfig();
               await this.fetchAllAssetCategories();
               await this.fetchAllAssets();
               await this.fetchAllAssessmentActivities();
@@ -195,6 +198,11 @@ export default {
               await this.fetchAllRecommendationVulnerabilityAssociations();
             }
           }
+          await this.fetchAllConfig();
+          var langText = await this.getAllConfig;
+          var langObj = await JSON.parse(langText);
+          this.$i18n.locale = langObj.lang;
+          this.$vuetify.lang.current = langObj.lang;
         }
       }
     },
@@ -218,6 +226,7 @@ export default {
       if (window.confirm(this.$t("home.delete_confirm"))) {
         await this.deleteDatabase();
 
+        await this.fetchAllConfig();
         await this.fetchAllAssessmentActivities();
         await this.fetchAllAssessmentActivityAssetAssociations();
         await this.fetchAllAssets();

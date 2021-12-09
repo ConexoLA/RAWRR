@@ -8,15 +8,33 @@ const state = {
 
 const getters = {
   getAllAssets: (state) => state.assets,
-  getAllAssetCategories: (state) => state.assetCategories,
-  getAllMergedAssets: (state) => {
+  getAllAssetCategories: (state) => {
+    let _assetCategories = state.assetCategories;
+    let tempObj;
+    switch (i18n.locale) {
+      case "es":
+        _assetCategories.forEach((element) => {
+          tempObj = JSON.parse(element.name);
+          element.name_translation = tempObj.es;
+        });
+        break;
+      default:
+        _assetCategories.forEach((element) => {
+          tempObj = JSON.parse(element.name);
+          element.name_translation = tempObj.en;
+        });
+        break;
+    }
+    return _assetCategories;
+  },
+  getAllMergedAssets: (state, rootState) => {
     //This performs a join operation, this should be removed and replaced with proper db queries in the future.
     let _assets = state.assets;
-    let _assetCategories = state.assetCategories;
+    let _assetCategories = rootState.getAllAssetCategories;
     let _assetCategoryMap = {};
 
     _assetCategories.forEach(function (assetCategory) {
-      _assetCategoryMap[assetCategory.id] = assetCategory.name;
+      _assetCategoryMap[assetCategory.id] = assetCategory.name_translation;
     });
 
     _assets.forEach(function (asset) {
