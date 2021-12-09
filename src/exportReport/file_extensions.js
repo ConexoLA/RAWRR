@@ -469,7 +469,7 @@ export function md(
                 ")\n"
             );
             fileContents.push(
-              "\t * **" +
+              " * **" +
                 i18n.t("global.description") +
                 ":** " +
                 description +
@@ -487,7 +487,7 @@ export function md(
                       assets[k].asset_category_name = i18n.t("global.none");
                     }
                     fileContents.push(
-                      "\t * **" +
+                      " * **" +
                         i18n.t("global.asset_category") +
                         ":** " +
                         assets[k].asset_category_name +
@@ -520,11 +520,11 @@ export function md(
                           related_assets += 1;
                           if (related_assets == 1) {
                             fileContents.push(
-                              "\t * **" + i18n.t("global.assets") + ":**\n"
+                              " * **" + i18n.t("global.assets") + ":**\n"
                             );
                           }
                           fileContents.push(
-                            "\t   - [" +
+                            "   - [" +
                               activities[k].asset_name[z] +
                               "](#" +
                               activities[k].asset_name[z]
@@ -539,7 +539,7 @@ export function md(
 
                     if (related_assets == 0) {
                       fileContents.push(
-                        "\t * **" +
+                        " * **" +
                           i18n.t("global.assets") +
                           ":** " +
                           i18n.t("global.none") +
@@ -559,7 +559,7 @@ export function md(
                       threats[k].threat_type_name = i18n.t("global.none");
                     }
                     fileContents.push(
-                      "\t * **" +
+                      " * **" +
                         i18n.t("global.threat_type") +
                         ":** " +
                         threats[k].threat_type_name +
@@ -578,7 +578,7 @@ export function md(
                       ) {
                         related_asset = 1;
                         fileContents.push(
-                          "\t * **" +
+                          " * **" +
                             i18n.t("global.asset") +
                             ":** " +
                             "[" +
@@ -595,7 +595,7 @@ export function md(
 
                     if (related_asset == 0) {
                       fileContents.push(
-                        "\t * **" +
+                        " * **" +
                           i18n.t("global.asset") +
                           ":** " +
                           i18n.t("global.none") +
@@ -604,14 +604,14 @@ export function md(
                     }
 
                     fileContents.push(
-                      "\t * **" +
+                      " * **" +
                         i18n.t("global.impact") +
                         ":** " +
                         threats[k].impact +
                         "\n"
                     );
                     fileContents.push(
-                      "\t * **" +
+                      " * **" +
                         i18n.t("global.likelihood") +
                         ":** " +
                         threats[k].likelihood +
@@ -639,7 +639,7 @@ export function md(
                       ) {
                         related_activity = 1;
                         fileContents.push(
-                          "\t * **" +
+                          " * **" +
                             i18n.t("global.assessment_activity") +
                             ":** [" +
                             vulnerabilities[k].assessment_activity_name +
@@ -655,7 +655,7 @@ export function md(
 
                     if (related_activity == 0) {
                       fileContents.push(
-                        "\t * **" +
+                        " * **" +
                           i18n.t("global.assessment_activity") +
                           ":**  " +
                           i18n.t("global.none") +
@@ -675,7 +675,7 @@ export function md(
                       ) {
                         related_asset = 1;
                         fileContents.push(
-                          "\t * **" +
+                          " * **" +
                             i18n.t("global.asset") +
                             ":** [" +
                             vulnerabilities[k].asset_name +
@@ -691,7 +691,7 @@ export function md(
 
                     if (related_asset == 0) {
                       fileContents.push(
-                        "\t * **" +
+                        " * **" +
                           i18n.t("global.asset") +
                           ":** " +
                           i18n.t("global.none") +
@@ -715,11 +715,11 @@ export function md(
                           related_threats += 1;
                           if (related_threats == 1) {
                             fileContents.push(
-                              "\t * **" + i18n.t("global.threats") + ":**\n"
+                              " * **" + i18n.t("global.threats") + ":**\n"
                             );
                           }
                           fileContents.push(
-                            "\t   - [" +
+                            "   - [" +
                               reportThreatName[z] +
                               "](#" +
                               reportThreatName[z]
@@ -734,7 +734,7 @@ export function md(
 
                     if (related_threats == 0) {
                       fileContents.push(
-                        "\t * **" +
+                        " * **" +
                           i18n.t("global.threats") +
                           ":** " +
                           i18n.t("global.none") +
@@ -757,14 +757,14 @@ export function md(
                       recommentations[k].implementation_time = "";
                     }
                     fileContents.push(
-                      "\t * **" +
+                      " * **" +
                         i18n.t("global.implementation_cost") +
                         ":** " +
                         recommentations[k].implementation_cost +
                         "\n"
                     );
                     fileContents.push(
-                      "\t * **" +
+                      " * **" +
                         i18n.t("global.implementation_time") +
                         ":** " +
                         recommentations[k].implementation_time +
@@ -796,13 +796,13 @@ export function md(
                           related_vulnerabilities += 1;
                           if (related_vulnerabilities == 1) {
                             fileContents.push(
-                              "\t * **" +
+                              " * **" +
                                 i18n.t("global.vulnerabilities") +
                                 ":**\n"
                             );
                           }
                           fileContents.push(
-                            "\t   - [" +
+                            "   - [" +
                               reportVulnerabilityName[z] +
                               "](#" +
                               reportVulnerabilityName[z]
@@ -817,7 +817,7 @@ export function md(
 
                     if (related_vulnerabilities == 0) {
                       fileContents.push(
-                        "\t * **" +
+                        " * **" +
                           i18n.t("global.vulnerabilities") +
                           ":** " +
                           i18n.t("global.none") +
@@ -972,7 +972,7 @@ export function json(
                           related_assets += 1;
                           if (related_assets == 1) {
                             fileContents.push(
-                              "\t * **" + i18n.t("global.assets") + ":**\n"
+                              " * **" + i18n.t("global.assets") + ":**\n"
                             );
                             jsonEntry["relatedAssets"] = [];
                           }
