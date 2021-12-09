@@ -924,7 +924,8 @@ export function setIPCMainListeners() {
               arg[7],
               arg[8],
               arg[9],
-              arg[10]
+              arg[10],
+              arg[11]
             )
             .then(
               function (data) {
@@ -953,7 +954,8 @@ export function setIPCMainListeners() {
               arg[7],
               arg[8],
               arg[9],
-              arg[10]
+              arg[10],
+              arg[11]
             )
             .then(
               function (data) {
@@ -982,7 +984,8 @@ export function setIPCMainListeners() {
               arg[7],
               arg[8],
               arg[9],
-              arg[10]
+              arg[10],
+              arg[11]
             )
             .then(
               function (data) {
@@ -1011,7 +1014,8 @@ export function setIPCMainListeners() {
               arg[7],
               arg[8],
               arg[9],
-              arg[10]
+              arg[10],
+              arg[11]
             )
             .then(
               function (data) {

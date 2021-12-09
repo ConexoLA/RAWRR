@@ -21,7 +21,8 @@ export function txt(
   vulnerabilities,
   recommentations,
   titletxt,
-  message
+  message,
+  locale
 ) {
   return new Promise(function (resolve, reject) {
     try {
@@ -33,6 +34,7 @@ export function txt(
       };
 
       let path = dialog.showSaveDialogSync(options);
+      i18n.locale = locale;
 
       if (path) {
         path = path + ".txt";
@@ -415,7 +417,8 @@ export function md(
   vulnerabilities,
   recommentations,
   titlemd,
-  message
+  message,
+  locale
 ) {
   return new Promise(function (resolve, reject) {
     try {
@@ -427,6 +430,7 @@ export function md(
       };
 
       let path = dialog.showSaveDialogSync(options);
+      i18n.locale = locale;
 
       if (path) {
         path = path + ".md";
@@ -877,7 +881,8 @@ export function json(
   vulnerabilities,
   recommentations,
   titlejson,
-  message
+  message,
+  locale
 ) {
   return new Promise(function (resolve, reject) {
     try {
@@ -889,6 +894,7 @@ export function json(
       };
 
       let path = dialog.showSaveDialogSync(options);
+      i18n.locale = locale;
 
       if (path) {
         path = path + ".json";
@@ -1199,7 +1205,8 @@ export function docx(
   vulnerabilities,
   recommentations,
   titletxt,
-  message
+  message,
+  locale
 ) {
   return new Promise(function (resolve, reject) {
     try {
@@ -1211,6 +1218,7 @@ export function docx(
       };
 
       let path = dialog.showSaveDialogSync(options);
+      i18n.locale = locale;
 
       if (path) {
         path = path + ".docx";
