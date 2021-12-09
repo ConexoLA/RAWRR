@@ -460,7 +460,7 @@ export function md(
             }
             let title = getMain[item.interest][0].tasks[i].title;
             const j = i + 1;
-            fileContents.push("1. #### " + title + "\n");
+            fileContents.push("#### " + title + "\n");
             toc.push(
               "  * [" +
                 title +
