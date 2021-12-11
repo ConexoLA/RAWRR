@@ -7,19 +7,37 @@ const state = {
 };
 
 const getters = {
-  getAllThreatTypes: (state) => state.threat_types,
+  getAllThreatTypes: (state) => {
+    let _threat_types = state.threat_types;
+    let tempObj;
+    switch (i18n.locale) {
+      case "es":
+        _threat_types.forEach((element) => {
+          tempObj = JSON.parse(element.name);
+          element.name_translation = tempObj.es;
+        });
+        break;
+      default:
+        _threat_types.forEach((element) => {
+          tempObj = JSON.parse(element.name);
+          element.name_translation = tempObj.en;
+        });
+        break;
+    }
+    return _threat_types;
+  },
   getAllThreats: (state) => state.threats,
   getAllMergedThreats: (state, rootState) => {
     //This performs a join operation, this should be removed and replaced with proper db queries in the future.
     rootState.fetchAllAssets;
     let _threats = state.threats;
-    let _threatTypes = state.threat_types;
+    let _threatTypes = rootState.getAllThreatTypes;
     let _assets = rootState.getAllAssets;
     let _assetMap = {};
     let _threatTypeMap = {};
 
     _threatTypes.forEach(function (threatType) {
-      _threatTypeMap[threatType.id] = threatType.name;
+      _threatTypeMap[threatType.id] = threatType.name_translation;
     });
 
     _assets.forEach(function (asset) {

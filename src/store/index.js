@@ -8,6 +8,7 @@ import recommendations from "./modules/recommendations";
 import assessment_reports from "./modules/assessment_reports";
 import notification from "./modules/notification";
 import home from "./modules/home";
+import config from "./modules/config";
 
 Vue.use(Vuex);
 
@@ -21,5 +22,6 @@ export default new Vuex.Store({
     assessment_reports,
     notification,
     home,
+    config,
   },
 });
