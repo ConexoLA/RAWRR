@@ -4,6 +4,7 @@ import Vuetify from "vuetify/lib";
 import colors from "vuetify/lib/util/colors";
 import en from "vuetify/src/locale/en.ts";
 import es from "vuetify/src/locale/es.ts";
+import pt from "vuetify/src/locale/pt.ts";
 
 Vue.use(Vuetify);
 
@@ -25,7 +26,7 @@ export default new Vuetify({
     iconfont: "mdi",
   },
   lang: {
-    locales: { en, es },
+    locales: { en, es, pt },
     current: process.env.VUE_APP_I18N_LOCALE,
   },
 });
