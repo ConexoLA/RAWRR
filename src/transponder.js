@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { ipcMain } from "electron";
 
+import * as config from "./db/00_config";
 import * as init from "./db/00_initdb";
 import * as asset_categories from "./db/assets/01_asset_categories";
 import * as assets from "./db/assets/02_assets";
@@ -250,6 +251,24 @@ export function setIPCMainListeners() {
   //          or an empty array if the table does not exist.
   ipcMain.on("queryAll", (event, arg) => {
     switch (arg[0]) {
+      case "config":
+        try {
+          config.queryAll().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
       case "asset_categories":
         try {
           asset_categories.queryAll().then(
@@ -438,15 +457,35 @@ export function setIPCMainListeners() {
 
   //data is sent as arg from a synchronous call made in whichever file is contained in the views folder.
   //PARAMETERS:
-  //  arg is an array with the following structure: ["table_name", {row}].
+  //  arg is an array with the following structure: ["table_name", "data", "id"].
   //    table_name is the keyword identifying a database table
-  //    row is an object containing all necesary atributes to update said row from a table
+  //    row is an array containing all atributes to update a row from a table
+  //    id is the primary key of the row to update
   //      there's aditional information regarding these atributes in the db folder for each table
   //EXPECTED OUTPUT:
   //  Returns an array containing row or an empty one.
   ipcMain.on("update", (event, arg) => {
     let arr = [];
     switch (arg[0]) {
+      case "config":
+        try {
+          arr = [arg[1][0], arg[1][1]];
+          config.update(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
       case "asset_categories":
         try {
           arr = [arg[1].name, arg[1].description, arg[1].id];
@@ -885,7 +924,8 @@ export function setIPCMainListeners() {
               arg[7],
               arg[8],
               arg[9],
-              arg[10]
+              arg[10],
+              arg[11]
             )
             .then(
               function (data) {
@@ -914,7 +954,8 @@ export function setIPCMainListeners() {
               arg[7],
               arg[8],
               arg[9],
-              arg[10]
+              arg[10],
+              arg[11]
             )
             .then(
               function (data) {
@@ -943,7 +984,8 @@ export function setIPCMainListeners() {
               arg[7],
               arg[8],
               arg[9],
-              arg[10]
+              arg[10],
+              arg[11]
             )
             .then(
               function (data) {
@@ -972,7 +1014,8 @@ export function setIPCMainListeners() {
               arg[7],
               arg[8],
               arg[9],
-              arg[10]
+              arg[10],
+              arg[11]
             )
             .then(
               function (data) {

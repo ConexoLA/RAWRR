@@ -284,6 +284,7 @@ export default {
             this.getAllMergedRecommendations,
             this.$t("reports.md.title"),
             this.$t("global.report_save"),
+            i18n.locale,
           ];
           break;
         case "docx":
@@ -298,6 +299,7 @@ export default {
             this.getAllMergedRecommendations,
             this.$t("reports.docx.title"),
             this.$t("global.report_save"),
+            i18n.locale,
           ];
           break;
         case "json":
@@ -312,6 +314,7 @@ export default {
             this.getAllMergedRecommendations,
             this.$t("reports.json.title"),
             this.$t("global.report_save"),
+            i18n.locale,
           ];
           break;
         case "txt":
@@ -326,6 +329,7 @@ export default {
             this.getAllMergedRecommendations,
             this.$t("reports.txt.title"),
             this.$t("global.report_save"),
+            i18n.locale,
           ];
           break;
         default:

@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height fluid>
     <v-row align="center" justify="center">
-      <v-col>
+      <v-col cols="12" class="text-center">
         <v-img
           :src="require('../assets/logo_rawrr_v_yellow.png')"
           contain
@@ -10,22 +10,26 @@
       </v-col>
 
       <v-row align="center" justify="center">
-        <v-col cols="auto">
+        <v-col cols="12" class="text-center">
           <h1 class="display-1 font-weight-bold">
             {{ $t("home.welcome_message_1") }}
           </h1>
         </v-col>
       </v-row>
 
-      <v-row align-content="center" justify="center" class="ml-2 mr-2">
-        <v-col cols="auto" align-self="center">
+      <v-row align="center" justify="center" class="ml-2 mr-2">
+        <v-col cols="12" class="text-center">
           <p justify-center align-center style="white-space: pre-line">
             {{ $t("home.welcome_message_2") }}
           </p>
         </v-col>
+        <v-col cols="auto" class="text-center">
+          <locale-switcher></locale-switcher>
+        </v-col>
       </v-row>
-      <v-row justify="center" align="center">
-        <v-col cols="auto" align-self="center">
+
+      <v-row justify="center" align="center" class="mb-4">
+        <v-col cols="auto" class="text-center">
           <v-card class="pa-2" elevation="0">
             <v-tooltip bottom close-delay="100">
               <template v-slot:activator="{ on, attrs }">
@@ -45,7 +49,7 @@
             </v-tooltip>
           </v-card>
         </v-col>
-        <v-col cols="auto" align-self="center">
+        <v-col cols="auto" class="text-center">
           <v-card class="pa-2" elevation="0">
             <v-tooltip bottom close-delay="100">
               <template v-slot:activator="{ on, attrs }">
@@ -64,7 +68,7 @@
             </v-tooltip>
           </v-card>
         </v-col>
-        <v-col cols="auto" align-self="center">
+        <v-col cols="auto" class="text-center">
           <v-card class="pa-2" elevation="0">
             <v-tooltip bottom close-delay="100">
               <template v-slot:activator="{ on, attrs }">
@@ -83,7 +87,7 @@
             </v-tooltip>
           </v-card>
         </v-col>
-        <v-col cols="auto" align-self="center">
+        <v-col cols="auto" class="text-center">
           <v-card class="pa-2" elevation="0">
             <v-tooltip bottom close-delay="100">
               <template v-slot:activator="{ on, attrs }">
@@ -109,12 +113,14 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import LocaleSwitcher from "./LocaleSwitcher.vue";
 export default {
+  components: { LocaleSwitcher },
   data: () => ({
     backup: false,
   }),
   computed: {
-    ...mapGetters(["getBackup"]),
+    ...mapGetters(["getBackup", "getAllConfig"]),
   },
   methods: {
     ...mapActions([
@@ -123,6 +129,7 @@ export default {
       "loadTestValues",
       "backupDatabase",
       "deleteDatabase",
+      "fetchAllConfig",
       "fetchAllAssetCategories",
       "fetchAllAssets",
       "fetchAllAssessmentActivities",
@@ -154,6 +161,7 @@ export default {
           ]);
 
           if (answer != "ignore") {
+            await this.fetchAllConfig();
             await this.fetchAllAssetCategories();
             await this.fetchAllAssets();
             await this.fetchAllAssessmentActivities();
@@ -177,6 +185,7 @@ export default {
 
               await this.setBackup(false);
 
+              await this.fetchAllConfig();
               await this.fetchAllAssetCategories();
               await this.fetchAllAssets();
               await this.fetchAllAssessmentActivities();
@@ -189,6 +198,11 @@ export default {
               await this.fetchAllRecommendationVulnerabilityAssociations();
             }
           }
+          await this.fetchAllConfig();
+          var langText = await this.getAllConfig;
+          var langObj = await JSON.parse(langText);
+          this.$i18n.locale = langObj.lang;
+          this.$vuetify.lang.current = langObj.lang;
         }
       }
     },
@@ -212,6 +226,7 @@ export default {
       if (window.confirm(this.$t("home.delete_confirm"))) {
         await this.deleteDatabase();
 
+        await this.fetchAllConfig();
         await this.fetchAllAssessmentActivities();
         await this.fetchAllAssessmentActivityAssetAssociations();
         await this.fetchAllAssets();

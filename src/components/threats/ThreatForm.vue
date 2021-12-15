@@ -30,7 +30,7 @@
               <v-select
                 v-model="formDataTemp.threat.threat_type_id"
                 :items="getAllThreatTypes"
-                item-text="name"
+                item-text="name_translation"
                 item-value="id"
                 :label="$t('global.threat_type')"
                 clearable
