@@ -130,7 +130,14 @@
     "edit_success": "Vulnerabilidade modificada com sucesso",
     "edit_error": "A vulnerabilidade não pôde ser modificada. Por favor se certifique de que o nome seja único",
     "insert_success": "Vulnerabilidade inserida com sucesso",
-    "insert_error": "A vulnerabilidade não pôde ser inserida. Por favor se certifique de que o nome seja único"
+    "insert_error": "A vulnerabilidade não pôde ser inserida. Por favor se certifique de que o nome seja único",
+    "risk_matrix":{
+      "vcard_name": "Matriz de Risco",
+      "show": "Matrix de Risco",
+      "h_axis": "Probabilidade",
+      "v_axis": "Impacto",
+      "hide_message": "Ocultar matriz de risco"
+    }
   },
   "recommendations": {
     "title": "Listando todas as recomendações",
