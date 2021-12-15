@@ -118,7 +118,13 @@
     "edit_error": "Threat could not be modified. Please make sure the name is unique",
     "insert_success": "Threat inserted successfully",
     "insert_error": "Threat could not be inserted. Please make sure the name is unique",
-    "show_matrix": "Risk Matrix"
+    "risk_matrix":{
+      "vcard_name": "Risk Matrix",
+      "show": "Risk Matrix",
+      "h_axis": "Likelihood",
+      "v_axis": "Impact",
+      "hide_message": "Hide Risk Matrix"
+    }
   },
   "vulnerabilities": {
     "title": "Listing all vulnerabilities",
