@@ -117,7 +117,14 @@
     "edit_success": "Amenaza modificada exitosamente",
     "edit_error": "La amenaza no pudo ser modificada. Por favor compruebe que el nombre sea único",
     "insert_success": "La amenaza ha sido insertada exitosamente",
-    "insert_error": "La amenaza no pudo ser insertada. Por favor compruebe que el nombre sea único"
+    "insert_error": "La amenaza no pudo ser insertada. Por favor compruebe que el nombre sea único",
+    "risk_matrix":{
+      "vcard_name": "Matriz de Riesgo",
+      "show": "Matrix de Riesgo",
+      "h_axis": "Probabilidad",
+      "v_axis": "Impacto",
+      "hide_message": "Esconder Matriz de Riesgo"
+    }
   },
   "vulnerabilities": {
     "title": "Listando todas las vulnerabilidades",
