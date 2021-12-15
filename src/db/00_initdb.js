@@ -1589,69 +1589,96 @@ export function deleteDatabase() {
         );
         db.run(
           "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
-          ['{"en": "User equipment", "es": "Equipos particulares"}', ""]
-        );
-        db.run(
-          "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
           [
-            '{"en": "Organization equipment and services", "es": "Equipos y servicios organizacionales"}',
+            '{"en": "User equipment", "es": "Equipos particulares", "pt-br": "Equipamentos de usuário"}',
             "",
           ]
         );
         db.run(
           "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
           [
-            '{"en": "Organization members", "es": "Personal de la organización"}',
+            '{"en": "Organization equipment and services", "es": "Equipos y servicios organizacionales", "pt-br": "Equipamentos e serviços da organização"}',
             "",
           ]
         );
         db.run(
           "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
-          ['{"en": "Beneficiaries", "es": "Beneficiarios"}', ""]
+          [
+            '{"en": "Organization members", "es": "Personal de la organización", "pt-br": "Membros da organização"}',
+            "",
+          ]
         );
         db.run(
           "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
-          ['{"en": "Reputational", "es": "Reputacional"}', ""]
+          [
+            '{"en": "Beneficiaries", "es": "Beneficiarios", "pt-br": "Beneficiários"}',
+            "",
+          ]
         );
         db.run(
           "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
-          ['{"en": "Financial", "es": "Financiero"}', ""]
+          [
+            '{"en": "Reputational", "es": "Reputacional", "pt-br": "Reputacional"}',
+            "",
+          ]
         );
         db.run(
           "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
-          ['{"en": "Digital assets", "es": "Activos digitales"}', ""]
+          ['{"en": "Financial", "es": "Financiero", "pt-br": "Financeiro"}', ""]
         );
         db.run(
           "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
-          ['{"en": "Physical assets", "es": "Activos físicos"}', ""]
+          [
+            '{"en": "Digital assets", "es": "Activos digitales", "pt-br": "Recursos digitais"}',
+            "",
+          ]
+        );
+        db.run(
+          "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
+          [
+            '{"en": "Physical assets", "es": "Activos físicos", "pt-br": "Recursos físicos"}',
+            "",
+          ]
         );
         db.run(
           "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
-          ['{"en": "Physical", "es": "Física"}', ""]
+          ['{"en": "Physical", "es": "Física", "pt-br": "Física"}', ""]
         );
         db.run(
           "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
-          ['{"en": "Digital-Information", "es": "Digital"}', ""]
+          [
+            '{"en": "Digital-Information", "es": "Digital-Información", "pt-br": "Digital-Informação"}',
+            "",
+          ]
         );
         db.run(
           "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
-          ['{"en": "Psychosocial", "es": "Psicosocial"}', ""]
+          [
+            '{"en": "Psychosocial", "es": "Psicosocial", "pt-br": "Psicossocial"}',
+            "",
+          ]
         );
         db.run(
           "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
-          ['{"en": "Financial", "es": "Financiera"}', ""]
+          ['{"en": "Financial", "es": "Financiera", "pt-br": "Financeira"}', ""]
         );
         db.run(
           "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
-          ['{"en": "Administrative-Legal", "es": "Legal-Administrativa"}', ""]
+          [
+            '{"en": "Administrative-Legal", "es": "Administrativa-Legal", "pt-br": "Administrativa-Legal"}',
+            "",
+          ]
         );
         db.run(
           "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
-          ['{"en": "Judicial", "es": "Judicial"}', ""]
+          ['{"en": "Judicial", "es": "Judicial", "pt-br": "Judicial"}', ""]
         );
         db.run(
           "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
-          ['{"en": "Reputational", "es": "Reputacional"}', ""]
+          [
+            '{"en": "Reputational", "es": "Reputacional", "pt-br": "Reputacional"}',
+            "",
+          ]
         );
         db.get("PRAGMA foreign_keys = ON");
       });
