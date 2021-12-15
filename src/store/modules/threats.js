@@ -17,6 +17,13 @@ const getters = {
           element.name_translation = tempObj.es;
         });
         break;
+      case "pt-br":
+        _threat_types.forEach((element) => {
+          tempObj = JSON.parse(element.name);
+          element.name_translation = tempObj["pt-br"];
+        });
+        break;
+      //Add language case here
       default:
         _threat_types.forEach((element) => {
           tempObj = JSON.parse(element.name);

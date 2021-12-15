@@ -5,6 +5,7 @@
     :items="[
       { text: 'English', value: 'en' },
       { text: 'Español', value: 'es' },
+      { text: 'Português do Brasil', value: 'pt-br' },
     ]"
     @change="changeLocale()"
   >
@@ -27,13 +28,21 @@ export default {
       var langText = await this.getAllConfig;
       var langObj = await JSON.parse(langText);
       this.$i18n.locale = langObj.lang;
-      this.$vuetify.lang.current = langObj.lang;
+      if (langObj.lang === "pt-br") {
+        this.$vuetify.lang.current = "pt";
+      } else {
+        this.$vuetify.lang.current = langObj.lang;
+      }
     },
     async changeLocale() {
       var langText = await this.getAllConfig;
       var langObj = await JSON.parse(langText);
       langObj.lang = this.$i18n.locale;
-      this.$vuetify.lang.current = this.$i18n.locale;
+      if (langObj.lang === "pt-br") {
+        this.$vuetify.lang.current = "pt";
+      } else {
+        this.$vuetify.lang.current = langObj.lang;
+      }
       langText = await JSON.stringify(langObj);
       await this.updateConfig(langText);
       await this.fetchAllConfig();

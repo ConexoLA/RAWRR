@@ -83,9 +83,9 @@
   "assets": {
     "title": "Listando todos los activos",
     "subtitle": "Lo que deseas proteger: personas, dispositivos, sitios, servidores",
-    "delete_confirm": "Realmente quieres eliminar este activo?",
+    "delete_confirm": "¿Realmente quieres eliminar este activo?",
     "delete_multiple": "Eliminar activos",
-    "delete_multiple_confirm": "Realmente quieres eliminar los siguientes activos?",
+    "delete_multiple_confirm": "¿Realmente quieres eliminar los siguientes activos?",
     "form_edit": "Editar activo",
     "form_create": "Crear activo",
     "edit_success": "Activo modificado exitosamente",
@@ -96,9 +96,9 @@
   "activities": {
     "title": "Listando todas las actividades de evaluación",
     "subtitle": "Tareas realizadas para entender a la organización, como entrevistas o análisis",
-    "delete_confirm": "Realmente quieres eliminar esta actividad de evaluación?",
+    "delete_confirm": "¿Realmente quieres eliminar esta actividad de evaluación?",
     "delete_multiple": "Eliminar actividades",
-    "delete_multiple_confirm": "Realmente quieres eliminar las siguientes actividades de evaluación?",
+    "delete_multiple_confirm": "¿Realmente quieres eliminar las siguientes actividades de evaluación?",
     "form_edit": "Editar actividad de evaluación",
     "form_create": "Crear actividad de evaluación",
     "edit_success": "Actividad modificada exitosamente",
@@ -109,9 +109,9 @@
   "threats": {
     "title": "Listando todas las amenazas",
     "subtitle": "Un escenario a evitar como incautación de equipos o robo de credenciales",
-    "delete_confirm": "Realmente quieres eliminar esta amenaza?",
+    "delete_confirm": "¿Realmente quieres eliminar esta amenaza?",
     "delete_multiple": "Eliminar amenazas",
-    "delete_multiple_confirm": "Realmente quieres eliminar las siguientes amenazas?",
+    "delete_multiple_confirm": "¿Realmente quieres eliminar las siguientes amenazas?",
     "form_edit": "Editar amenaza",
     "form_create": "Crear amenaza",
     "edit_success": "Amenaza modificada exitosamente",
@@ -122,9 +122,9 @@
   "vulnerabilities": {
     "title": "Listando todas las vulnerabilidades",
     "subtitle": "Debilidades que facilitan que ocurran amenazas, como falta de cifrado",
-    "delete_confirm": "Realmente quieres eliminar esta vulnerabilidad?",
+    "delete_confirm": "¿Realmente quieres eliminar esta vulnerabilidad?",
     "delete_multiple": "Eliminar vulnerabilidades",
-    "delete_multiple_confirm": "Realmente quieres eliminar las siguientes vulnerabilidades?",
+    "delete_multiple_confirm": "¿Realmente quieres eliminar las siguientes vulnerabilidades?",
     "form_edit": "Editar vulnerabilidad",
     "form_create": "Crear vulnerabilidad",
     "edit_success": "Vulnerabilidad modificada exitosamente",
@@ -135,9 +135,9 @@
   "recommendations": {
     "title": "Listando todas las recomendaciones",
     "subtitle": "Medidas para mejorar la seguridad, como usar un gestor de contraseñas",
-    "delete_confirm": "Realmente quieres eliminar esta recomendación?",
+    "delete_confirm": "¿Realmente quieres eliminar esta recomendación?",
     "delete_multiple": "Eliminar recomendaciones",
-    "delete_multiple_confirm": "Realmente quieres eliminar las siguientes recomendaciones?",
+    "delete_multiple_confirm": "¿Realmente quieres eliminar las siguientes recomendaciones?",
     "form_edit": "Editar recomendaciones",
     "form_create": "Crear recomendación",
     "edit_success": "Recomendación modificada exitosamente",
@@ -199,10 +199,10 @@
     },
     "threat_types": {
       "1": "Física",
-      "2": "Digital",
+      "2": "Digital-Información",
       "3": "Psicosocial",
       "4": "Financiera",
-      "5": "Legal-Administrativa",
+      "5": "Administrativa-Legal",
       "6": "Judicial",
       "7": "Reputacional"
     }
