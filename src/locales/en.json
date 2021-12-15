@@ -117,7 +117,8 @@
     "edit_success": "Threat modified successfully",
     "edit_error": "Threat could not be modified. Please make sure the name is unique",
     "insert_success": "Threat inserted successfully",
-    "insert_error": "Threat could not be inserted. Please make sure the name is unique"
+    "insert_error": "Threat could not be inserted. Please make sure the name is unique",
+    "show_matrix": "Risk Matrix"
   },
   "vulnerabilities": {
     "title": "Listing all vulnerabilities",
