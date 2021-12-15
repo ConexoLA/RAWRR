@@ -18,7 +18,7 @@
       </v-col>
       <v-col cols="auto" align-self="center">
         <v-btn medium color="primary" @click="showCreateMatrix()">{{
-          $t("threats.show_matrix")
+          $t("threats.risk_matrix.show")
         }}</v-btn>
       </v-col>      
       <v-col cols="auto" align-self="center">
@@ -173,7 +173,9 @@
       >
 
         <v-card-title>
-        Risk Matrix
+          {{
+            $t("threats.risk_matrix.vcard_name")
+          }}
         </v-card-title>
       
         <GChart
@@ -190,7 +192,9 @@
             color="orange"
             @click="matrix = !matrix"
           >
-            Hide Risk Matrix
+            {{
+            $t("threats.risk_matrix.hide_message")
+            }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -301,6 +305,10 @@ export default {
         // Initialize Risk matrix and Counter Matrix
         var matrix = [];
         var counter = [];
+
+        // Get locale for axis
+        this.chart_options.hAxis.title = this.$t("threats.risk_matrix.h_axis");
+        this.chart_options.vAxis.title = this.$t("threats.risk_matrix.v_axis");
 
         // Both are size [11][11] props to JS team.
         for(var i=0; i<=10; i++) {
