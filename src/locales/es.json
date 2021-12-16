@@ -120,10 +120,12 @@
     "insert_error": "La amenaza no pudo ser insertada. Por favor compruebe que el nombre sea único",
     "risk_matrix":{
       "vcard_name": "Matriz de Riesgo",
-      "show": "Matrix de Riesgo",
+      "show": "Matriz de Riesgo",
       "h_axis": "Probabilidad",
       "v_axis": "Impacto",
-      "hide_message": "Esconder Matriz de Riesgo"
+      "hide_message": "Esconder Matriz de Riesgo",
+      "value": "Magnitud de Riesgo",
+      "name": "Nombre"
     }
   },
   "vulnerabilities": {
