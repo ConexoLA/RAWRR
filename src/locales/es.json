@@ -164,19 +164,19 @@
     "added": "Contenido del reporte",
     "choose": "Elige un formato",
     "md": {
-      "name": "MarkDown Text File",
+      "name": "Archivo MarkDown",
       "title": "Exportar reporte como .md"
     },
     "docx": {
-      "name": "Microsoft Word File",
+      "name": "Archivo de Microsoft Word",
       "title": "Exportar reporte como .docx"
     },
     "json": {
-      "name": "Javascript Object Notation File",
+      "name": "Archivo de Notación de Objeto de Javascript",
       "title": "Exportar reporte como .json"
     },
     "txt": {
-      "name": "Text File",
+      "name": "Archivo de texto",
       "title": "Exportar reporte como .txt"
     },
     "to_add_empty": "Si eliminas un elemento del reporte, aparecerá acá",
