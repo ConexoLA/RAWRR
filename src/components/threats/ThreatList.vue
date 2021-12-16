@@ -333,10 +333,10 @@ export default {
         const data = [
           [
             {type: 'string', label: 'ID'},
-            {type: 'number', label: 'Probabilidad'}, 
-            {type: 'number', label: 'Impacto'},
-            {type: 'number', label: 'Risk magnitude'},
-            {type: 'number', label: 'Name'}
+            {type: 'number', label: this.$t("threats.risk_matrix.h_axis")}, 
+            {type: 'number', label: this.$t("threats.risk_matrix.v_axis")},
+            {type: 'number', label: this.$t("threats.risk_matrix.value")},
+            {type: 'number', label: this.$t("threats.risk_matrix.name")}
           ]
         ];
 
