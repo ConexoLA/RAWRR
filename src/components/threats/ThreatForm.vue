@@ -12,14 +12,14 @@
               class="mb-3"
               v-model="formDataTemp.threat.name"
               :rules="nameRules"
-              :label="$t('generic_form_name_label')"
+              :label="$t('forms.name')"
               required
             ></v-text-field>
           </v-row>
           <v-row no-gutters>
             <v-textarea
               v-model="formDataTemp.threat.description"
-              :label="$t('generic_form_description_label')"
+              :label="$t('global.description')"
               outlined
               rows="5"
               no-resize
@@ -30,9 +30,9 @@
               <v-select
                 v-model="formDataTemp.threat.threat_type_id"
                 :items="getAllThreatTypes"
-                item-text="name"
+                item-text="name_translation"
                 item-value="id"
-                :label="$t('generic_form_threat_type_label')"
+                :label="$t('global.threat_type')"
                 clearable
               ></v-select>
             </v-col>
@@ -42,7 +42,7 @@
                 :items="getAllAssets"
                 item-text="name"
                 item-value="id"
-                :label="$t('generic_form_asset_label')"
+                :label="$t('global.asset')"
                 clearable
               ></v-select>
             </v-col>
@@ -55,7 +55,7 @@
                 min="0"
                 max="10"
                 :rules="impactRules"
-                :label="$t('generic_form_impact_label')"
+                :label="$t('global.impact')"
                 required
               ></v-text-field>
             </v-col>
@@ -66,7 +66,7 @@
                 min="0"
                 max="10"
                 :rules="likelihoodRules"
-                :label="$t('generic_form_likelihood_label')"
+                :label="$t('global.likelihood')"
                 required
               ></v-text-field>
             </v-col>
@@ -82,7 +82,7 @@
                 color="primary"
                 :disabled="!valid"
                 @click="updateElement(formDataTemp.threat)"
-                >{{ $t("generic_form_update_button") }}
+                >{{ $t("global.update") }}
               </v-btn>
             </v-col>
           </v-row>
@@ -97,7 +97,7 @@
                 color="primary"
                 :disabled="!valid"
                 @click="insertElement(formDataTemp.threat)"
-                >{{ $t("generic_form_insert_button") }}
+                >{{ $t("global.insert") }}
               </v-btn>
             </v-col>
           </v-row>
@@ -120,27 +120,26 @@ export default {
     ...mapGetters(["getAllThreatTypes", "getAllAssets"]),
     nameRules() {
       return [
-        (v) => !!v || this.$t("generic_form_name_restriction_1"),
-        (v) =>
-          (v && v.length <= 150) || this.$t("generic_form_name_restriction_2"),
+        (v) => !!v || this.$t("forms.name_restriction_1"),
+        (v) => (v && v.length <= 150) || this.$t("forms.name_restriction_2"),
       ];
     },
     threatTypeRules() {
-      return [(v) => !!v || this.$t("generic_form_threat_type_restriction")];
+      return [(v) => !!v || this.$t("forms.threat_type_restriction")];
     },
     assetRules() {
       return [(v) => !!v || this.$t("generic_form_asset_restriction")];
     },
     impactRules() {
       return [
-        (v) => v >= 0 || this.$t("generic_form_impact_restriction"),
-        (v) => v <= 10 || this.$t("generic_form_impact_restriction"),
+        (v) => v >= 0 || this.$t("forms.impact_restriction"),
+        (v) => v <= 10 || this.$t("forms.impact_restriction"),
       ];
     },
     likelihoodRules() {
       return [
-        (v) => v >= 0 || this.$t("generic_form_likelihood_restriction"),
-        (v) => v <= 10 || this.$t("generic_form_likelihood_restriction"),
+        (v) => v >= 0 || this.$t("forms.likelihood_restriction"),
+        (v) => v <= 10 || this.$t("forms.likelihood_restriction"),
       ];
     },
   },

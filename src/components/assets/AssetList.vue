@@ -4,16 +4,16 @@
       <v-col cols="auto" align-self="center">
         <v-card class="pa-2" elevation="0">
           <v-card-title>
-            {{ $t("assets_table_title") }}
+            {{ $t("assets.title") }}
           </v-card-title>
           <v-card-subtitle>
-            {{ $t("assets_table_subtitle") }}
+            {{ $t("assets.subtitle") }}
           </v-card-subtitle>
         </v-card>
       </v-col>
       <v-col cols="auto" align-self="center">
         <v-btn medium color="primary" @click="showCreateDialog()">{{
-          $t("generic_table_add_element")
+          $t("global.add_element")
         }}</v-btn>
       </v-col>
       <v-col cols="auto" align-self="center">
@@ -23,7 +23,7 @@
           color="error"
           class="ml-2"
           @click="showDeleteDialog(selected)"
-          >{{ $t("asset_table_delete_multiple_button") }}
+          >{{ $t("assets.delete_multiple") }}
         </v-btn>
       </v-col>
       <v-spacer></v-spacer>
@@ -31,7 +31,7 @@
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
-          :label="$t('generic_table_search_bar_title')"
+          :label="$t('global.search')"
           clearable
           single-line
           hide-details
@@ -137,13 +137,13 @@
         <v-card color="#FFFFFF" tile>
           <v-card-text>
             <p class="display-1 text--primary">
-              {{ $t("generic_delete_item_confirmation") }}
+              {{ $t("global.delete_confirm") }}
             </p>
             <div v-if="deleteElements.length == 1" class="text--primary">
-              {{ $t("asset_delete_description") }}
+              {{ $t("assets.delete_confirm") }}
             </div>
             <div v-if="deleteElements.length > 1" class="text--primary">
-              {{ $t("asset_multiple_delete_description") }}
+              {{ $t("assets.delete_multiple_confirm") }}
             </div>
             <div
               v-for="element in deleteElements"
@@ -156,10 +156,10 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn text color="accent" @click="overlay = false">
-              {{ $t("generic_delete_cancel") }}
+              {{ $t("global.cancel") }}
             </v-btn>
             <v-btn text color="error" @click="confirmDelete()">
-              {{ $t("generic_delete_confirm") }}
+              {{ $t("global.delete") }}
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -180,27 +180,27 @@ export default {
     headers() {
       return [
         {
-          text: this.$t("generic_table_header_id"),
+          text: this.$t("global.id"),
           align: "start",
           sortable: false,
           value: "id",
         },
-        { text: this.$t("generic_table_header_name"), value: "name" },
+        { text: this.$t("global.name"), value: "name" },
         {
-          text: this.$t("generic_table_header_description"),
+          text: this.$t("global.description"),
           value: "description",
         },
         {
-          text: this.$t("generic_table_header_asset_category"),
+          text: this.$t("global.asset_category"),
           value: "asset_category_name",
         },
         {
-          text: this.$t("generic_table_header_edit"),
+          text: this.$t("global.edit"),
           value: "edit",
           sortable: false,
         },
         {
-          text: this.$t("generic_table_header_delete"),
+          text: this.$t("global.delete"),
           value: "delete",
           sortable: false,
         },
@@ -222,7 +222,7 @@ export default {
     },
     showCreateDialog() {
       this.fetchAllAssets();
-      this.formData.title = this.$t("asset_form_create");
+      this.formData.title = this.$t("assets.form_create");
       this.formData.type = "Create";
       this.formData.asset = {};
       this.formData.resetFormValidation = true;
@@ -230,7 +230,7 @@ export default {
     },
     showEditDialog(asset) {
       this.fetchAllAssets();
-      this.formData.title = this.$t("asset_form_edit");
+      this.formData.title = this.$t("assets.form_edit");
       this.formData.type = "Edit";
       this.formData.asset = asset;
       this.formData.resetFormValidation = false;

@@ -12,14 +12,14 @@
               class="mb-3"
               v-model="formDataTemp.recommendation.name"
               :rules="nameRules"
-              :label="$t('generic_form_name_label')"
+              :label="$t('forms.name')"
               required
             ></v-text-field>
           </v-row>
           <v-row no-gutters>
             <v-textarea
               v-model="formDataTemp.recommendation.description"
-              :label="$t('generic_form_description_label')"
+              :label="$t('global.description')"
               outlined
               rows="5"
               no-resize
@@ -30,7 +30,7 @@
               v-model="formDataTemp.recommendation.newVulnerabilitiesId"
               clearable
               :items="getAllVulnerabilities()"
-              :label="$t('generic_form_vulnerabilities_label')"
+              :label="$t('global.vulnerabilities')"
               multiple
               chips
               deletable-chips
@@ -42,13 +42,13 @@
             <v-col cols="5" class="mr-5">
               <v-text-field
                 v-model="formDataTemp.recommendation.implementation_cost"
-                :label="$t('recommendation_form_implementation_cost_label')"
+                :label="$t('global.implementation_cost')"
               ></v-text-field>
             </v-col>
             <v-col cols="5" class="ml-5">
               <v-text-field
                 v-model="formDataTemp.recommendation.implementation_time"
-                :label="$t('recommendation_form_implementation_time_label')"
+                :label="$t('global.implementation_time')"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -63,7 +63,7 @@
                 color="primary"
                 :disabled="!valid"
                 @click="updateElement(formDataTemp.recommendation)"
-                >{{ $t("generic_form_update_button") }}
+                >{{ $t("global.update") }}
               </v-btn>
             </v-col>
           </v-row>
@@ -78,7 +78,7 @@
                 color="primary"
                 :disabled="!valid"
                 @click="insertElement(formDataTemp.recommendation)"
-                >{{ $t("generic_form_insert_button") }}
+                >{{ $t("global.insert") }}
               </v-btn>
             </v-col>
           </v-row>
@@ -100,9 +100,8 @@ export default {
   computed: {
     nameRules() {
       return [
-        (v) => !!v || this.$t("generic_form_name_restriction_1"),
-        (v) =>
-          (v && v.length <= 150) || this.$t("generic_form_name_restriction_2"),
+        (v) => !!v || this.$t("forms.name_restriction_1"),
+        (v) => (v && v.length <= 150) || this.$t("forms.name_restriction_2"),
       ];
     },
   },

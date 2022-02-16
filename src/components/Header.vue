@@ -15,25 +15,25 @@
     <v-spacer></v-spacer>
     <v-toolbar-items>
       <v-btn class="amber darken-3" elevation="0" to="/">{{
-        $t("header_home_title")
+        $t("header.home")
       }}</v-btn>
       <v-btn class="amber darken-3" elevation="0" to="/assets">{{
-        $t("header_assets_title")
+        $t("header.assets")
       }}</v-btn>
       <v-btn class="amber darken-3" elevation="0" to="/activities">{{
-        $t("header_activities_title")
+        $t("header.activities")
       }}</v-btn>
       <v-btn class="amber darken-3" elevation="0" to="/threats">{{
-        $t("header_threats_title")
+        $t("header.threats")
       }}</v-btn>
       <v-btn class="amber darken-3" elevation="0" to="/vulnerabilities">{{
-        $t("header_vulnerabilities_title")
+        $t("header.vulnerabilities")
       }}</v-btn>
       <v-btn class="amber darken-3" elevation="0" to="/recommendations">{{
-        $t("header_recommendations_title")
+        $t("header.recommendations")
       }}</v-btn>
       <v-btn class="amber darken-3" elevation="0" to="/reports">{{
-        $t("header_report_title")
+        $t("header.report")
       }}</v-btn>
     </v-toolbar-items>
   </v-toolbar>

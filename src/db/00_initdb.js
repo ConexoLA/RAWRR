@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 let db = null;
+import i18n from "../i18n.js";
 
 import { app } from "electron";
 
@@ -39,6 +40,9 @@ export function open() {
       db.serialize(function () {
         db.get("PRAGMA foreign_keys = OFF");
         db.run(
+          "CREATE TABLE IF NOT EXISTS config (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, data TEXT NOT NULL UNIQUE)"
+        );
+        db.run(
           "CREATE TABLE IF NOT EXISTS asset_categories (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, description TEXT, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL)"
         );
         db.run(
@@ -68,100 +72,100 @@ export function open() {
         db.run(
           "CREATE TABLE IF NOT EXISTS recommendation_vulnerability_associations (recommendation_id INTEGER NOT NULL, vulnerability_id INTEGER NOT NULL, PRIMARY KEY (recommendation_id, vulnerability_id), FOREIGN KEY (recommendation_id) REFERENCES recommendations(id) ON DELETE CASCADE, FOREIGN KEY (vulnerability_id) REFERENCES vulnerabilities(id) ON DELETE CASCADE)"
         );
-        db.run(
-          "CREATE TABLE IF NOT EXISTS assessment_reports (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, description TEXT, threat_order INTEGER, assessment_activities_order INTEGER, assessment_activity_results_order INTEGER, vulnerabilities_order INTEGER, recommendation_order INTEGER, assets_order INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL)"
-        );
-        db.run(
-          "CREATE TABLE IF NOT EXISTS assessment_report_sections (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, description TEXT, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL)"
-        );
-        db.run(
-          "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
-          ["User equipment", "Computers, mobile phones, hand recorders, etc."]
-        );
+        db.run("INSERT OR IGNORE INTO config (data) VALUES (?)", [
+          '{"lang": "en"}',
+        ]);
         db.run(
           "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
           [
-            "Organization equipment and services",
-            "Servers, Routers, Switches, Security cameras, Intercoms, IoT, etc.",
-          ]
-        );
-        db.run(
-          "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
-          ["Organization members", "Staff, contractors"]
-        );
-        db.run(
-          "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
-          [
-            "Beneficiaries",
-            "Clients, help receptors, readers, citizen reporters, etc.",
+            '{"en": "User equipment", "es": "Equipos particulares", "pt-br": "Equipamentos de usuário"}',
+            "",
           ]
         );
         db.run(
           "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
           [
-            "Reputational",
-            "Organization credibility and trust, public perception, brand positioning",
+            '{"en": "Organization equipment and services", "es": "Equipos y servicios organizacionales", "pt-br": "Equipamentos e serviços da organização"}',
+            "",
           ]
         );
         db.run(
           "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
-          ["Financial", "Organization funds, grants, donor access, etc."]
-        );
-        db.run(
-          "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
-          ["Digital assets", "Accounts, information, etc."]
+          [
+            '{"en": "Organization members", "es": "Personal de la organización", "pt-br": "Membros da organização"}',
+            "",
+          ]
         );
         db.run(
           "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
           [
-            "Physical assets",
-            "Spaces, venues, offices, non-electronic equipment, etc.",
+            '{"en": "Beneficiaries", "es": "Beneficiarios", "pt-br": "Beneficiários"}',
+            "",
+          ]
+        );
+        db.run(
+          "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
+          [
+            '{"en": "Reputational", "es": "Reputacional", "pt-br": "Reputacional"}',
+            "",
+          ]
+        );
+        db.run(
+          "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
+          ['{"en": "Financial", "es": "Financiero", "pt-br": "Financeiro"}', ""]
+        );
+        db.run(
+          "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
+          [
+            '{"en": "Digital assets", "es": "Activos digitales", "pt-br": "Recursos digitais"}',
+            "",
+          ]
+        );
+        db.run(
+          "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
+          [
+            '{"en": "Physical assets", "es": "Activos físicos", "pt-br": "Recursos físicos"}',
+            "",
+          ]
+        );
+        db.run(
+          "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
+          ['{"en": "Physical", "es": "Física", "pt-br": "Física"}', ""]
+        );
+        db.run(
+          "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
+          [
+            '{"en": "Digital-Information", "es": "Digital-Información", "pt-br": "Digital-Informação"}',
+            "",
           ]
         );
         db.run(
           "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
           [
-            "Physical",
-            "That can lead to physical harm, death or other compromises to people's physical integrity",
+            '{"en": "Psychosocial", "es": "Psicosocial", "pt-br": "Psicossocial"}',
+            "",
           ]
         );
         db.run(
           "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
+          ['{"en": "Financial", "es": "Financiera", "pt-br": "Financeira"}', ""]
+        );
+        db.run(
+          "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
           [
-            "Digital-Information",
-            "Compromises of the availability, integrity and confidentiality of organizational information in digital devices or physical supports",
+            '{"en": "Administrative-Legal", "es": "Administrativa-Legal", "pt-br": "Administrativa-Legal"}',
+            "",
           ]
         );
         db.run(
           "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
-          [
-            "Psychosocial",
-            "That can lead to high amounts of stress, burnout or traumatic events for staff members or other partners",
-          ]
-        );
-        db.run(
-          "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
-          ["Financial", "That can lead to money loss"]
+          ['{"en": "Judicial", "es": "Judicial", "pt-br": "Judicial"}', ""]
         );
         db.run(
           "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
           [
-            "Administrative-Legal",
-            "That can lead to fines, temporal closure, sanctions and other compromises before public institutions",
-          ]
-        );
-        db.run(
-          "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
-          [
-            "Judicial",
-            "That can lead to arrests, detentions and other forms of law enforcement interventions",
-          ]
-        );
-        db.run(
-          "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
-          [
-            "Reputational",
-            "That can lead to loss of credibility, brand position and public exposition in a way that can harm the impact of the organization outreach",
+            '{"en": "Reputational", "es": "Reputacional", "pt-br": "Reputacional"}',
+            "",
           ]
         );
         db.get("PRAGMA foreign_keys = ON");
@@ -190,22 +194,15 @@ export function loadTestValues() {
       db = open();
       db.serialize(function () {
         db.get("PRAGMA foreign_keys = OFF");
-        db.run("DROP TABLE IF EXISTS asset_categories");
         db.run("DROP TABLE IF EXISTS assets");
         db.run("DROP TABLE IF EXISTS assessment_activities");
         db.run("DROP TABLE IF EXISTS assessment_activity_asset_associations");
-        db.run("DROP TABLE IF EXISTS threat_types");
         db.run("DROP TABLE IF EXISTS threats");
         db.run("DROP TABLE IF EXISTS vulnerabilities");
         db.run("DROP TABLE IF EXISTS vulnerability_threat_associations");
         db.run("DROP TABLE IF EXISTS recommendations");
         db.run(
           "DROP TABLE IF EXISTS recommendation_vulnerability_associations"
-        );
-        db.run("DROP TABLE IF EXISTS assessment_reports");
-        db.run("DROP TABLE IF EXISTS assessment_report_sections");
-        db.run(
-          "CREATE TABLE IF NOT EXISTS asset_categories (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, description TEXT, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL)"
         );
         db.run(
           "CREATE TABLE IF NOT EXISTS assets (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, asset_category_id INTEGER, description TEXT, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (asset_category_id) REFERENCES asset_categories(id) ON DELETE SET NULL)"
@@ -215,9 +212,6 @@ export function loadTestValues() {
         );
         db.run(
           "CREATE TABLE IF NOT EXISTS assessment_activity_asset_associations (assessment_activity_id INTEGER NOT NULL, asset_id INTEGER NOT NULL, PRIMARY KEY (assessment_activity_id, asset_id), FOREIGN KEY (assessment_activity_id) REFERENCES assessment_activities(id) ON DELETE CASCADE, FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE CASCADE)"
-        );
-        db.run(
-          "CREATE TABLE IF NOT EXISTS threat_types (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, description TEXT, color TEXT, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL)"
         );
         db.run(
           "CREATE TABLE IF NOT EXISTS threats (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, threat_type_id INTEGER, name TEXT NOT NULL UNIQUE, description TEXT, asset_id INTEGER, impact INTEGER, likelihood INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (threat_type_id) REFERENCES threat_types(id) ON DELETE SET NULL, FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE SET NULL, CHECK(impact BETWEEN 0 AND 10), CHECK(likelihood BETWEEN 0 AND 10))"
@@ -233,96 +227,6 @@ export function loadTestValues() {
         );
         db.run(
           "CREATE TABLE IF NOT EXISTS recommendation_vulnerability_associations (recommendation_id INTEGER NOT NULL, vulnerability_id INTEGER NOT NULL, PRIMARY KEY (recommendation_id, vulnerability_id), FOREIGN KEY (recommendation_id) REFERENCES recommendations(id) ON DELETE CASCADE, FOREIGN KEY (vulnerability_id) REFERENCES vulnerabilities(id) ON DELETE CASCADE)"
-        );
-        db.run(
-          "CREATE TABLE IF NOT EXISTS assessment_reports (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, description TEXT, threat_order INTEGER, assessment_activities_order INTEGER, assessment_activity_results_order INTEGER, vulnerabilities_order INTEGER, recommendation_order INTEGER, assets_order INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL)"
-        );
-        db.run(
-          "CREATE TABLE IF NOT EXISTS assessment_report_sections (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, description TEXT, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL)"
-        );
-        db.run(
-          "INSERT INTO asset_categories (name, description) VALUES (?, ?)",
-          ["User equipment", "Computers, mobile phones, hand recorders, etc."],
-          function (err) {
-            if (err) {
-              reject(err.message);
-            }
-          }
-        );
-        db.run(
-          "INSERT INTO asset_categories (name, description) VALUES (?, ?)",
-          [
-            "Organization equipment and services",
-            "Servers, Routers, Switches, Security cameras, Intercoms, IoT, etc.",
-          ],
-          function (err) {
-            if (err) {
-              reject(err.message);
-            }
-          }
-        );
-        db.run(
-          "INSERT INTO asset_categories (name, description) VALUES (?, ?)",
-          ["Organization members", "Staff, contractors"],
-          function (err) {
-            if (err) {
-              reject(err.message);
-            }
-          }
-        );
-        db.run(
-          "INSERT INTO asset_categories (name, description) VALUES (?, ?)",
-          [
-            "Beneficiaries",
-            "Clients, help receptors, readers, citizen reporters, etc.",
-          ],
-          function (err) {
-            if (err) {
-              reject(err.message);
-            }
-          }
-        );
-        db.run(
-          "INSERT INTO asset_categories (name, description) VALUES (?, ?)",
-          [
-            "Reputational",
-            "Organization credibility and trust, public perception, brand positioning",
-          ],
-          function (err) {
-            if (err) {
-              reject(err.message);
-            }
-          }
-        );
-        db.run(
-          "INSERT INTO asset_categories (name, description) VALUES (?, ?)",
-          ["Financial", "Organization funds, grants, donor access, etc."],
-          function (err) {
-            if (err) {
-              reject(err.message);
-            }
-          }
-        );
-        db.run(
-          "INSERT INTO asset_categories (name, description) VALUES (?, ?)",
-          ["Digital assets", "Accounts, information, etc."],
-          function (err) {
-            if (err) {
-              reject(err.message);
-            }
-          }
-        );
-        db.run(
-          "INSERT INTO asset_categories (name, description) VALUES (?, ?)",
-          [
-            "Physical assets",
-            "Spaces, venues, offices, non-electronic equipment, etc.",
-          ],
-          function (err) {
-            if (err) {
-              reject(err.message);
-            }
-          }
         );
         db.run(
           "INSERT INTO assets (name, asset_category_id, description) VALUES (?, ?, ?)",
@@ -457,87 +361,6 @@ export function loadTestValues() {
             "Office space",
             "8",
             "The physical space where daily operations are executed.",
-          ],
-          function (err) {
-            if (err) {
-              reject(err.message);
-            }
-          }
-        );
-        db.run(
-          "INSERT INTO threat_types (name, description) VALUES (?, ?)",
-          [
-            "Physical",
-            "That can lead to physical harm, death or other compromises to people's physical integrity",
-          ],
-          function (err) {
-            if (err) {
-              reject(err.message);
-            }
-          }
-        );
-        db.run(
-          "INSERT INTO threat_types (name, description) VALUES (?, ?)",
-          [
-            "Digital-Information",
-            "Compromises of the availability, integrity and confidentiality of organizational information in digital devices or physical supports",
-          ],
-          function (err) {
-            if (err) {
-              reject(err.message);
-            }
-          }
-        );
-        db.run(
-          "INSERT INTO threat_types (name, description) VALUES (?, ?)",
-          [
-            "Psychosocial",
-            "That can lead to high amounts of stress, burnout or traumatic events for staff members or other partners",
-          ],
-          function (err) {
-            if (err) {
-              reject(err.message);
-            }
-          }
-        );
-        db.run(
-          "INSERT INTO threat_types (name, description) VALUES (?, ?)",
-          ["Financial", "That can lead to money loss"],
-          function (err) {
-            if (err) {
-              reject(err.message);
-            }
-          }
-        );
-        db.run(
-          "INSERT INTO threat_types (name, description) VALUES (?, ?)",
-          [
-            "Administrative-Legal",
-            "That can lead to fines, temporal closure, sanctions and other compromises before public institutions",
-          ],
-          function (err) {
-            if (err) {
-              reject(err.message);
-            }
-          }
-        );
-        db.run(
-          "INSERT INTO threat_types (name, description) VALUES (?, ?)",
-          [
-            "Judicial",
-            "That can lead to arrests, detentions and other forms of law enforcement interventions",
-          ],
-          function (err) {
-            if (err) {
-              reject(err.message);
-            }
-          }
-        );
-        db.run(
-          "INSERT INTO threat_types (name, description) VALUES (?, ?)",
-          [
-            "Reputational",
-            "That can lead to loss of credibility, brand position and public exposition in a way that can harm the impact of the organization outreach",
           ],
           function (err) {
             if (err) {
@@ -1707,55 +1530,6 @@ export function loadTestValues() {
             }
           }
         );
-        db.run(
-          "INSERT INTO assessment_reports (name, description) VALUES (?, ?)",
-          ["Report #1", "This is a new test report"],
-          function (err) {
-            if (err) {
-              console.log(err);
-              reject(err.message);
-            }
-          }
-        );
-        db.run(
-          "INSERT INTO assessment_reports (name, description) VALUES (?, ?)",
-          [
-            "Report #2 (some exclusions)",
-            "This test report won't have every element. You could use it to generate a report for the IT department with only tech items, or remove sensitive information for unauthorized audiences.",
-          ],
-          function (err) {
-            if (err) {
-              console.log(err);
-              reject(err.message);
-            }
-          }
-        );
-        db.run(
-          "INSERT INTO assessment_reports (name, description) VALUES (?, ?)",
-          [
-            "Report #3 (general)",
-            "This test report is meant to include all findings",
-          ],
-          function (err) {
-            if (err) {
-              console.log(err);
-              reject(err.message);
-            }
-          }
-        );
-        db.run(
-          "INSERT INTO assessment_reports (name, description) VALUES (?, ?)",
-          [
-            "Report #4 (complete)",
-            "This test report has many elements able to be added",
-          ],
-          function (err) {
-            if (err) {
-              console.log(err);
-              reject(err.message);
-            }
-          }
-        );
         db.get("PRAGMA foreign_keys = ON");
       });
       resolve("Fixtures successfully inserted");
@@ -1771,9 +1545,11 @@ export function deleteDatabase() {
       db = open();
       db.serialize(function () {
         db.get("PRAGMA foreign_keys = OFF");
+        db.run("DROP TABLE IF EXISTS asset_categories");
         db.run("DROP TABLE IF EXISTS assets");
         db.run("DROP TABLE IF EXISTS assessment_activities");
         db.run("DROP TABLE IF EXISTS assessment_activity_asset_associations");
+        db.run("DROP TABLE IF EXISTS threat_types");
         db.run("DROP TABLE IF EXISTS threats");
         db.run("DROP TABLE IF EXISTS vulnerabilities");
         db.run("DROP TABLE IF EXISTS vulnerability_threat_associations");
@@ -1781,8 +1557,9 @@ export function deleteDatabase() {
         db.run(
           "DROP TABLE IF EXISTS recommendation_vulnerability_associations"
         );
-        db.run("DROP TABLE IF EXISTS assessment_reports");
-        db.run("DROP TABLE IF EXISTS assessment_report_sections");
+        db.run(
+          "CREATE TABLE IF NOT EXISTS asset_categories (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, description TEXT, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL)"
+        );
         db.run(
           "CREATE TABLE IF NOT EXISTS assets (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, asset_category_id INTEGER, description TEXT, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (asset_category_id) REFERENCES asset_categories(id) ON DELETE SET NULL)"
         );
@@ -1791,6 +1568,9 @@ export function deleteDatabase() {
         );
         db.run(
           "CREATE TABLE IF NOT EXISTS assessment_activity_asset_associations (assessment_activity_id INTEGER NOT NULL, asset_id INTEGER NOT NULL, PRIMARY KEY (assessment_activity_id, asset_id), FOREIGN KEY (assessment_activity_id) REFERENCES assessment_activities(id) ON DELETE CASCADE, FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE CASCADE)"
+        );
+        db.run(
+          "CREATE TABLE IF NOT EXISTS threat_types (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, description TEXT, color TEXT, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL)"
         );
         db.run(
           "CREATE TABLE IF NOT EXISTS threats (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, threat_type_id INTEGER, name TEXT NOT NULL UNIQUE, description TEXT, asset_id INTEGER, impact INTEGER, likelihood INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (threat_type_id) REFERENCES threat_types(id) ON DELETE SET NULL, FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE SET NULL, CHECK(impact BETWEEN 0 AND 10), CHECK(likelihood BETWEEN 0 AND 10))"
@@ -1808,10 +1588,97 @@ export function deleteDatabase() {
           "CREATE TABLE IF NOT EXISTS recommendation_vulnerability_associations (recommendation_id INTEGER NOT NULL, vulnerability_id INTEGER NOT NULL, PRIMARY KEY (recommendation_id, vulnerability_id), FOREIGN KEY (recommendation_id) REFERENCES recommendations(id) ON DELETE CASCADE, FOREIGN KEY (vulnerability_id) REFERENCES vulnerabilities(id) ON DELETE CASCADE)"
         );
         db.run(
-          "CREATE TABLE IF NOT EXISTS assessment_reports (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, description TEXT, threat_order INTEGER, assessment_activities_order INTEGER, assessment_activity_results_order INTEGER, vulnerabilities_order INTEGER, recommendation_order INTEGER, assets_order INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL)"
+          "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
+          [
+            '{"en": "User equipment", "es": "Equipos particulares", "pt-br": "Equipamentos de usuário"}',
+            "",
+          ]
         );
         db.run(
-          "CREATE TABLE IF NOT EXISTS assessment_report_sections (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, description TEXT, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL)"
+          "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
+          [
+            '{"en": "Organization equipment and services", "es": "Equipos y servicios organizacionales", "pt-br": "Equipamentos e serviços da organização"}',
+            "",
+          ]
+        );
+        db.run(
+          "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
+          [
+            '{"en": "Organization members", "es": "Personal de la organización", "pt-br": "Membros da organização"}',
+            "",
+          ]
+        );
+        db.run(
+          "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
+          [
+            '{"en": "Beneficiaries", "es": "Beneficiarios", "pt-br": "Beneficiários"}',
+            "",
+          ]
+        );
+        db.run(
+          "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
+          [
+            '{"en": "Reputational", "es": "Reputacional", "pt-br": "Reputacional"}',
+            "",
+          ]
+        );
+        db.run(
+          "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
+          ['{"en": "Financial", "es": "Financiero", "pt-br": "Financeiro"}', ""]
+        );
+        db.run(
+          "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
+          [
+            '{"en": "Digital assets", "es": "Activos digitales", "pt-br": "Recursos digitais"}',
+            "",
+          ]
+        );
+        db.run(
+          "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
+          [
+            '{"en": "Physical assets", "es": "Activos físicos", "pt-br": "Recursos físicos"}',
+            "",
+          ]
+        );
+        db.run(
+          "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
+          ['{"en": "Physical", "es": "Física", "pt-br": "Física"}', ""]
+        );
+        db.run(
+          "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
+          [
+            '{"en": "Digital-Information", "es": "Digital-Información", "pt-br": "Digital-Informação"}',
+            "",
+          ]
+        );
+        db.run(
+          "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
+          [
+            '{"en": "Psychosocial", "es": "Psicosocial", "pt-br": "Psicossocial"}',
+            "",
+          ]
+        );
+        db.run(
+          "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
+          ['{"en": "Financial", "es": "Financiera", "pt-br": "Financeira"}', ""]
+        );
+        db.run(
+          "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
+          [
+            '{"en": "Administrative-Legal", "es": "Administrativa-Legal", "pt-br": "Administrativa-Legal"}',
+            "",
+          ]
+        );
+        db.run(
+          "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
+          ['{"en": "Judicial", "es": "Judicial", "pt-br": "Judicial"}', ""]
+        );
+        db.run(
+          "INSERT OR IGNORE INTO threat_types (name, description) VALUES (?, ?)",
+          [
+            '{"en": "Reputational", "es": "Reputacional", "pt-br": "Reputacional"}',
+            "",
+          ]
         );
         db.get("PRAGMA foreign_keys = ON");
       });

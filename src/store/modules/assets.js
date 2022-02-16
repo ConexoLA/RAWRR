@@ -8,15 +8,40 @@ const state = {
 
 const getters = {
   getAllAssets: (state) => state.assets,
-  getAllAssetCategories: (state) => state.assetCategories,
-  getAllMergedAssets: (state) => {
+  getAllAssetCategories: (state) => {
+    let _assetCategories = state.assetCategories;
+    let tempObj;
+    switch (i18n.locale) {
+      case "es":
+        _assetCategories.forEach((element) => {
+          tempObj = JSON.parse(element.name);
+          element.name_translation = tempObj.es;
+        });
+        break;
+      case "pt-br":
+        _assetCategories.forEach((element) => {
+          tempObj = JSON.parse(element.name);
+          element.name_translation = tempObj["pt-br"];
+        });
+        break;
+      //Add language case here
+      default:
+        _assetCategories.forEach((element) => {
+          tempObj = JSON.parse(element.name);
+          element.name_translation = tempObj.en;
+        });
+        break;
+    }
+    return _assetCategories;
+  },
+  getAllMergedAssets: (state, rootState) => {
     //This performs a join operation, this should be removed and replaced with proper db queries in the future.
     let _assets = state.assets;
-    let _assetCategories = state.assetCategories;
+    let _assetCategories = rootState.getAllAssetCategories;
     let _assetCategoryMap = {};
 
     _assetCategories.forEach(function (assetCategory) {
-      _assetCategoryMap[assetCategory.id] = assetCategory.name;
+      _assetCategoryMap[assetCategory.id] = assetCategory.name_translation;
     });
 
     _assets.forEach(function (asset) {
@@ -35,7 +60,7 @@ const actions = {
         //Table does not exist
         case 1:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_1"),
+            text: i18n.t("home.import_error_1"),
             color: "error",
           });
           commit("backup", true);
@@ -43,7 +68,7 @@ const actions = {
         //File is not a DB
         case 26:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_26"),
+            text: i18n.t("home.import_error_26"),
             color: "error",
           });
           commit("backup", true);
@@ -51,7 +76,7 @@ const actions = {
         //Unkown error
         default:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_unkown"),
+            text: i18n.t("home.import_error_unkown"),
             color: "error",
           });
           commit("backup", true);
@@ -65,12 +90,12 @@ const actions = {
     const response = await ipcRenderer.sendSync("insert", ["assets", asset]);
     if (response.length == 0) {
       this.dispatch("setNotification", {
-        text: i18n.t("asset_insert_error"),
+        text: i18n.t("assets.insert_error"),
         color: "error",
       });
     } else {
       this.dispatch("setNotification", {
-        text: i18n.t("asset_insert_success"),
+        text: i18n.t("assets.insert_success"),
       });
     }
     commit("newAsset", response);
@@ -79,12 +104,12 @@ const actions = {
     const response = await ipcRenderer.sendSync("remove", ["assets", asset]);
     if (response.length == 0) {
       this.dispatch("setNotification", {
-        text: i18n.t("generic_delete_error"),
+        text: i18n.t("global.delete_error"),
         color: "error",
       });
     } else {
       this.dispatch("setNotification", {
-        text: i18n.t("generic_delete_success"),
+        text: i18n.t("global.delete_success"),
       });
     }
     commit("removeAsset", response);
@@ -93,12 +118,12 @@ const actions = {
     const response = await ipcRenderer.sendSync("update", ["assets", asset]);
     if (response.length == 0) {
       this.dispatch("setNotification", {
-        text: i18n.t("asset_edit_error"),
+        text: i18n.t("assets.edit_error"),
         color: "error",
       });
     } else {
       this.dispatch("setNotification", {
-        text: i18n.t("asset_edit_success"),
+        text: i18n.t("assets.edit_success"),
       });
     }
     commit("changeAsset", response);
@@ -112,7 +137,7 @@ const actions = {
         //Table does not exist
         case 1:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_1"),
+            text: i18n.t("home.import_error_1"),
             color: "error",
           });
           commit("backup", true);
@@ -120,7 +145,7 @@ const actions = {
         //File is not a DB
         case 26:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_26"),
+            text: i18n.t("home.import_error_26"),
             color: "error",
           });
           commit("backup", true);
@@ -128,7 +153,7 @@ const actions = {
         //Unkown error
         default:
           this.dispatch("setNotification", {
-            text: i18n.t("database_import_error_unkown"),
+            text: i18n.t("home.import_error_unkown"),
             color: "error",
           });
           commit("backup", true);

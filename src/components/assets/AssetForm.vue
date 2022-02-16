@@ -12,14 +12,14 @@
               class="mb-3"
               v-model="formDataTemp.asset.name"
               :rules="nameRules"
-              :label="$t('generic_form_name_label')"
+              :label="$t('forms.name')"
               required
             ></v-text-field>
           </v-row>
           <v-row no-gutters>
             <v-textarea
               v-model="formDataTemp.asset.description"
-              :label="$t('generic_form_description_label')"
+              :label="$t('global.description')"
               outlined
               rows="5"
               no-resize
@@ -30,9 +30,9 @@
               class="mb-3"
               v-model="formDataTemp.asset.asset_category_id"
               :items="getAllAssetCategories"
-              item-text="name"
+              item-text="name_translation"
               item-value="id"
-              :label="$t('generic_form_asset_category_label')"
+              :label="$t('global.asset_category')"
               clearable
             ></v-select>
           </v-row>
@@ -47,7 +47,7 @@
                 color="primary"
                 :disabled="!valid"
                 @click="updateElement(formDataTemp.asset)"
-                >{{ $t("generic_form_update_button") }}
+                >{{ $t("global.update") }}
               </v-btn>
             </v-col>
           </v-row>
@@ -62,7 +62,7 @@
                 color="primary"
                 :disabled="!valid"
                 @click="insertElement(formDataTemp.asset)"
-                >{{ $t("generic_form_insert_button") }}
+                >{{ $t("global.insert") }}
               </v-btn>
             </v-col>
           </v-row>
@@ -82,9 +82,8 @@ export default {
     ...mapGetters(["getAllAssetCategories"]),
     nameRules() {
       return [
-        (v) => !!v || this.$t("generic_form_name_restriction_1"),
-        (v) =>
-          (v && v.length <= 150) || this.$t("generic_form_name_restriction_2"),
+        (v) => !!v || this.$t("forms.name_restriction_1"),
+        (v) => (v && v.length <= 150) || this.$t("forms.name_restriction_2"),
       ];
     },
   },

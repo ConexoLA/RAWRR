@@ -33,8 +33,6 @@ export default {
     ...mapActions([
       "fetchAllAssessmentActivities",
       "fetchAllAssessmentActivityAssetAssociations",
-      "fetchAllAssessmentReports",
-      "fetchAllAssessmentReportSections",
       "fetchAllAssets",
       "fetchAllAssetCategories",
       "fetchAllRecommendations",
@@ -43,14 +41,14 @@ export default {
       "fetchAllThreats",
       "fetchAllVulnerabilities",
       "fetchAllVulnerabilityThreatAssociations",
+      "fetchAllConfig",
     ]),
   },
   created() {
     //Loading Vuex initial state
+    this.fetchAllConfig;
     this.fetchAllAssessmentActivities;
     this.fetchAllAssessmentActivityAssetAssociations;
-    this.fetchAllAssessmentReports;
-    this.fetchAllAssessmentReportSections;
     this.fetchAllAssets;
     this.fetchAllAssetCategories;
     this.fetchAllRecommendations;

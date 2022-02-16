@@ -4,16 +4,21 @@
       <v-col cols="auto" align-self="center">
         <v-card class="pa-2" elevation="0">
           <v-card-title>
-            {{ $t("threats_table_title") }}
+            {{ $t("threats.title") }}
           </v-card-title>
           <v-card-subtitle>
-            {{ $t("threats_table_subtitle") }}
+            {{ $t("threats.subtitle") }}
           </v-card-subtitle>
         </v-card>
       </v-col>
       <v-col cols="auto" align-self="center">
         <v-btn medium color="primary" @click="showCreateDialog()">{{
-          $t("generic_table_add_element")
+          $t("global.add_element")
+        }}</v-btn>
+      </v-col>
+      <v-col cols="auto" align-self="center">
+        <v-btn medium color="primary" @click="showCreateMatrix()">{{
+          $t("threats.risk_matrix.show")
         }}</v-btn>
       </v-col>
       <v-col cols="auto" align-self="center">
@@ -23,7 +28,7 @@
           color="error"
           class="ml-2"
           @click="showDeleteDialog(selected)"
-          >{{ $t("threat_table_delete_multiple_button") }}
+          >{{ $t("threats.delete_multiple") }}
         </v-btn>
       </v-col>
       <v-spacer></v-spacer>
@@ -31,7 +36,7 @@
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
-          :label="$t('generic_table_search_bar_title')"
+          :label="$t('global.search')"
           clearable
           single-line
           hide-details
@@ -151,6 +156,29 @@
       </v-sheet>
     </v-bottom-sheet>
 
+    <v-overlay :value="matrix">
+      <v-card class="mx-auto">
+        <v-card-title>
+          {{ $t("threats.risk_matrix.vcard_name") }}
+        </v-card-title>
+
+        <GChart
+          :settings="{ packages: ['corechart'] }"
+          type="BubbleChart"
+          @ready="onChartReady"
+          style="width: 500px; height: 500px"
+        />
+
+        <v-spacer></v-spacer>
+
+        <v-card-actions class="justify-center">
+          <v-btn color="orange" @click="matrix = !matrix">
+            {{ $t("threats.risk_matrix.hide_message") }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-overlay>
+
     <v-overlay :value="overlay">
       <div
         :style="`
@@ -161,13 +189,13 @@
         <v-card color="#FFFFFF" tile>
           <v-card-text>
             <p class="display-1 text--primary">
-              {{ $t("generic_delete_item_confirmation") }}
+              {{ $t("global.delete_confirm") }}
             </p>
             <div v-if="deleteElements.length == 1" class="text--primary">
-              {{ $t("threat_delete_description") }}
+              {{ $t("threats.delete_confirm") }}
             </div>
             <div v-if="deleteElements.length > 1" class="text--primary">
-              {{ $t("threat_multiple_delete_description") }}
+              {{ $t("threats.delete_multiple_confirm") }}
             </div>
             <div
               v-for="element in deleteElements"
@@ -180,10 +208,10 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn text color="accent" @click="overlay = false">
-              {{ $t("generic_delete_cancel") }}
+              {{ $t("global.cancel") }}
             </v-btn>
             <v-btn text color="error" @click="confirmDelete()">
-              {{ $t("generic_delete_confirm") }}
+              {{ $t("global.delete") }}
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -194,49 +222,51 @@
 
 <script>
 import { mapActions } from "vuex";
+import { GChart } from "vue-google-charts";
 import ThreatForm from "./ThreatForm.vue";
 export default {
   name: "ThreatList",
   components: {
+    GChart,
     ThreatForm,
   },
   computed: {
     headers() {
       return [
         {
-          text: this.$t("generic_table_header_id"),
+          text: this.$t("global.id"),
           align: "start",
           sortable: false,
           value: "id",
         },
-        { text: this.$t("generic_table_header_name"), value: "name" },
+        { text: this.$t("global.name"), value: "name" },
         {
-          text: this.$t("generic_table_header_description"),
+          text: this.$t("global.description"),
           value: "description",
         },
         {
-          text: this.$t("generic_table_header_threat_type"),
+          text: this.$t("global.threat_type"),
           value: "threat_type_name",
         },
         {
-          text: this.$t("generic_table_header_asset"),
+          text: this.$t("global.asset"),
           value: "asset_name",
         },
         {
-          text: this.$t("generic_table_header_last_impact"),
+          text: this.$t("global.impact"),
           value: "impact",
         },
         {
-          text: this.$t("generic_table_header_last_likelihood"),
+          text: this.$t("global.likelihood"),
           value: "likelihood",
         },
         {
-          text: this.$t("generic_table_header_edit"),
+          text: this.$t("global.edit"),
           value: "edit",
           sortable: false,
         },
         {
-          text: this.$t("generic_table_header_delete"),
+          text: this.$t("global.delete"),
           value: "delete",
           sortable: false,
         },
@@ -250,15 +280,111 @@ export default {
   props: ["threats"],
   methods: {
     ...mapActions(["fetchAllThreats", "deleteThreat"]),
+    onChartReady(chart, google) {
+      // Initialize Risk matrix and Counter Matrix
+      var matrix = [];
+      var counter = [];
+
+      // Get locale for axis
+      this.chart_options.hAxis.title = this.$t("threats.risk_matrix.h_axis");
+      this.chart_options.vAxis.title = this.$t("threats.risk_matrix.v_axis");
+
+      // Both are size [11][11] props to JS team.
+      for (var i = 0; i <= 10; i++) {
+        matrix[i] = new Array(11);
+        counter[i] = new Array(11);
+      }
+
+      // Fill with zeros
+      for (var i = 0; i <= 10; i++) {
+        for (var j = 0; j <= 10; j++) {
+          matrix[i][j] = 0;
+          counter[i][j] = 0;
+        }
+      }
+
+      // Fill data
+      for (var i = 0; i < this.threats.length; i++) {
+        matrix[this.threats[i].likelihood][this.threats[i].impact] += 1;
+      }
+
+      // This first row should solve column message error in line 396
+      const data = [
+        [
+          { type: "string", label: "ID" },
+          { type: "number", label: this.$t("threats.risk_matrix.h_axis") },
+          { type: "number", label: this.$t("threats.risk_matrix.v_axis") },
+          { type: "number", label: this.$t("threats.risk_matrix.value") },
+          { type: "number", label: this.$t("threats.risk_matrix.name") },
+        ],
+      ];
+
+      for (var i = 0; i < this.threats.length; i++) {
+        data.push([
+          String(this.threats[i].id),
+          {
+            v: this.getCircleX(
+              this.threats[i].likelihood,
+              0.5,
+              counter[this.threats[i].likelihood][this.threats[i].impact],
+              matrix[this.threats[i].likelihood][this.threats[i].impact]
+            ),
+            f: this.threats[i].likelihood,
+          },
+          {
+            v: this.getCircleY(
+              this.threats[i].impact,
+              0.5,
+              counter[this.threats[i].likelihood][this.threats[i].impact],
+              matrix[this.threats[i].likelihood][this.threats[i].impact]
+            ),
+            f: this.threats[i].impact,
+          },
+          this.threats[i].impact * this.threats[i].likelihood,
+          {
+            v: 2,
+            f: this.threats[i].name,
+          },
+        ]);
+        counter[this.threats[i].likelihood][this.threats[i].impact] += 1;
+      }
+
+      // Transform the Array into a proper DataTable
+      var chart_data = new google.visualization.arrayToDataTable(data, false);
+
+      // Remove notification error for columns
+      // This could be fixed in the future by vue-google-charts team
+      google.visualization.events.addListener(
+        chart,
+        "error",
+        function (googleError) {
+          google.visualization.errors.removeError(googleError.id);
+        }
+      );
+
+      chart.draw(chart_data, this.chart_options);
+    },
+    getCircleX(cx, r, k, n) {
+      return cx + Math.min(1, n - 1) * r * Math.cos((2 * Math.PI * k) / n);
+    },
+    getCircleY(cy, r, k, n) {
+      return cy + Math.min(1, n - 1) * r * Math.sin((2 * Math.PI * k) / n);
+    },
     onResize() {
       this.windowSize = { x: window.innerWidth, y: window.innerHeight };
     },
     toggleSheet() {
       this.sheet = !this.sheet;
     },
+    toggleMatrix() {
+      this.matrix = !this.matrix;
+    },
+    showCreateMatrix() {
+      this.matrix = !this.matrix;
+    },
     showCreateDialog() {
       this.fetchAllThreats();
-      this.formData.title = this.$t("threat_form_create");
+      this.formData.title = this.$t("threats.form_create");
       this.formData.type = "Create";
       this.formData.threat = {};
       this.formData.threat.impact = 0;
@@ -268,7 +394,7 @@ export default {
     },
     showEditDialog(threat) {
       this.fetchAllThreats();
-      this.formData.title = this.$t("threat_form_edit");
+      this.formData.title = this.$t("threats.form_edit");
       this.formData.type = "Edit";
       this.formData.threat = threat;
       this.formData.resetFormValidation = false;
@@ -292,6 +418,48 @@ export default {
     },
   },
   data: () => ({
+    chart_options: {
+      titleTextStyle: {
+        color: "#FFF",
+      },
+      explorer: {
+        zoomDelta: 0.5,
+        actions: ["dragToZoom", "rightClickToReset"],
+        keepInBounds: true,
+      },
+      chartArea: {
+        left: 50,
+        top: 30,
+        bottom: 50,
+        right: 10,
+      },
+      colorAxis: {
+        legend: {
+          position: "top",
+        },
+        colors: ["yellow", "red"],
+      },
+      hAxis: {
+        title: "probabilidad",
+        viewWindowMode: "maximized",
+        ticks: [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+      },
+      vAxis: {
+        title: "impacto",
+        ticks: [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+      },
+      bubble: {
+        textStyle: {
+          fontSize: 15,
+        },
+      },
+      sizeAxis: {
+        maxSize: 17,
+        minSize: 2,
+      },
+      title: ".",
+    },
+    matrix: false,
     sheet: false,
     search: "",
     selected: [],
