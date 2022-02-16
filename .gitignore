@@ -24,3 +24,5 @@ yarn-error.log*
 /dist_electron
 
 rawrr.db
+
+package-lock.json
