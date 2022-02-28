@@ -35,6 +35,7 @@
           clearable
           single-line
           hide-details
+          :aria-placeholder="$t('global.search_bar_accessibility')"
         ></v-text-field>
       </v-col>
     </v-row>
