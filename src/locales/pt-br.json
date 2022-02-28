@@ -33,7 +33,8 @@
     "report_save": "Escolha um local onde você quer salvar seu relatório",
     "delete_success": "Removido com sucesso",
     "delete_error": "Um erro ocorreu ao tentar remover",
-    "none": "Nenhum(a)"
+    "none": "Nenhum(a)",
+    "risk_matrix_accessibility": "Representação gráfica das ameaças em uma matriz de 10 por 10, localizada nos eixos de impacto e probabilidade de acordo com seus valores."
   },
   "header": {
     "home": "Início",

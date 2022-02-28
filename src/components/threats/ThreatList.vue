@@ -158,7 +158,7 @@
 
     <v-overlay :value="matrix">
       <v-card class="mx-auto">
-        <v-card-title>
+        <v-card-title :aria-label="$t('global.risk_matrix_accessibility')" role="img">
           {{ $t("threats.risk_matrix.vcard_name") }}
         </v-card-title>
 

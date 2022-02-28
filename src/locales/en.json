@@ -33,7 +33,8 @@
     "report_save": "Choose a location where you would like to save your report",
     "delete_success": "Successfully deleted",
     "delete_error": "An error occured while trying to delete",
-    "none": "None"
+    "none": "None",
+    "risk_matrix_accessibility": "Graphic representation of threats in a 10 by 10 matrix, located on impact and probability axes according to their values."
   },
   "header": {
     "home": "Home",
