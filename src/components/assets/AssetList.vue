@@ -118,7 +118,7 @@
           @click="sheet = !sheet"
           absolute
           right
-          ><v-icon>mdi-close</v-icon></v-btn
+          ><v-icon>mdi-close</v-icon>{{ $t("global.close_sheet") }}</v-btn
         >
 
         <div class="my-3">
