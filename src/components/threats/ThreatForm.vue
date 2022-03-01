@@ -9,6 +9,7 @@
           </v-row>
           <v-row no-gutters>
             <v-text-field
+              color="accent"
               class="mb-3"
               v-model="formDataTemp.threat.name"
               :rules="nameRules"
@@ -18,6 +19,7 @@
           </v-row>
           <v-row no-gutters>
             <v-textarea
+              color="accent"
               v-model="formDataTemp.threat.description"
               :label="$t('global.description')"
               outlined
@@ -28,6 +30,8 @@
           <v-row no-gutters justify="center">
             <v-col cols="5" class="mr-5">
               <v-select
+                color="accent"
+                item-color="accent"
                 v-model="formDataTemp.threat.threat_type_id"
                 :items="getAllThreatTypes"
                 item-text="name_translation"
@@ -38,6 +42,8 @@
             </v-col>
             <v-col cols="5" class="ml-5">
               <v-select
+                color="accent"
+                item-color="accent"
                 v-model="formDataTemp.threat.asset_id"
                 :items="getAllAssets"
                 item-text="name"
@@ -50,6 +56,7 @@
           <v-row no-gutters justify="center">
             <v-col cols="5" class="mr-5">
               <v-text-field
+                color="accent"
                 v-model="formDataTemp.threat.impact"
                 type="number"
                 min="0"
@@ -61,6 +68,7 @@
             </v-col>
             <v-col cols="5" class="ml-5">
               <v-text-field
+                color="accent"
                 v-model="formDataTemp.threat.likelihood"
                 type="number"
                 min="0"
@@ -78,7 +86,7 @@
           >
             <v-col>
               <v-btn
-                class="mr-4 v-btn v-btn--contained theme--light v-size--default"
+                class="mr-4 black--text font-weight-regular"
                 color="primary"
                 :disabled="!valid"
                 @click="updateElement(formDataTemp.threat)"
@@ -93,7 +101,7 @@
           >
             <v-col>
               <v-btn
-                class="mr-4 v-btn v-btn--contained theme--light v-size--default"
+                class="mr-4 black--text font-weight-regular"
                 color="primary"
                 :disabled="!valid"
                 @click="insertElement(formDataTemp.threat)"

@@ -22,7 +22,7 @@
       <div>
         <v-btn
           v-if="!isReport"
-          class="mx-2"
+          class="mx-2 darken-3"
           dark
           small
           :color="badgeColor"
@@ -34,7 +34,7 @@
 
         <v-btn
           v-if="isReport"
-          class="mx-2"
+          class="mx-2 darken-3"
           dark
           small
           :color="badgeColor"
@@ -139,11 +139,11 @@ export default {
   computed: {
     badgeColor() {
       const mappings = {
-        Activities: "purple",
-        Assets: "teal",
-        Threats: "blue",
-        Vulnerabilities: "green",
-        Recommendations: "red",
+        Assets: "pink",
+        Activities: "indigo",
+        Threats: "red",
+        Vulnerabilities: "purple",
+        Recommendations: "green",
         default: "black",
       };
       return mappings[this.task.type] || mappings.default;
