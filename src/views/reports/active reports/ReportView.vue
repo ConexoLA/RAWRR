@@ -23,6 +23,7 @@
                 color="primary"
                 v-bind="attrs"
                 v-on="on"
+                :aria-label="$t('reports.to_add_info')"
                 @click="hide_left_column = !hide_left_column"
               >
                 <v-icon v-if="!hide_left_column" class="pr-2"
@@ -32,27 +33,25 @@
                 {{ $t("reports.to_add") }}
               </v-btn>
             </template>
-            <span>{{ $t("reports.to_add_info") }} </span>
+            <span> {{ $t("reports.to_add_info") }} </span>
           </v-tooltip>
         </v-card>
       </v-col>
       <v-col cols="auto" align-self="center">
-        <v-card class="pa-2" elevation="0">
-          <v-tooltip bottom close-delay="100">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                medium
-                color="primary"
-                v-bind="attrs"
-                v-on="on"
-                @click="overlay_export = true"
-                >{{ $t("reports.export") }}</v-btn
-              >
-            </template>
-
-            <span>{{ $t("reports.export_info") }} </span>
-          </v-tooltip>
-        </v-card>
+        <v-tooltip bottom close-delay="100">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              medium
+              color="primary"
+              v-bind="attrs"
+              v-on="on"
+              :aria-label="$t('reports.export_info')"
+              @click="overlay_export = true"
+              >{{ $t("reports.export") }}</v-btn
+            >
+          </template>
+          <span>{{ $t("reports.export_info") }}</span>
+        </v-tooltip>
       </v-col>
     </v-row>
     <v-row justify="center">
