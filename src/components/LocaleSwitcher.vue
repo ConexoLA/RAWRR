@@ -1,5 +1,7 @@
 <template>
   <v-select
+    color="accent"
+    item-color="accent"
     prepend-icon="mdi-translate"
     v-model="$i18n.locale"
     :items="[

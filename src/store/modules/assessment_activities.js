@@ -114,7 +114,7 @@ const actions = {
       });
     } else {
       this.dispatch("setNotification", {
-        text: i18n.t("gobal.delete_success"),
+        text: i18n.t("global.delete_success"),
       });
     }
     commit("removeAssessmentActivity", response);
