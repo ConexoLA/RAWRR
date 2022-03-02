@@ -35,7 +35,7 @@
     "delete_success": "Successfully deleted",
     "delete_error": "An error occured while trying to delete",
     "none": "None",
-    "risk_matrix_accessibility": "Graphic representation of threats in a 10 by 10 matrix, located on impact and probability axes according to their values."
+    "risk_matrix_accessibility": "Graphic representation of threats in a 10 by 10 matrix, located on impact and probability axes according to their values.",
     "search_bar_accessibility": "This search bar is meant to filter elements from the table bellow"
   },
   "header": {
@@ -121,7 +121,7 @@
     "edit_error": "Threat could not be modified. Please make sure the name is unique",
     "insert_success": "Threat inserted successfully",
     "insert_error": "Threat could not be inserted. Please make sure the name is unique",
-    "risk_matrix":{
+    "risk_matrix": {
       "vcard_name": "Risk Matrix",
       "show": "Risk Matrix",
       "h_axis": "Likelihood",

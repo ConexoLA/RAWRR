@@ -35,7 +35,7 @@
     "delete_success": "Removido com sucesso",
     "delete_error": "Um erro ocorreu ao tentar remover",
     "none": "Nenhum(a)",
-    "risk_matrix_accessibility": "Representação gráfica das ameaças em uma matriz de 10 por 10, localizada nos eixos de impacto e probabilidade de acordo com seus valores."
+    "risk_matrix_accessibility": "Representação gráfica das ameaças em uma matriz de 10 por 10, localizada nos eixos de impacto e probabilidade de acordo com seus valores.",
     "search_bar_accessibility": "Esta barra de pesquisa serve para filtrar os elementos da tabela abaixo"
   },
   "header": {
