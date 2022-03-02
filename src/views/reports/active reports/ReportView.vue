@@ -47,6 +47,7 @@
               v-bind="attrs"
               v-on="on"
               :aria-label="$t('reports.export_info')"
+              class="black--text font-weight-regular"
               @click="overlay_export = true"
               >{{ $t("reports.export") }}</v-btn
             >
