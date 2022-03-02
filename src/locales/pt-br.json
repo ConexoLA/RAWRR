@@ -35,6 +35,7 @@
     "delete_error": "Um erro ocorreu ao tentar remover",
     "none": "Nenhum(a)",
     "risk_matrix_accessibility": "Representação gráfica das ameaças em uma matriz de 10 por 10, localizada nos eixos de impacto e probabilidade de acordo com seus valores."
+    "search_bar_accessibility": "Esta barra de pesquisa serve para filtrar os elementos da tabela abaixo"
   },
   "header": {
     "home": "Início",
@@ -109,7 +110,7 @@
   },
   "threats": {
     "title": "Listando todas as ameaças",
-    "subtitle": "Um cenário que você quer evitar como uma apreensão de dispositivo ou contas serem comprometidas",
+    "subtitle": "Um cenário que você quer evitar como uma apreensão de dispositivo",
     "delete_confirm": "Tem certeza de que deseja remover esta ameaça?",
     "delete_multiple": "Remover ameaças",
     "delete_multiple_confirm": "Tem certeza de que deseja remover as seguintes ameaças?",
@@ -119,7 +120,7 @@
     "edit_error": "A ameaça não pôde ser modificada. Por favor se certifique de que o nome seja único",
     "insert_success": "Ameaça inserida com sucesso",
     "insert_error": "A ameaça não pôde ser inserida. Por favor se certifique de que o nome seja único",
-    "risk_matrix":{
+    "risk_matrix": {
       "vcard_name": "Matriz de Risco",
       "show": "Matrix de Risco",
       "h_axis": "Probabilidade",
@@ -131,7 +132,7 @@
   },
   "vulnerabilities": {
     "title": "Listando todas as vulnerabilidades",
-    "subtitle": "Uma fraqueza que torna a ameaça mais provável de acontecer, como um escritório desprotegido",
+    "subtitle": "Uma fraqueza que torna a ameaça mais provável de acontecer",
     "delete_confirm": "Tem certeza de que deseja remover esta vulnerabilidade?",
     "delete_multiple": "Remover vulnerabilidades",
     "delete_multiple_confirm": "Tem certeza de que deseja remover as seguintes vulnerabilidades?",

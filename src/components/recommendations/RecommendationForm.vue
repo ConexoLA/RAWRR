@@ -9,6 +9,7 @@
           </v-row>
           <v-row no-gutters>
             <v-text-field
+              color="accent"
               class="mb-3"
               v-model="formDataTemp.recommendation.name"
               :rules="nameRules"
@@ -18,6 +19,7 @@
           </v-row>
           <v-row no-gutters>
             <v-textarea
+              color="accent"
               v-model="formDataTemp.recommendation.description"
               :label="$t('global.description')"
               outlined
@@ -27,6 +29,8 @@
           </v-row>
           <v-row no-gutters>
             <v-select
+              color="accent"
+              item-color="accent"
               v-model="formDataTemp.recommendation.newVulnerabilitiesId"
               clearable
               :items="getAllVulnerabilities()"
@@ -41,12 +45,14 @@
           <v-row no-gutters justify="center">
             <v-col cols="5" class="mr-5">
               <v-text-field
+                color="accent"
                 v-model="formDataTemp.recommendation.implementation_cost"
                 :label="$t('global.implementation_cost')"
               ></v-text-field>
             </v-col>
             <v-col cols="5" class="ml-5">
               <v-text-field
+                color="accent"
                 v-model="formDataTemp.recommendation.implementation_time"
                 :label="$t('global.implementation_time')"
               ></v-text-field>
@@ -59,7 +65,7 @@
           >
             <v-col>
               <v-btn
-                class="mr-4 v-btn v-btn--contained theme--light v-size--default"
+                class="mr-4 black--text font-weight-regular"
                 color="primary"
                 :disabled="!valid"
                 @click="updateElement(formDataTemp.recommendation)"
@@ -74,7 +80,7 @@
           >
             <v-col>
               <v-btn
-                class="mr-4 v-btn v-btn--contained theme--light v-size--default"
+                class="mr-4 black--text font-weight-regular"
                 color="primary"
                 :disabled="!valid"
                 @click="insertElement(formDataTemp.recommendation)"
