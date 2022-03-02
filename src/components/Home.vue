@@ -38,6 +38,7 @@
                   color="primary"
                   v-bind="attrs"
                   v-on="on"
+                  class="black--text font-weight-regular"
                   @click="onLoadTestValues()"
                 >
                   <v-icon class="mr-2">mdi-test-tube</v-icon>
@@ -58,6 +59,7 @@
                   color="primary"
                   v-bind="attrs"
                   v-on="on"
+                  class="black--text font-weight-regular"
                   @click="onImportDatabase()"
                   ><v-icon class="mr-2">mdi-import</v-icon> {{ ""
                   }}{{ $t("home.import") }}
@@ -77,6 +79,7 @@
                   color="primary"
                   v-bind="attrs"
                   v-on="on"
+                  class="black--text font-weight-regular"
                   @click="onExportDatabase()"
                   ><v-icon class="mr-2">mdi-export</v-icon>
                   {{ $t("home.export") }}
@@ -96,6 +99,7 @@
                   color="error"
                   v-bind="attrs"
                   v-on="on"
+                  class="white--text font-weight-medium"
                   @click="onDeleteDatabase()"
                   ><v-icon class="mr-2">mdi-delete-forever</v-icon>
                   {{ $t("home.delete") }}

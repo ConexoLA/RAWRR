@@ -23,6 +23,7 @@
                 color="primary"
                 v-bind="attrs"
                 v-on="on"
+                class="black--text font-weight-regular"
                 @click="hide_left_column = !hide_left_column"
               >
                 <v-icon v-if="!hide_left_column" class="pr-2"
@@ -46,6 +47,7 @@
                 v-bind="attrs"
                 v-on="on"
                 @click="overlay_export = true"
+                class="black--text font-weight-regular"
                 >{{ $t("reports.export") }}</v-btn
               >
             </template>
@@ -147,7 +149,7 @@
           <div v-for="item in supportedFiles" :key="item.id">
             <v-btn
               text
-              color="primary"
+              color="accent"
               :disabled="item.disabled"
               @click="onExportReport(`${item.type}`)"
             >

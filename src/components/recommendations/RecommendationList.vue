@@ -2,7 +2,7 @@
   <div v-resize="onResize" style="padding: 15px">
     <v-row>
       <v-col cols="auto" align-self="center">
-        <v-card class="pa-2" elevation="0">
+        <v-card class="pa-1" elevation="0">
           <v-card-title>
             {{ $t("recommendations.title") }}
           </v-card-title>
@@ -11,24 +11,29 @@
           </v-card-subtitle>
         </v-card>
       </v-col>
-      <v-col cols="auto" align-self="center">
-        <v-btn medium color="primary" @click="showCreateDialog()">{{
-          $t("global.add_element")
-        }}</v-btn>
+      <v-col cols="auto" align-self="center" class="pl-0">
+        <v-btn
+          medium
+          color="primary"
+          class="black--text font-weight-regular"
+          @click="showCreateDialog()"
+          >{{ $t("global.add_element") }}</v-btn
+        >
       </v-col>
-      <v-col cols="auto" align-self="center">
+      <v-col cols="auto" align-self="center" class="pl-0">
         <v-btn
           v-if="selected.length"
           medium
           color="error"
-          class="ml-2"
+          class="ml-2 white--text font-weight-medium"
           @click="showDeleteDialog(selected)"
           >{{ $t("recommendations.delete_multiple") }}
         </v-btn>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col cols="auto" xl="4" lg="3" md="2" align-self="center" class="pr-10">
+      <v-col cols="2" align-self="center" class="pr-10">
         <v-text-field
+          color="accent"
           v-model="search"
           append-icon="mdi-magnify"
           :label="$t('global.search')"
