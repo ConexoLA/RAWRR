@@ -22,10 +22,19 @@
       </v-col>
       <v-col cols="auto" align-self="center" class="pl-1">
         <v-btn
+          :aria-label="
+            $t('threats.risk_matrix.show') +
+            '. ' +
+            $t('global.risk_matrix_accessibility')
+          "
+          ref="rm"
           medium
           color="primary"
           class="black--text font-weight-regular"
-          @click="showCreateMatrix()"
+          @click="
+            showCreateMatrix();
+            focusOn('nrm');
+          "
           >{{ $t("threats.risk_matrix.show") }}</v-btn
         >
       </v-col>
@@ -168,7 +177,7 @@
 
     <v-overlay :value="matrix">
       <v-card class="mx-auto">
-        <v-card-title :aria-label="$t('global.risk_matrix_accessibility')" role="img">
+        <v-card-title>
           {{ $t("threats.risk_matrix.vcard_name") }}
         </v-card-title>
 
@@ -183,9 +192,13 @@
 
         <v-card-actions class="justify-center">
           <v-btn
+            ref="nrm"
             color="primary"
             class="black--text font-weight-regular"
-            @click="matrix = !matrix"
+            @click="
+              matrix = !matrix;
+              focusOn('rm');
+            "
           >
             {{ $t("threats.risk_matrix.hide_message") }}
           </v-btn>
@@ -428,6 +441,17 @@ export default {
         this.selected = [];
         this.overlay = !this.overlay;
         this.fetchAllThreats();
+      }
+    },
+    focusOn(elemento) {
+      if (elemento == "nrm") {
+        setTimeout(() => {
+          this.$refs.nrm.$el.focus();
+        }, 0);
+      } else if (elemento == "rm") {
+        setTimeout(() => {
+          this.$refs.rm.$el.focus();
+        }, 0);
       }
     },
   },
