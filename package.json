@@ -5,7 +5,7 @@
     "email": "rawrr@conexo.org"
   },
   "description": "Risk Assessment Workflow for Recommendation Roadmaps",
-  "version": "1.2.5",
+  "version": "1.3.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
