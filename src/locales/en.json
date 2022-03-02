@@ -7,6 +7,7 @@
     "delete": "Delete",
     "delete_confirm": "Confirm delete",
     "cancel": "Cancel",
+    "close_sheet": "Close",
     "add": "Add",
     "remove": "Remove",
     "collapse": "Collapse",
@@ -33,7 +34,9 @@
     "report_save": "Choose a location where you would like to save your report",
     "delete_success": "Successfully deleted",
     "delete_error": "An error occured while trying to delete",
-    "none": "None"
+    "none": "None",
+    "risk_matrix_accessibility": "Graphic representation of threats in a 10 by 10 matrix, located on impact and probability axes according to their values."
+    "search_bar_accessibility": "This search bar is meant to filter elements from the table bellow"
   },
   "header": {
     "home": "Home",

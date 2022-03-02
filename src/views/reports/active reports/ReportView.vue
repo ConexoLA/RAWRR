@@ -24,6 +24,7 @@
                 v-bind="attrs"
                 v-on="on"
                 :aria-label="$t('reports.to_add_info')"
+                class="black--text font-weight-regular"
                 @click="hide_left_column = !hide_left_column"
               >
                 <v-icon v-if="!hide_left_column" class="pr-2"
@@ -146,7 +147,7 @@
           <div v-for="item in supportedFiles" :key="item.id">
             <v-btn
               text
-              color="primary"
+              color="accent"
               :disabled="item.disabled"
               @click="onExportReport(`${item.type}`)"
             >

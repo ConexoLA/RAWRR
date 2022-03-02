@@ -9,6 +9,7 @@
           </v-row>
           <v-row no-gutters>
             <v-text-field
+              color="accent"
               class="mb-3"
               v-model="formDataTemp.assessmentActivity.name"
               :rules="nameRules"
@@ -18,6 +19,7 @@
           </v-row>
           <v-row no-gutters>
             <v-textarea
+              color="accent"
               v-model="formDataTemp.assessmentActivity.description"
               :label="$t('global.description')"
               outlined
@@ -27,6 +29,8 @@
           </v-row>
           <v-row no-gutters>
             <v-select
+              color="accent"
+              item-color="accent"
               class="mb-3"
               v-model="formDataTemp.assessmentActivity.newAssetsId"
               clearable
@@ -46,7 +50,7 @@
           >
             <v-col>
               <v-btn
-                class="mr-4 v-btn v-btn--contained theme--light v-size--default"
+                class="mr-4 black--text font-weight-regular"
                 color="primary"
                 :disabled="!valid"
                 @click="updateElement(formDataTemp.assessmentActivity)"
@@ -61,7 +65,7 @@
           >
             <v-col>
               <v-btn
-                class="mr-4 v-btn v-btn--contained theme--light v-size--default"
+                class="mr-4 black--text font-weight-regular"
                 color="primary"
                 :disabled="!valid"
                 @click="insertElement(formDataTemp.assessmentActivity)"

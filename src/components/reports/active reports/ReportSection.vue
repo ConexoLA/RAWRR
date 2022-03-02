@@ -233,11 +233,11 @@ export default {
   computed: {
     badgeColor() {
       const mappings = {
-        Activities: "purple",
-        Assets: "teal",
-        Threats: "blue",
-        Vulnerabilities: "green",
-        Recommendations: "red",
+        Assets: "pink",
+        Activities: "indigo",
+        Threats: "red",
+        Vulnerabilities: "purple",
+        Recommendations: "green",
         default: "black",
       };
       return mappings[this.task.type] || mappings.default;

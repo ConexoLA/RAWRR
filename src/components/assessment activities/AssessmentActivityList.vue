@@ -2,7 +2,7 @@
   <div v-resize="onResize" style="padding: 15px">
     <v-row>
       <v-col cols="auto" align-self="center">
-        <v-card class="pa-2" elevation="0">
+        <v-card class="pa-1" elevation="0">
           <v-card-title>
             {{ $t("activities.title") }}
           </v-card-title>
@@ -12,22 +12,26 @@
         </v-card>
       </v-col>
       <v-col cols="auto" align-self="center">
-        <v-btn medium color="primary" @click="showCreateDialog()">{{
-          $t("global.add_element")
-        }}</v-btn>
+        <v-btn
+          medium
+          color="primary"
+          class="black--text font-weight-regular"
+          @click="showCreateDialog()"
+          >{{ $t("global.add_element") }}</v-btn
+        >
       </v-col>
       <v-col cols="auto" align-self="center">
         <v-btn
           v-if="selected.length"
           medium
           color="error"
-          class="ml-2"
+          class="ml-2 white--text font-weight-medium"
           @click="showDeleteDialog(selected)"
           >{{ $t("activities.delete_multiple") }}
         </v-btn>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col cols="auto" xl="4" lg="3" md="2" align-self="center" class="pr-10">
+      <v-col cols="2" align-self="center" class="pr-10">
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
@@ -35,6 +39,8 @@
           clearable
           single-line
           hide-details
+          :aria-placeholder="$t('global.search_bar_accessibility')"
+          color="accent"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -52,6 +58,7 @@
           :items-per-page="-1"
           show-select
           :search="search"
+          checkbox-color="accent"
         >
           <template v-slot:[`item.id`]="{ item }">
             <span class="d-inline-block text-truncate" :title="item.id">
@@ -126,7 +133,7 @@
           @click="sheet = !sheet"
           absolute
           right
-          ><v-icon>mdi-close</v-icon></v-btn
+          ><v-icon>mdi-close</v-icon>{{ $t("global.close_sheet") }}</v-btn
         >
         <div class="my-3">
           <assessment-activity-form
