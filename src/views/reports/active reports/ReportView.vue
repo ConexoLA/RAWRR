@@ -46,6 +46,7 @@
               color="primary"
               v-bind="attrs"
               v-on="on"
+              ref="export_option"
               :aria-label="$t('reports.export_info')"
               class="black--text font-weight-regular"
               @click="overlay_export = true"
@@ -148,6 +149,7 @@
           <div v-for="item in supportedFiles" :key="item.id">
             <v-btn
               text
+              ref="report_generator_option"
               color="accent"
               :disabled="item.disabled"
               @click="onExportReport(`${item.type}`)"
@@ -157,7 +159,8 @@
           </div>
         </v-card-text>
         <v-card-actions>
-          <v-btn text plain color="accent" @click="overlay_export = false">
+          <v-btn text plain color="accent" @click="overlay_export = false;
+                                                   focusOnExportButton();">
             {{ $t("global.return") }}
           </v-btn>
         </v-card-actions>
@@ -173,6 +176,12 @@ import { mapGetters, mapActions } from "vuex";
 import i18n from "../../../i18n.js";
 
 export default {
+  updated() {
+    if (this.$refs.report_generator_option != undefined &&
+        this.$refs.report_generator_option.length > 0) {
+      this.$refs.report_generator_option[0].$el.focus()
+    }
+  },
   components: {
     draggable,
     ReportSection,
@@ -343,6 +352,11 @@ export default {
     },
     onResize() {
       this.windowSize = { x: window.innerWidth, y: window.innerHeight };
+    },
+    focusOnExportButton() {
+      setTimeout(() => {
+        this.$refs.export_option.$el.focus();
+      }, 0);
     },
   },
   computed: {
