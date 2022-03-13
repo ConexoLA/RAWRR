@@ -134,3 +134,39 @@ export function remove(threat) {
     }
   });
 }
+
+//PARAMETERS:
+//  Threat_id is the id of the current threat trying to return
+//    id is the table's Primary Key.
+//EXPECTED OUTPUT:
+//  Returns a promise.
+//    Resolve: array containing threat.
+//    Reject: empty array or an error.
+export function getOne(threat) {
+  return new Promise(function (resolve, reject) {
+    try {
+      let db = init.open();
+      let threats = [];
+      if (db) {
+        db.serialize(function () {
+          let sql =
+            "SELECT * FROM threats WHERE id = ?";
+          db.all(sql, threat, (err, rows) => {
+            if (err) {
+              reject(err);
+            } else {
+              rows.forEach((row) => {
+                threats.push(row);
+              });
+              resolve(threats[0]);
+            }
+          });
+        });
+      } else {
+        reject(threats);
+      }
+    } catch (err) {
+      reject(err);
+    }
+  });
+}

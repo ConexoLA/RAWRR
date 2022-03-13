@@ -61,6 +61,9 @@ export function open() {
           "CREATE TABLE IF NOT EXISTS threats (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, threat_type_id INTEGER, name TEXT NOT NULL UNIQUE, description TEXT, asset_id INTEGER, impact INTEGER, likelihood INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (threat_type_id) REFERENCES threat_types(id) ON DELETE SET NULL, FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE SET NULL, CHECK(impact BETWEEN 0 AND 10), CHECK(likelihood BETWEEN 0 AND 10))"
         );
         db.run(
+          "CREATE TABLE IF NOT EXISTS threats_audits (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, threat_id INTEGER, changed_fields JSON NOT NULL, description TEXT, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (threat_id) REFERENCES threats(id) ON DELETE SET NULL)"
+        );        
+        db.run(
           "CREATE TABLE IF NOT EXISTS vulnerabilities (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, description TEXT, assessment_activity_id INTEGER, asset_id INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (assessment_activity_id) REFERENCES assessment_activities(id) ON DELETE SET NULL, FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE SET NULL)"
         );
         db.run(
@@ -198,6 +201,7 @@ export function loadTestValues() {
         db.run("DROP TABLE IF EXISTS assessment_activities");
         db.run("DROP TABLE IF EXISTS assessment_activity_asset_associations");
         db.run("DROP TABLE IF EXISTS threats");
+        db.run("DROP TABLE IF EXISTS threats_audits");
         db.run("DROP TABLE IF EXISTS vulnerabilities");
         db.run("DROP TABLE IF EXISTS vulnerability_threat_associations");
         db.run("DROP TABLE IF EXISTS recommendations");
@@ -216,6 +220,9 @@ export function loadTestValues() {
         db.run(
           "CREATE TABLE IF NOT EXISTS threats (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, threat_type_id INTEGER, name TEXT NOT NULL UNIQUE, description TEXT, asset_id INTEGER, impact INTEGER, likelihood INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (threat_type_id) REFERENCES threat_types(id) ON DELETE SET NULL, FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE SET NULL, CHECK(impact BETWEEN 0 AND 10), CHECK(likelihood BETWEEN 0 AND 10))"
         );
+        db.run(
+          "CREATE TABLE IF NOT EXISTS threats_audits (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, threat_id INTEGER, changed_fields JSON NOT NULL, description TEXT, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (threat_id) REFERENCES threats(id) ON DELETE SET NULL)"
+        );        
         db.run(
           "CREATE TABLE IF NOT EXISTS vulnerabilities (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, description TEXT, assessment_activity_id INTEGER, asset_id INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (assessment_activity_id) REFERENCES assessment_activities(id) ON DELETE SET NULL, FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE SET NULL)"
         );
@@ -1551,6 +1558,7 @@ export function deleteDatabase() {
         db.run("DROP TABLE IF EXISTS assessment_activity_asset_associations");
         db.run("DROP TABLE IF EXISTS threat_types");
         db.run("DROP TABLE IF EXISTS threats");
+        db.run("DROP TABLE IF EXISTS threats_audits");
         db.run("DROP TABLE IF EXISTS vulnerabilities");
         db.run("DROP TABLE IF EXISTS vulnerability_threat_associations");
         db.run("DROP TABLE IF EXISTS recommendations");
@@ -1575,6 +1583,9 @@ export function deleteDatabase() {
         db.run(
           "CREATE TABLE IF NOT EXISTS threats (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, threat_type_id INTEGER, name TEXT NOT NULL UNIQUE, description TEXT, asset_id INTEGER, impact INTEGER, likelihood INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (threat_type_id) REFERENCES threat_types(id) ON DELETE SET NULL, FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE SET NULL, CHECK(impact BETWEEN 0 AND 10), CHECK(likelihood BETWEEN 0 AND 10))"
         );
+        db.run(
+          "CREATE TABLE IF NOT EXISTS threats_audits (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, threat_id INTEGER, changed_fields JSON NOT NULL, description TEXT, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (threat_id) REFERENCES threats(id) ON DELETE SET NULL)"
+        );        
         db.run(
           "CREATE TABLE IF NOT EXISTS vulnerabilities (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, description TEXT, assessment_activity_id INTEGER, asset_id INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (assessment_activity_id) REFERENCES assessment_activities(id) ON DELETE SET NULL, FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE SET NULL)"
         );

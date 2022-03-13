@@ -177,6 +177,9 @@ const actions = {
     commit("removeThreat", response);
   },
   async updateThreat({ commit }, threat) {
+    const threat_response = await ipcRenderer.sendSync("getOne", ["threats", threat]);
+    const asset_response = await ipcRenderer.sendSync("getOne", ["assets", threat]);
+    const threat_type_response = await ipcRenderer.sendSync("getOne", ["threat_types", threat]);
     const response = await ipcRenderer.sendSync("update", ["threats", threat]);
     if (response.length == 0) {
       this.dispatch("setNotification", {
@@ -184,6 +187,28 @@ const actions = {
         color: "error",
       });
     } else {
+      var audit_threat_json = {};
+      if (asset_response.id != threat.asset_id) {
+        audit_threat_json["asset_name"] = { old_data: asset_response.name, new_data: threat.asset_name }
+      }
+      if (threat_response.description != threat.description) {
+        audit_threat_json["description"] = { old_data: threat_response.description, new_data: threat.description }
+      }
+      if (threat_response.impact != threat.impact) {
+        audit_threat_json["impact"] = { old_data: threat_response.impact, new_data: threat.impact }
+      }
+      if (threat_response.likelihood != threat.likelihood){
+        audit_threat_json["likelihood"] = { old_data: threat_response.likelihood, new_data: threat.likelihood }
+      }
+      if (threat_response.name != threat.name) {
+        audit_threat_json["name"] = { old_data: threat_response.name, new_data: threat.name }
+      }
+      if (threat_type_response.id != threat.threat_type_id) {
+        audit_threat_json["threat_type_name"] = { old_data: threat_response.threat_type_name, new_data: threat.threat_type_name }
+      }
+      var threat_audit = { threat_id: threat.id, changed_fields: JSON.stringify(audit_threat_json) };    
+      const threat_audit_response = await ipcRenderer.sendSync("insert", ["threats_audits", threat_audit]);
+
       this.dispatch("setNotification", {
         text: i18n.t("threats.edit_success"),
       });
