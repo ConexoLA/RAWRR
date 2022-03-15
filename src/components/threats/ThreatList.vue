@@ -179,6 +179,19 @@
       <v-card class="mx-auto">
         <v-card-title>
           {{ $t("threats.risk_matrix.vcard_name") }}
+          <v-spacer></v-spacer>
+          <v-btn
+            ref="nrm"
+            text
+            color="primary"
+            @click="
+              matrix = !matrix;
+              focusOn('rm');
+            "
+          >
+            <v-icon>mdi-close</v-icon>
+            {{ $t("global.close_sheet") }}
+          </v-btn>
         </v-card-title>
 
         <GChart
@@ -192,24 +205,10 @@
 
         <v-card-actions class="justify-center">
           <v-btn
-            ref="nrm"
-            color="primary"
-            class="black--text font-weight-regular"
-            @click="
-              matrix = !matrix;
-              focusOn('rm');
-            "
-          >
-            {{ $t("threats.risk_matrix.hide_message") }}
-          </v-btn>
-          <v-btn
             ref="svi"
+            text
             color="primary"
-            class="black--text font-weight-regular"
-            @click="
-              callExportImage(),
-              focusOn('svi');
-            "
+            @click="callExportImage(), focusOn('svi')"
           >
             {{ $t("threats.risk_matrix.export_message") }}
           </v-btn>
@@ -394,7 +393,7 @@ export default {
 
       // Remove notification error for columns
       // This could be fixed in the future by vue-google-charts team
-     google.visualization.events.addListener(
+      google.visualization.events.addListener(
         chart,
         "error",
         function (googleError) {
@@ -405,21 +404,16 @@ export default {
       chart.draw(chart_data, this.chart_options);
 
       this.base64Data = chart
-       .getImageURI()
-       .replace(/^data:image\/png;base64,/, "");
-
-      // ADD HERE CALL TO FUNCTION
+        .getImageURI()
+        .replace(/^data:image\/png;base64,/, "");
     },
-    callExportImage(){
-       this.exportImage(
-        [
-          "png",
-          this.base64Data,
-          "Download Risk Matrix image", //THIS IS i18n
-          "This is a message", //THIS IS i18n
-          i18n.locale,
-        ]
-      );
+    callExportImage() {
+      this.exportImage([
+        "png",
+        this.base64Data,
+        this.$t("threats.risk_matrix.export_title"),
+        this.$t("threats.risk_matrix.export_subtitle"),
+      ]);
     },
     getCircleX(cx, r, k, n) {
       return cx + Math.min(1, n - 1) * r * Math.cos((2 * Math.PI * k) / n);
