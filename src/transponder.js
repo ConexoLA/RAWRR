@@ -15,6 +15,7 @@ import * as vulnerability_threat_associations from "./db/vulnerabilities/09_vuln
 import * as recommendations from "./db/recommendations/10_recommendations";
 import * as recommendation_vulnerability_associations from "./db/recommendations/11_recommendation_vulnerability_associations";
 import * as export_report from "./exportReport/file_extensions";
+import * as export_image from "./exportImage/file_extensions";
 import * as database_management from "./db/fs_management";
 
 export function setIPCMainListeners() {
@@ -1219,6 +1220,22 @@ export function setIPCMainListeners() {
           event.returnValue = ["error", error];
         }
         break;
+      case "png":
+          try {
+            export_image.png(arg[1], arg[2], arg[3], arg[4]).then(
+                function (data) {
+                  event.returnValue = ["resolve", data];
+                },
+                function (err) {
+                  console.log(err);
+                  event.returnValue = ["reject", err];
+                }
+              );
+          } catch (error) {
+            console.log(error);
+            event.returnValue = ["error", error];
+          }
+          break;
       default:
         console.log(arg[0], " does not have a valid export method.");
         event.returnValue = ["error", ""];
