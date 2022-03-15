@@ -191,7 +191,6 @@ const actions = {
     commit("changeThreat", response);
   },
   async exportImage({ dispatch }, imageBase64) {
-    // CHANGE i18n
     const response = await ipcRenderer.sendSync("export", imageBase64);
     if (response[0] === "error" || response[0] === "reject") {
       dispatch("setNotification", {
