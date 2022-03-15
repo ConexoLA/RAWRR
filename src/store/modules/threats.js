@@ -190,6 +190,22 @@ const actions = {
     }
     commit("changeThreat", response);
   },
+  async exportImage({ dispatch }, imageBase64) {
+    // CHANGE i18n
+    const response = await ipcRenderer.sendSync("export", imageBase64);
+    if (response[0] === "error" || response[0] === "reject") {
+      dispatch("setNotification", {
+        text: i18n.t("threats.risk_matrix.export_error"),
+        color: "error",
+      });
+    } else {
+      if (response[1]) {
+        dispatch("setNotification", {
+          text: i18n.t("threats.risk_matrix.export_success"),
+        });
+      }
+    }
+  },
 };
 
 const mutations = {
