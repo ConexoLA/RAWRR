@@ -179,6 +179,19 @@
       <v-card class="mx-auto">
         <v-card-title>
           {{ $t("threats.risk_matrix.vcard_name") }}
+          <v-spacer></v-spacer>
+          <v-btn
+            ref="nrm"
+            text
+            color="primary"
+            @click="
+              matrix = !matrix;
+              focusOn('rm');
+            "
+          >
+            <v-icon>mdi-close</v-icon>
+            {{ $t("global.close_sheet") }}
+          </v-btn>
         </v-card-title>
 
         <GChart
@@ -192,15 +205,12 @@
 
         <v-card-actions class="justify-center">
           <v-btn
-            ref="nrm"
+            ref="svi"
+            text
             color="primary"
-            class="black--text font-weight-regular"
-            @click="
-              matrix = !matrix;
-              focusOn('rm');
-            "
+            @click="callExportImage(), focusOn('svi')"
           >
-            {{ $t("threats.risk_matrix.hide_message") }}
+            {{ $t("threats.risk_matrix.export_message") }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -251,6 +261,8 @@
 import { mapActions } from "vuex";
 import { GChart } from "vue-google-charts";
 import ThreatForm from "./ThreatForm.vue";
+import i18n from "../../i18n.js";
+
 export default {
   name: "ThreatList",
   components: {
@@ -306,7 +318,7 @@ export default {
   },
   props: ["threats"],
   methods: {
-    ...mapActions(["fetchAllThreats", "deleteThreat"]),
+    ...mapActions(["fetchAllThreats", "deleteThreat", "exportImage"]),
     onChartReady(chart, google) {
       // Initialize Risk matrix and Counter Matrix
       var matrix = [];
@@ -390,6 +402,18 @@ export default {
       );
 
       chart.draw(chart_data, this.chart_options);
+
+      this.base64Data = chart
+        .getImageURI()
+        .replace(/^data:image\/png;base64,/, "");
+    },
+    callExportImage() {
+      this.exportImage([
+        "png",
+        this.base64Data,
+        this.$t("threats.risk_matrix.export_title"),
+        this.$t("threats.risk_matrix.export_subtitle"),
+      ]);
     },
     getCircleX(cx, r, k, n) {
       return cx + Math.min(1, n - 1) * r * Math.cos((2 * Math.PI * k) / n);
@@ -452,10 +476,15 @@ export default {
         setTimeout(() => {
           this.$refs.rm.$el.focus();
         }, 0);
+      } else if (elemento == "svi") {
+        setTimeout(() => {
+          this.$refs.svi.$el.focus();
+        }, 0);
       }
     },
   },
   data: () => ({
+    base64Data: "",
     chart_options: {
       titleTextStyle: {
         color: "#FFF",
