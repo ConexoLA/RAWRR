@@ -122,16 +122,17 @@
     "insert_success": "Threat inserted successfully",
     "insert_error": "Threat could not be inserted. Please make sure the name is unique",
     "risk_matrix": {
-      "vcard_name": "Risk Matrix",
-      "show": "Risk Matrix",
+      "vcard_name": "Risk matrix",
+      "show": "Risk matrix",
       "h_axis": "Likelihood",
       "v_axis": "Impact",
-      "hide_message": "Hide Risk Matrix",
-      "export_message": "Export Risk Matrix",
+      "export_message": "Export as image",
       "export_error": "Error exporting the image",
       "export_success": "Image exported succesfully",
-      "value": "Risk Magnitude",
-      "name": "Name"
+      "value": "Risk magnitude",
+      "name": "Name",
+      "export_title": "Export risk matrix as .png",
+      "export_subtitle": "Choose a location where you would like to save the image"
     }
   },
   "vulnerabilities": {

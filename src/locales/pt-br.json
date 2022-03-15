@@ -122,16 +122,17 @@
     "insert_success": "Ameaça inserida com sucesso",
     "insert_error": "A ameaça não pôde ser inserida. Por favor se certifique de que o nome seja único",
     "risk_matrix": {
-      "vcard_name": "Matriz de Risco",
-      "show": "Matrix de Risco",
+      "vcard_name": "Matriz de risco",
+      "show": "Matrix de risco",
       "h_axis": "Probabilidade",
       "v_axis": "Impacto",
-      "hide_message": "Ocultar matriz de risco",
-      "export_message": "Exportar matriz de risco",
+      "export_message": "Exportar como imagem",
       "export_error": "Erro ao exportar a matriz de risco",
       "export_success": "Matriz de risco exportada com sucesso",
       "value": "Magnitude do risco",
-      "name": "Nome"
+      "name": "Nome",
+      "export_title": "Exporte a matriz de risco como um .png",
+      "export_subtitle": "Selecione um local onde você gostaria de salvar a imagem"
     }
   },
   "vulnerabilities": {
