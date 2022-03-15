@@ -202,6 +202,17 @@
           >
             {{ $t("threats.risk_matrix.hide_message") }}
           </v-btn>
+          <v-btn
+            ref="svi"
+            color="primary"
+            class="black--text font-weight-regular"
+            @click="
+              callExportImage(),
+              focusOn('svi');
+            "
+          >
+            {{ $t("threats.risk_matrix.export_message") }}
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-overlay>
@@ -251,6 +262,8 @@
 import { mapActions } from "vuex";
 import { GChart } from "vue-google-charts";
 import ThreatForm from "./ThreatForm.vue";
+import i18n from "../../i18n.js";
+
 export default {
   name: "ThreatList",
   components: {
@@ -306,7 +319,7 @@ export default {
   },
   props: ["threats"],
   methods: {
-    ...mapActions(["fetchAllThreats", "deleteThreat"]),
+    ...mapActions(["fetchAllThreats", "deleteThreat", "exportImage"]),
     onChartReady(chart, google) {
       // Initialize Risk matrix and Counter Matrix
       var matrix = [];
@@ -381,7 +394,7 @@ export default {
 
       // Remove notification error for columns
       // This could be fixed in the future by vue-google-charts team
-      google.visualization.events.addListener(
+     google.visualization.events.addListener(
         chart,
         "error",
         function (googleError) {
@@ -390,6 +403,23 @@ export default {
       );
 
       chart.draw(chart_data, this.chart_options);
+
+      this.base64Data = chart
+       .getImageURI()
+       .replace(/^data:image\/png;base64,/, "");
+
+      // ADD HERE CALL TO FUNCTION
+    },
+    callExportImage(){
+       this.exportImage(
+        [
+          "png",
+          this.base64Data,
+          "Download Risk Matrix image", //THIS IS i18n
+          "This is a message", //THIS IS i18n
+          i18n.locale,
+        ]
+      );
     },
     getCircleX(cx, r, k, n) {
       return cx + Math.min(1, n - 1) * r * Math.cos((2 * Math.PI * k) / n);
@@ -452,10 +482,15 @@ export default {
         setTimeout(() => {
           this.$refs.rm.$el.focus();
         }, 0);
+      } else if (elemento == "svi") {
+        setTimeout(() => {
+          this.$refs.svi.$el.focus();
+        }, 0);
       }
     },
   },
   data: () => ({
+    base64Data: "",
     chart_options: {
       titleTextStyle: {
         color: "#FFF",
