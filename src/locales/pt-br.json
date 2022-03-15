@@ -127,6 +127,9 @@
       "h_axis": "Probabilidade",
       "v_axis": "Impacto",
       "hide_message": "Ocultar matriz de risco",
+      "export_message": "Exportar matriz de risco",
+      "export_error": "Erro ao exportar a matriz de risco",
+      "export_success": "Matriz de risco exportada com sucesso",
       "value": "Magnitude do risco",
       "name": "Nome"
     }

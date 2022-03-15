@@ -127,6 +127,9 @@
       "h_axis": "Likelihood",
       "v_axis": "Impact",
       "hide_message": "Hide Risk Matrix",
+      "export_message": "Export Risk Matrix",
+      "export_error": "Error exporting the image",
+      "export_success": "Image exported succesfully",
       "value": "Risk Magnitude",
       "name": "Name"
     }
