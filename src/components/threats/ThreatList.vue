@@ -147,11 +147,14 @@
             >
               <v-icon>mdi-delete</v-icon>
             </v-btn>
-            <router-link to="/threats/history">
-              <v-btn text icon color="accent">
-                <v-icon>mdi-history</v-icon>
-              </v-btn>
-            </router-link>
+            <v-btn
+              text
+              icon
+              color="accent"
+              @click="selectActiveThreatH(props.item)"
+            >
+              <v-icon>mdi-history</v-icon>
+            </v-btn>
           </template>
         </v-data-table>
       </v-col>
@@ -303,7 +306,11 @@ export default {
   },
   props: ["threats"],
   methods: {
-    ...mapActions(["fetchAllThreats", "deleteThreat"]),
+    ...mapActions([
+      "fetchAllThreats",
+      "deleteThreat",
+      "changeActiveThreatHistory",
+    ]),
     onChartReady(chart, google) {
       // Initialize Risk matrix and Counter Matrix
       var matrix = [];
@@ -429,6 +436,10 @@ export default {
         this.deleteElements = element;
         this.overlay = !this.overlay;
       }
+    },
+    async selectActiveThreatH(threat) {
+      await this.changeActiveThreatHistory(threat);
+      await this.$router.push("/threats/history");
     },
     confirmDelete() {
       if (this.deleteElements.length) {
