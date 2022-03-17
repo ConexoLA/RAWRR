@@ -153,7 +153,6 @@ export function setIPCMainListeners() {
         break;
       case "threats_audits":
         try {
-          console.log(arg)
           arr = [
             arg[1].threat_id,
             arg[1].changed_fields
@@ -1018,7 +1017,6 @@ export function setIPCMainListeners() {
           threats_audits.allAudits(arr).then(
             function (data) {
               //resolve
-              console.log(data)
               event.returnValue = data;
             },
             function (err) {

@@ -5,6 +5,7 @@ const state = {
   threat_types: [],
   threats: [],
   active_threat_history: null,
+  audits: null
 };
 
 const getters = {
@@ -221,7 +222,21 @@ const actions = {
   async changeActiveThreatHistory({ commit }, threat) {
     console.log("This is the threat's id: ", threat.id);
     const audits_response = await ipcRenderer.sendSync("allAudits", ["threats_audits", threat]);
-    commit("setActiveThreatHistory", threat, audits_response);
+    var audits_array = [];
+    for (var i=0; i < audits_response.length; i++) {
+      var jsonData = {};
+      var iter_json = JSON.parse(audits_response[i]["changed_fields"]);
+      var iter_json_keys = Object.keys(iter_json);
+
+      for (var j=0; j < iter_json_keys.length; j++) {
+        jsonData[iter_json_keys[j] + "_old"] = iter_json[iter_json_keys[j]]["old_data"];
+        jsonData[iter_json_keys[j] + "_new"] = iter_json[iter_json_keys[j]]["new_data"];
+      }
+      jsonData["created"] = audits_response[i]["created"];
+      audits_array.push(jsonData);
+    }
+    commit("setActiveThreatHistory", threat);
+    commit("setActiveThreatAudits", audits_array);
   },  
   async exportImage({ dispatch }, imageBase64) {
     const response = await ipcRenderer.sendSync("export", imageBase64);
@@ -266,8 +281,10 @@ const mutations = {
     }
   },
   backup: (rootState, value) => (rootState.backup = value),
-  setActiveThreatHistory: (state, active_threat_history, audits) =>
-    (state.active_threat_history = active_threat_history, state.audits = audits)
+  setActiveThreatHistory: (state, active_threat_history) =>
+    (state.active_threat_history = active_threat_history),
+  setActiveThreatAudits: (state, audits) =>
+    (state.audits = audits)
 };
 
 export default {

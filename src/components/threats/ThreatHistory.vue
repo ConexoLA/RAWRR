@@ -6,7 +6,7 @@
         {{ $t("global.back") }}
       </v-btn>
     </router-link>
-    This is THREAT: {{ audits }}
+
     <v-row align="center" justify="center">
       <v-col cols="6" class="text-center">
         <v-card class="elevation-2 text-left">
@@ -14,7 +14,6 @@
             {{ threat.id }} - {{ threat.name }}
           </v-card-title>
           <v-card-text>
-            <li>ID: {{ threat.id }}</li>
             <li>Description: {{ threat.description }}</li>
             <li>Threat type: {{ threat.threat_type_name }}</li>
             <li>Asset: {{ threat.asset_name }}</li>
@@ -42,7 +41,23 @@
             <v-card class="elevation-2">
               <v-card-title class="text-h5">Modified</v-card-title>
               <v-card-text>
-                {{ n.changed_fields }}
+                <p v-if="n.name_old">Nombre anterior: {{ n.name_old }}</p>
+                <p v-if="n.name_new">Nombre actualizado: {{ n.name_new }}</p>
+                <hr v-if="n.name_new">
+                <p v-if="n.description_old">Descripcion anterior: {{ n.description_old }}</p>
+                <p v-if="n.description_new">Descripcion actualizado: {{ n.description_new }}</p>
+                <hr v-if="n.description_new">
+                <p v-if="n.asset_name_old">Activo anterior: {{ n.asset_name_old }}</p>
+                <p v-if="n.asset_name_new">Activo actualizado: {{ n.asset_name_new }}</p>
+                <hr v-if="n.asset_name_new">
+                <p v-if="n.impact_old">Impacto anterior: {{ n.impact_old }}</p>
+                <p v-if="n.impact_new">Impacto actualizado: {{ n.impact_new }}</p>
+                <hr v-if="n.likelihood_new">
+                <p v-if="n.likelihood_old">Frecuencia anterior: {{ n.likelihood_old }}</p>
+                <p v-if="n.likelihood_new">Frecuencia actualizado: {{ n.likelihood_new }}</p>
+                <hr v-if="n.threat_type_name_new">
+                <p v-if="n.threat_type_name_old">Tipo de riesgo anterior: {{ n.threat_type_name_old }}</p>
+                <p v-if="n.threat_type_name_new">Tipo de riesgo actualizado: {{ n.threat_type_name_new }}</p>
               </v-card-text>
             </v-card>
           </v-timeline-item>
@@ -57,40 +72,7 @@
 //import ThreatList from "../components/threats/ThreatList.vue";
 export default {
   props: ["threat", "audits"],
-  data: () => ({
-    years: [
-      {
-        color: "cyan",
-        date: "January",
-        title: "Created",
-        subtitle: "",
-      },
-      {
-        color: "green",
-        date: "1970",
-        title: "Modified",
-        subtitle: "",
-      },
-      {
-        color: "pink",
-        date: "1980",
-        title: "Modified",
-        subtitle: "",
-      },
-      {
-        color: "amber",
-        date: "1990",
-        title: "Modified",
-        subtitle: "",
-      },
-      {
-        color: "orange",
-        date: "2000",
-        title: "Modified",
-        subtitle: "",
-      },
-    ],
-  }),
+  data: () => ({}),
   components: {
     //ThreatList,
   },
