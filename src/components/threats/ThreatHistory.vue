@@ -6,7 +6,7 @@
         {{ $t("global.back") }}
       </v-btn>
     </router-link>
-    This is THREAT: {{ threat }}
+    This is THREAT: {{ audits }}
     <v-row align="center" justify="center">
       <v-col cols="6" class="text-center">
         <v-card class="elevation-2 text-left">
@@ -29,23 +29,20 @@
       <v-col cols="12" class="text-center">
         <v-timeline>
           <v-timeline-item
-            v-for="n in years"
-            :key="n.date"
+            v-for="n in audits"
+            :key="n.threat_id"
             color="red darken-2"
             large
           >
             <template v-slot:opposite>
               <p>
-                {{ $d(new Date(threat.created), "long", $i18n.locale) }}
+                {{ $d(new Date(n.created), "long", $i18n.locale) }}
               </p>
             </template>
             <v-card class="elevation-2">
-              <v-card-title class="text-h5"> {{ n.title }} </v-card-title>
+              <v-card-title class="text-h5">Modified</v-card-title>
               <v-card-text>
-                Lorem ipsum dolor sit amet, no nam oblique veritus. Commune
-                scaevola imperdiet nec ut, sed euismod convenire principes at.
-                Est et nobis iisque percipit, an vim zril disputando
-                voluptatibus, vix an salutandi sententiae.
+                {{ n.changed_fields }}
               </v-card-text>
             </v-card>
           </v-timeline-item>
@@ -59,7 +56,7 @@
 //import { mapGetters } from "vuex";
 //import ThreatList from "../components/threats/ThreatList.vue";
 export default {
-  props: ["threat"],
+  props: ["threat", "audits"],
   data: () => ({
     years: [
       {

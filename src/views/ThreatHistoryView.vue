@@ -1,5 +1,7 @@
 <template>
-  <threat-history v-bind:threat="getActiveThreatHistory"></threat-history>
+  <threat-history :threat="getActiveThreatHistory"
+                  :audits="getActiveThreatAudits">
+  </threat-history>
 </template>
 
 <script>
@@ -7,10 +9,10 @@ import { mapGetters } from "vuex";
 import ThreatHistory from "../components/threats/ThreatHistory.vue";
 export default {
   components: {
-    ThreatHistory,
+    ThreatHistory
   },
   computed: {
-    ...mapGetters(["getActiveThreatHistory"]),
+    ...mapGetters(["getActiveThreatHistory", "getActiveThreatAudits"]),
   },
 };
 </script>

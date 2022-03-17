@@ -60,6 +60,7 @@ const getters = {
     return _threats;
   },
   getActiveThreatHistory: (state) => state.active_threat_history,
+  getActiveThreatAudits: (state) => state.audits
 };
 
 const actions = {
@@ -219,10 +220,8 @@ const actions = {
   },
   async changeActiveThreatHistory({ commit }, threat) {
     console.log("This is the threat's id: ", threat.id);
-    /*Transponder method call to query threat history based on threat id
-      const response = await ipcRenderer.sendSync("type", ["db_table", threat.id]);
-      commit("setActiveThreatHistory", response);*/
-    commit("setActiveThreatHistory", threat); //For testing, threat to be replaced by response
+    const audits_response = await ipcRenderer.sendSync("allAudits", ["threats_audits", threat]);
+    commit("setActiveThreatHistory", threat, audits_response);
   },  
   async exportImage({ dispatch }, imageBase64) {
     const response = await ipcRenderer.sendSync("export", imageBase64);
@@ -267,8 +266,8 @@ const mutations = {
     }
   },
   backup: (rootState, value) => (rootState.backup = value),
-  setActiveThreatHistory: (state, active_threat_history) =>
-    (state.active_threat_history = active_threat_history),
+  setActiveThreatHistory: (state, active_threat_history, audits) =>
+    (state.active_threat_history = active_threat_history, state.audits = audits)
 };
 
 export default {
