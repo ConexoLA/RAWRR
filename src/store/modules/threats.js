@@ -4,6 +4,7 @@ import i18n from "../../i18n.js";
 const state = {
   threat_types: [],
   threats: [],
+  active_threat_history: null,
 };
 
 const getters = {
@@ -58,6 +59,7 @@ const getters = {
 
     return _threats;
   },
+  getActiveThreatHistory: (state) => state.active_threat_history,
 };
 
 const actions = {
@@ -215,6 +217,13 @@ const actions = {
     }
     commit("changeThreat", response);
   },
+  async changeActiveThreatHistory({ commit }, threat) {
+    console.log("This is the threat's id: ", threat.id);
+    /*Transponder method call to query threat history based on threat id
+      const response = await ipcRenderer.sendSync("type", ["db_table", threat.id]);
+      commit("setActiveThreatHistory", response);*/
+    commit("setActiveThreatHistory", threat); //For testing, threat to be replaced by response
+  },  
   async exportImage({ dispatch }, imageBase64) {
     const response = await ipcRenderer.sendSync("export", imageBase64);
     if (response[0] === "error" || response[0] === "reject") {
@@ -229,7 +238,7 @@ const actions = {
         });
       }
     }
-  },
+  }
 };
 
 const mutations = {
@@ -258,6 +267,8 @@ const mutations = {
     }
   },
   backup: (rootState, value) => (rootState.backup = value),
+  setActiveThreatHistory: (state, active_threat_history) =>
+    (state.active_threat_history = active_threat_history),
 };
 
 export default {
