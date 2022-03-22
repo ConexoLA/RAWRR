@@ -155,8 +155,9 @@ export function setIPCMainListeners() {
         try {
           arr = [
             arg[1].threat_id,
-            arg[1].changed_fields
-            //arg[1].description,
+            arg[1].changed_fields,
+            arg[1].observation,
+            arg[1].type,
           ];
           threats_audits.insert(arr).then(
             function (data) {
@@ -178,7 +179,7 @@ export function setIPCMainListeners() {
         try {
           arr = [
             arg[1].name,
-            arg[1].description,
+            arg[1].observation,
             arg[1].assessment_activity_id,
             arg[1].asset_id,
           ];

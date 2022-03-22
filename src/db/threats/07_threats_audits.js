@@ -1,7 +1,7 @@
 const init = require("../00_initdb.js");
 
 //PARAMETERS:
-//  threats_audit is an array with the following structure: ["threat_id", "changed_fields", "description"].
+//  threats_audit is an array with the following structure: ["threat_id", "changed_fields", "observation"].
 //    threat_id is a Foreign Key. can NOT be null.
 //EXPECTED OUTPUT:
 //  Returns a promise.
@@ -14,7 +14,7 @@ export function insert(threats_audit) {
       if (db) {
         db.serialize(function () {
           let sql =
-            "INSERT INTO threats_audits (threat_id, changed_fields, description) VALUES (?, ?, ?)";
+            "INSERT INTO threats_audits (threat_id, changed_fields, observation, type) VALUES (?, ?, ?, ?)";
           db.run(sql, threats_audit, function (err) {
             if (err) {
               reject(err);
@@ -46,7 +46,7 @@ export function queryAll() {
       if (db) {
         db.serialize(function () {
           let sql =
-            "SELECT id, threat_id, changed_fields, description, created FROM threats_audits ORDER BY created DESC";
+            "SELECT id, threat_id, changed_fields, observation, type, created FROM threats_audits ORDER BY created DESC";
           db.all(sql, [], (err, rows) => {
             if (err) {
               reject(err);
@@ -81,7 +81,7 @@ export function allAudits(threat) {
       if (db) {
         db.serialize(function () {
           let sql =
-            "SELECT id, threat_id,changed_fields, description, created FROM threats_audits WHERE threat_id = ? ORDER BY created DESC";
+            "SELECT id, threat_id, changed_fields, observation, type, created FROM threats_audits WHERE threat_id = ? ORDER BY created DESC";
           db.all(sql, threat, (err, rows) => {
             if (err) {
               reject(err);

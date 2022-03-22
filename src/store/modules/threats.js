@@ -160,6 +160,56 @@ const actions = {
         color: "error",
       });
     } else {
+      var audit_threat_json = {};
+
+      if (threat.name != undefined) {
+        audit_threat_json["name"] = {
+          old_data: null,
+          new_data: threat.name,
+        };
+      }
+      if (threat.description != undefined) {
+        audit_threat_json["description"] = {
+          old_data: null,
+          new_data: threat.description,
+        };
+      }
+      if (threat.impact != undefined) {
+        audit_threat_json["impact"] = {
+          old_data: null,
+          new_data: threat.impact,
+        };
+      }
+      if (threat.likelihood != undefined) {
+        audit_threat_json["likelihood"] = {
+          old_data: null,
+          new_data: threat.likelihood,
+        };
+      }
+
+      if (threat.threat_type_id != undefined) {
+        audit_threat_json["threat_type_name"] = {
+          old_data: null,
+          new_data: threat.threat_type_id,
+        };
+      }
+      if (threat.asset_id != undefined) {
+        audit_threat_json["asset_name"] = {
+          old_data: null,
+          new_data: threat.asset_id,
+        };
+      }
+      var threat_audit = {
+        threat_id: threat.id,
+        changed_fields: JSON.stringify(audit_threat_json),
+        observation: null,
+        type: 0
+      };
+
+      /*const threat_audit_response = await ipcRenderer.sendSync("insert", [
+        "threats_audits",
+        threat_audit,
+      ]);*/
       this.dispatch("setNotification", {
         text: i18n.t("threats.insert_success"),
       });
@@ -245,6 +295,8 @@ const actions = {
       var threat_audit = {
         threat_id: threat.id,
         changed_fields: JSON.stringify(audit_threat_json),
+        observation: null,
+        type: 1
       };
       const threat_audit_response = await ipcRenderer.sendSync("insert", [
         "threats_audits",
@@ -275,6 +327,8 @@ const actions = {
           iter_json[iter_json_keys[j]]["new_data"];
       }
       jsonData["created"] = audits_response[i]["created"];
+      jsonData["type"] = audits_response[i]["type"];
+      jsonData["observation"] = audits_response[i]["observation"];
       audits_array.push(jsonData);
     }
     commit("setActiveThreatHistory", threat);
