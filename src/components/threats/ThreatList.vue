@@ -266,7 +266,6 @@
 import { mapActions } from "vuex";
 import { GChart } from "vue-google-charts";
 import ThreatForm from "./ThreatForm.vue";
-import i18n from "../../i18n.js";
 
 export default {
   name: "ThreatList",
