@@ -23,7 +23,7 @@
               v-model="formDataTemp.threat.description"
               :label="$t('global.description')"
               outlined
-              rows="5"
+              rows="4"
               no-resize
             ></v-textarea>
           </v-row>
@@ -78,7 +78,17 @@
                 required
               ></v-text-field>
             </v-col>
+            <v-row no-gutters justify="center">
+              <v-col cols="8">
+                <v-text-field
+                  color="accent"
+                  v-model="formDataTemp.threat.change"
+                  :label="$t('global.placeholder')"
+                ></v-text-field>
+              </v-col>
+            </v-row>
           </v-row>
+
           <v-row
             no-gutters
             class="text-end"
