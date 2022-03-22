@@ -8,12 +8,7 @@
         >
           <span>
             <slot
-              class="
-                text-gray-700
-                font-semibold font-sans
-                tracking-wide
-                text-sm
-              "
+              class="text-gray-700 font-semibold font-sans tracking-wide text-sm"
               >{{ task.identifier }} - {{ task.title }}</slot
             >
           </span>

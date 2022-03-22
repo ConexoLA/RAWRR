@@ -1,6 +1,8 @@
 <template>
-  <threat-history :threat="getActiveThreatHistory"
-                  :audits="getActiveThreatAudits">
+  <threat-history
+    :threat="getActiveThreatHistory"
+    :audits="getActiveThreatAudits"
+  >
   </threat-history>
 </template>
 
@@ -9,7 +11,7 @@ import { mapGetters } from "vuex";
 import ThreatHistory from "../components/threats/ThreatHistory.vue";
 export default {
   components: {
-    ThreatHistory
+    ThreatHistory,
   },
   computed: {
     ...mapGetters(["getActiveThreatHistory", "getActiveThreatAudits"]),
