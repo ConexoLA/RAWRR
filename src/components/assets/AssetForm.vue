@@ -107,10 +107,10 @@ export default {
         this.formDataTemp.resetFormValidation = false;
       }
     },
-    updateElement(asset) {
-      this.updateAsset(asset);
-      this.fetchAllAssets();
-      this.$emit("toggle");
+    async updateElement(asset) {
+      await this.updateAsset(asset);
+      await this.fetchAllAssets();
+      await this.$emit("toggle");
     },
     insertElement(asset) {
       this.addAsset(asset);

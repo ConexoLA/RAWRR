@@ -33,7 +33,7 @@
                 color="accent"
                 item-color="accent"
                 v-model="formDataTemp.threat.threat_type_id"
-                :items="getAllThreatTypes"
+                :items="getAllThreatTypes()"
                 item-text="name_translation"
                 item-value="id"
                 :label="$t('global.threat_type')"
@@ -45,7 +45,7 @@
                 color="accent"
                 item-color="accent"
                 v-model="formDataTemp.threat.asset_id"
-                :items="getAllAssets"
+                :items="getAllAssets()"
                 item-text="name"
                 item-value="id"
                 :label="$t('global.asset')"
@@ -125,7 +125,6 @@ export default {
     this.formDataTemp = this.formData;
   },
   computed: {
-    ...mapGetters(["getAllThreatTypes", "getAllAssets"]),
     nameRules() {
       return [
         (v) => !!v || this.$t("forms.name_restriction_1"),
@@ -158,6 +157,7 @@ export default {
   }),
   methods: {
     ...mapActions(["fetchAllThreats", "addThreat", "updateThreat"]),
+    ...mapGetters(["getAllThreatTypes", "getAllAssets"]),
     resetFormValidation() {
       if (this.$refs.form) {
         this.$refs.form.resetValidation();
@@ -168,16 +168,16 @@ export default {
       this.formDataTemp.threat.impact = 0;
       this.formDataTemp.threat.likelihood = 0;
     },
-    updateElement(threat) {
+    async updateElement(threat) {
       if (!threat.impact) {
-        threat.impact = 0;
+        threat.impact = await 0;
       }
       if (!threat.likelihood) {
-        threat.likelihood = 0;
+        threat.likelihood = await 0;
       }
-      this.updateThreat(threat);
-      this.fetchAllThreats();
-      this.$emit("toggle");
+      await this.updateThreat(threat);
+      await this.fetchAllThreats();
+      await this.$emit("toggle");
     },
     async insertElement(threat) {
       if (!threat.impact) {

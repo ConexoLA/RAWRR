@@ -117,27 +117,27 @@ export default {
         this.formDataTemp.resetFormValidation = false;
       }
     },
-    updateElement(assessmentActivity) {
+    async updateElement(assessmentActivity) {
       if (assessmentActivity.newAssetsId != assessmentActivity.oldAssetsId) {
-        let _activityAssetAssociation = {
+        let _activityAssetAssociation = await {
           assessment_activity_id: assessmentActivity.id,
           asset_id: null,
         };
-        assessmentActivity.oldAssetsId.forEach((oldAssetId) => {
+        await assessmentActivity.oldAssetsId.forEach((oldAssetId) => {
           _activityAssetAssociation.asset_id = oldAssetId;
           this.deleteAssessmentActivityAssetAssociation(
             _activityAssetAssociation
           );
         });
-        assessmentActivity.newAssetsId.forEach((newAssetId) => {
+        await assessmentActivity.newAssetsId.forEach((newAssetId) => {
           _activityAssetAssociation.asset_id = newAssetId;
           this.addAssessmentActivityAssetAssociation(_activityAssetAssociation);
         });
-        this.fetchAllAssessmentActivityAssetAssociations();
+        await this.fetchAllAssessmentActivityAssetAssociations();
       }
-      this.updateAssessmentActivity(assessmentActivity);
-      this.fetchAllAssessmentActivities();
-      this.$emit("toggle");
+      await this.updateAssessmentActivity(assessmentActivity);
+      await this.fetchAllAssessmentActivities();
+      await this.$emit("toggle");
     },
     async insertElement(assessmentActivity) {
       this.addAssessmentActivity(assessmentActivity);

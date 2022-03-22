@@ -132,34 +132,38 @@ export default {
         this.formDataTemp.resetFormValidation = false;
       }
     },
-    updateElement(recommendation) {
+    async updateElement(recommendation) {
       if (
         recommendation.newVulnerabilitiesId !=
         recommendation.oldVulnerabilitiesId
       ) {
-        let _recommendationVulnerabilityAssociation = {
+        let _recommendationVulnerabilityAssociation = await {
           recommendation_id: recommendation.id,
           vulnerability_id: null,
         };
-        recommendation.oldVulnerabilitiesId.forEach((oldVulnerabilityId) => {
-          _recommendationVulnerabilityAssociation.vulnerability_id =
-            oldVulnerabilityId;
-          this.deleteRecommendationVulnerabilityAssociation(
-            _recommendationVulnerabilityAssociation
-          );
-        });
-        recommendation.newVulnerabilitiesId.forEach((newVulnerabilityId) => {
-          _recommendationVulnerabilityAssociation.vulnerability_id =
-            newVulnerabilityId;
-          this.addRecommendationVulnerabilityAssociation(
-            _recommendationVulnerabilityAssociation
-          );
-        });
-        this.fetchAllRecommendationVulnerabilityAssociations();
+        await recommendation.oldVulnerabilitiesId.forEach(
+          (oldVulnerabilityId) => {
+            _recommendationVulnerabilityAssociation.vulnerability_id =
+              oldVulnerabilityId;
+            this.deleteRecommendationVulnerabilityAssociation(
+              _recommendationVulnerabilityAssociation
+            );
+          }
+        );
+        await recommendation.newVulnerabilitiesId.forEach(
+          (newVulnerabilityId) => {
+            _recommendationVulnerabilityAssociation.vulnerability_id =
+              newVulnerabilityId;
+            this.addRecommendationVulnerabilityAssociation(
+              _recommendationVulnerabilityAssociation
+            );
+          }
+        );
+        await this.fetchAllRecommendationVulnerabilityAssociations();
       }
-      this.updateRecommendation(recommendation);
-      this.fetchAllRecommendations();
-      this.$emit("toggle");
+      await this.updateRecommendation(recommendation);
+      await this.fetchAllRecommendations();
+      await this.$emit("toggle");
     },
     async insertElement(recommendation) {
       this.addRecommendation(recommendation);
