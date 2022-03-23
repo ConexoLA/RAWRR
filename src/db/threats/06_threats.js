@@ -22,6 +22,7 @@ export function insert(threat) {
             if (err) {
               reject(err);
             } else {
+              threat.push(this.lastID);
               resolve(threat);
             }
           });

@@ -200,21 +200,20 @@ const actions = {
         };
       }
       var threat_audit = {
-        threat_id: threat.id,
+        threat_id: response[6],
         changed_fields: JSON.stringify(audit_threat_json),
         observation: null,
         type: 0
       };
-
-      /*const threat_audit_response = await ipcRenderer.sendSync("insert", [
-        "threats_audits",
-        threat_audit,
-      ]);*/
       this.dispatch("setNotification", {
         text: i18n.t("threats.insert_success"),
       });
     }
     commit("newThreat", response);
+    if(threat_audit != undefined){
+      const threat_audit_response = await ipcRenderer.sendSync("insert", [
+        "threats_audits", threat_audit]);
+    }
   },
   async deleteThreat({ commit }, threat) {
     const response = await ipcRenderer.sendSync("remove", ["threats", threat]);
@@ -295,7 +294,7 @@ const actions = {
       var threat_audit = {
         threat_id: threat.id,
         changed_fields: JSON.stringify(audit_threat_json),
-        observation: null,
+        observation: threat.observation,
         type: 1
       };
       const threat_audit_response = await ipcRenderer.sendSync("insert", [

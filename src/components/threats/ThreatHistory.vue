@@ -230,6 +230,11 @@
                     <strike>{{ n.likelihood_old }}</strike>
                   </div>
                 </div>
+                <div v-if="n.observation">
+                  <hr>
+                  <br />
+                  <b>{{$t("threats.observation")}}: </b>{{ n.observation }}
+                </div>
               </v-card-text>
             </v-card>
           </v-timeline-item>

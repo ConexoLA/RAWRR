@@ -160,7 +160,8 @@
     "deleted_likelihood": "Deleted likelihood",
     "current_threats_values": "Current Threat values",
     "created_threat": "Created",
-    "modified_threat": "Modified"
+    "modified_threat": "Modified",
+    "observation": "Reason for the change"
   },
   "vulnerabilities": {
     "title": "Listing all vulnerabilities",

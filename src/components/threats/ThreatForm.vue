@@ -78,12 +78,12 @@
                 required
               ></v-text-field>
             </v-col>
-            <v-row no-gutters justify="center">
+            <v-row no-gutters justify="center" v-if="formDataTemp.type === 'Edit'">
               <v-col cols="8">
                 <v-text-field
                   color="accent"
-                  v-model="formDataTemp.threat.change"
-                  :label="$t('global.placeholder')"
+                  v-model="formDataTemp.threat.observation"
+                  :label="$t('threats.observation')"
                 ></v-text-field>
               </v-col>
             </v-row>
