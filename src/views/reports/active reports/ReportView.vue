@@ -159,8 +159,15 @@
           </div>
         </v-card-text>
         <v-card-actions>
-          <v-btn text plain color="accent" @click="overlay_export = false;
-                                                   focusOnExportButton();">
+          <v-btn
+            text
+            plain
+            color="accent"
+            @click="
+              overlay_export = false;
+              focusOnExportButton();
+            "
+          >
             {{ $t("global.return") }}
           </v-btn>
         </v-card-actions>
@@ -177,9 +184,11 @@ import i18n from "../../../i18n.js";
 
 export default {
   updated() {
-    if (this.$refs.report_generator_option != undefined &&
-        this.$refs.report_generator_option.length > 0) {
-      this.$refs.report_generator_option[0].$el.focus()
+    if (
+      this.$refs.report_generator_option != undefined &&
+      this.$refs.report_generator_option.length > 0
+    ) {
+      this.$refs.report_generator_option[0].$el.focus();
     }
   },
   components: {
