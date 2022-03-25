@@ -321,6 +321,7 @@ export default {
       "fetchAllThreats",
       "deleteThreat",
       "changeActiveThreatHistory",
+      "exportImage",
     ]),
     onChartReady(chart, google) {
       // Initialize Risk matrix and Counter Matrix
