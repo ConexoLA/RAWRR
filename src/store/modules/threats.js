@@ -154,6 +154,10 @@ const actions = {
   },
   async addThreat({ commit }, threat) {
     const response = await ipcRenderer.sendSync("insert", ["threats", threat]);
+    const asset_response = await ipcRenderer.sendSync("getOne", [
+      "assets",
+      threat,
+    ]);
     if (response.length == 0) {
       this.dispatch("setNotification", {
         text: i18n.t("threats.insert_error"),
@@ -193,10 +197,10 @@ const actions = {
           new_data: threat.threat_type_id,
         };
       }
-      if (threat.asset_id != undefined) {
+      if (threat.asset_id != undefined && asset_response) {
         audit_threat_json["asset_name"] = {
           old_data: null,
-          new_data: threat.asset_id,
+          new_data: asset_response.name,
         };
       }
       var threat_audit = {

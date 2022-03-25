@@ -29,7 +29,7 @@
                     v-on="on"
                     class="tooltipIcon trunc"
                   >
-                    mdi-more
+                    mdi-dots-vertical
                   </v-icon>
                 </template>
                 <span>{{ threat.description }}</span>
@@ -50,7 +50,6 @@
 
     <v-row align="center" justify="center">
       <v-col class="text-left">
-        <p v-if="!audits.length">Vacio {{ audits }}</p>
         <v-timeline v-if="audits.length">
           <v-timeline-item
             v-for="n in audits"
@@ -96,7 +95,7 @@
                           v-on="on"
                           class="tooltipIcon trunc"
                         >
-                          mdi-more
+                          mdi-dots-vertical
                         </v-icon>
                       </template>
                       <span>{{ n.description_new }}</span>
@@ -118,7 +117,7 @@
                           v-on="on"
                           class="tooltipIcon trunc"
                         >
-                          mdi-more
+                          mdi-dots-vertical
                         </v-icon>
                       </template>
                       <span>{{ n.description_old }}</span>
@@ -137,7 +136,7 @@
                           v-on="on"
                           class="tooltipIcon trunc"
                         >
-                          mdi-more
+                          mdi-dots-vertical
                         </v-icon>
                       </template>
                       <span>{{ n.description_new }}</span>
@@ -156,7 +155,7 @@
                           v-on="on"
                           class="tooltipIcon trunc"
                         >
-                          mdi-more
+                          mdi-dots-vertical
                         </v-icon>
                       </template>
                       <span>{{ n.description_old }}</span>
@@ -231,6 +230,7 @@
                   </div>
                 </div>
                 <div v-if="n.observation">
+                  <br />
                   <hr>
                   <br />
                   <b>{{$t("threats.observation")}}: </b>{{ n.observation }}
