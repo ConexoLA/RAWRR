@@ -78,7 +78,11 @@
                 required
               ></v-text-field>
             </v-col>
-            <v-row no-gutters justify="center" v-if="formDataTemp.type === 'Edit'">
+            <v-row
+              no-gutters
+              justify="center"
+              v-if="formDataTemp.type === 'Edit'"
+            >
               <v-col cols="8">
                 <v-text-field
                   color="accent"
@@ -201,7 +205,7 @@ export default {
       await this.$refs.form.reset();
       await this.resetImpactLikelihood();
     },
-    enabledUpdateButton(){
+    enabledUpdateButton() {
       var b_disabled = true;
       var arr_keys = Object.keys(this.formDataTemp.threat);
       var observation_index = arr_keys.indexOf("observation");
@@ -209,13 +213,16 @@ export default {
       var arrayLength = arr_keys.length;
 
       for (var i = 0; i < arrayLength; i++) {
-        if (this.formDataTemp.threat[arr_keys[i]] != this.formDataTemp.threat_aux[arr_keys[i]]){
+        if (
+          this.formDataTemp.threat[arr_keys[i]] !=
+          this.formDataTemp.threat_aux[arr_keys[i]]
+        ) {
           var b_disabled = false;
           break;
         }
       }
       return b_disabled;
-    }
+    },
   },
 };
 </script>
