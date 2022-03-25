@@ -98,7 +98,7 @@
               <v-btn
                 class="mr-4 black--text font-weight-regular"
                 color="primary"
-                :disabled="!valid"
+                :disabled="!valid || enabledUpdateButton()"
                 @click="updateElement(formDataTemp.threat)"
                 >{{ $t("global.update") }}
               </v-btn>
@@ -201,6 +201,21 @@ export default {
       await this.$refs.form.reset();
       await this.resetImpactLikelihood();
     },
+    enabledUpdateButton(){
+      var b_disabled = true;
+      var arr_keys = Object.keys(this.formDataTemp.threat);
+      var observation_index = arr_keys.indexOf("observation");
+      arr_keys.splice(observation_index, 1);
+      var arrayLength = arr_keys.length;
+
+      for (var i = 0; i < arrayLength; i++) {
+        if (this.formDataTemp.threat[arr_keys[i]] != this.formDataTemp.threat_aux[arr_keys[i]]){
+          var b_disabled = false;
+          break;
+        }
+      }
+      return b_disabled;
+    }
   },
 };
 </script>

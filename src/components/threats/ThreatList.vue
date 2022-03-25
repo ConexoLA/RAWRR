@@ -451,6 +451,7 @@ export default {
       this.formData.title = this.$t("threats.form_edit");
       this.formData.type = "Edit";
       this.formData.threat = threat;
+      this.formData.threat_aux = Object.assign({}, threat);
       this.formData.resetFormValidation = false;
       this.sheet = !this.sheet;
     },
