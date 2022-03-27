@@ -67,7 +67,7 @@
               <v-btn
                 class="mr-4 black--text font-weight-regular"
                 color="primary"
-                :disabled="!valid"
+                :disabled="!valid || enabledUpdateButton(true)"
                 @click="updateElement(formDataTemp.recommendation)"
                 >{{ $t("global.update") }}
               </v-btn>
@@ -188,6 +188,26 @@ export default {
         await this.fetchAllRecommendations();
       }
       await this.$refs.form.reset();
+    },
+    enabledUpdateButton() {
+      var b_disabled = true;
+      var arr_keys = Object.keys(this.formDataTemp.recommendation);
+      var old_vul_index = arr_keys.indexOf("oldVulnerabilitiesId");
+      arr_keys.splice(old_vul_index, 1);
+      var new_vul_index = arr_keys.indexOf("newVulnerabilitiesId");
+      arr_keys.splice(new_vul_index, 1);
+
+      var arrayLength = arr_keys.length;
+      for (var i = 0; i < arrayLength; i++) {
+        if (
+          this.formDataTemp.recommendation[arr_keys[i]] !=
+          this.formDataTemp.recommendation_aux[arr_keys[i]]
+        ) {
+          var b_disabled = false;
+          break;
+        }
+      }
+      return b_disabled
     },
   },
 };
