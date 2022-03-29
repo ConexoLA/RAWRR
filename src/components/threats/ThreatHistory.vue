@@ -23,19 +23,17 @@
               <span class="d-inline-block text-truncate trunc">{{
                 threat.description
               }}</span>
-              <v-tooltip bottom color="accent">
-                <template v-slot:activator="{ on }">
-                  <v-icon
-                    small
-                    color="accent"
-                    v-on="on"
-                    class="tooltipIcon trunc"
-                  >
-                    mdi-dots-vertical
-                  </v-icon>
-                </template>
-                <span>{{ threat.description }}</span>
-              </v-tooltip>
+              <template>
+                <v-icon
+                  small
+                  color="accent"
+                  class="trunc"
+                  @click="overlay_export = true
+                          fillOverlay($t('global.description'), threat.description)"
+                >
+                  mdi-dots-vertical
+                </v-icon>
+              </template>
             </div>
             <div v-if="threat.threat_type_name">
               <b>{{ $t("global.threat_type") }}: </b
@@ -96,22 +94,19 @@
                     <b class="d-inline text-truncate trunc"
                       >{{ $t("threats.updated_description") }}:
                     </b>
-                    <span class="d-inline-block text-truncate trunc">{{
-                      n.description_new
-                    }}</span>
-                    <v-tooltip bottom color="accent">
-                      <template v-slot:activator="{ on }">
-                        <v-icon
-                          small
-                          color="accent"
-                          v-on="on"
-                          class="tooltipIcon trunc"
-                        >
-                          mdi-dots-vertical
-                        </v-icon>
-                      </template>
-                      <span>{{ n.description_new }}</span>
-                    </v-tooltip>
+                    <span class="d-inline-block text-truncate trunc"
+                      >{{ n.description_new }}</span>
+                    <template>
+                      <v-icon
+                        small
+                        color="accent"
+                        class="trunc"
+                        @click="overlay_export = true
+                                fillOverlay($t('threats.updated_description'), n.description_new)"
+                      >
+                        mdi-dots-vertical
+                      </v-icon>
+                    </template>
 
                     <br />
 
@@ -121,57 +116,55 @@
                     <span class="d-inline-block text-truncate trunc"
                       ><strike>{{ n.description_old }}</strike></span
                     >
-                    <v-tooltip bottom color="accent">
-                      <template v-slot:activator="{ on }">
-                        <v-icon
-                          small
-                          color="accent"
-                          v-on="on"
-                          class="tooltipIcon trunc"
-                        >
-                          mdi-dots-vertical
-                        </v-icon>
-                      </template>
-                      <span>{{ n.description_old }}</span>
-                    </v-tooltip>
+                    <template>
+                      <v-icon
+                        small
+                        color="accent"
+                        class="trunc"
+                        @click="overlay_export = true
+                                fillOverlay($t('threats.previous_description'), n.description_old)"
+                      >
+                        mdi-dots-vertical
+                      </v-icon>
+                    </template>
                   </div>
                   <div v-if="n.description_new && !n.description_old">
-                    <b>{{ $t("threats.added_description") }}: </b>
-                    <span class="d-inline-block text-truncate trunc">{{
-                      n.description_new
-                    }}</span>
-                    <v-tooltip bottom color="accent">
-                      <template v-slot:activator="{ on }">
-                        <v-icon
-                          small
-                          color="accent"
-                          v-on="on"
-                          class="tooltipIcon trunc"
-                        >
-                          mdi-dots-vertical
-                        </v-icon>
-                      </template>
-                      <span>{{ n.description_new }}</span>
-                    </v-tooltip>
+                    <b class="d-inline text-truncate trunc">
+                      {{ $t("threats.added_description") }}:
+                    </b>
+                    <span class="d-inline-block text-truncate trunc"
+                      >{{ n.description_new }}</span
+                    >
+                    <template>
+                      <v-icon
+                        small
+                        color="accent"
+                        class="trunc"
+                        @click="overlay_export = true
+                                fillOverlay($t('threats.added_description'), n.description_new)"
+                      >
+                        mdi-dots-vertical
+                      </v-icon>
+                    </template>
                   </div>
                   <div v-if="!n.description_new && n.description_old">
-                    <b>{{ $t("threats.deleted_description") }}: </b
-                    ><span class="d-inline-block text-truncate trunc"
+                    <b class="d-inline text-truncate trunc">
+                      {{ $t("threats.deleted_description") }}:
+                    </b>
+                    <span class="d-inline-block text-truncate trunc"
                       ><strike>{{ n.description_old }}</strike></span
                     >
-                    <v-tooltip bottom color="accent">
-                      <template v-slot:activator="{ on }">
-                        <v-icon
-                          small
-                          color="accent"
-                          v-on="on"
-                          class="tooltipIcon trunc"
-                        >
-                          mdi-dots-vertical
-                        </v-icon>
-                      </template>
-                      <span>{{ n.description_old }}</span>
-                    </v-tooltip>
+                    <template>
+                      <v-icon
+                        small
+                        color="accent"
+                        class="trunc"
+                        @click="overlay_export = true
+                                fillOverlay($t('threats.deleted_description'), n.description_old)"
+                      >
+                        mdi-dots-vertical
+                      </v-icon>
+                    </template>
                   </div>
                 </div>
                 <div v-if="n.threat_type_name_new || n.threat_type_name_old">
@@ -258,6 +251,27 @@
         </v-timeline>
       </v-col>
     </v-row>
+    <v-overlay :dark="false" :value="overlay_export">
+      <v-card outlined>
+        <v-card-text>
+          <p class="display-2 text--secondary">
+            {{ description_title }}
+          </p>
+          {{ description_value }}
+        </v-card-text>
+        <v-card-actions>
+          <v-btn
+            text
+            plain
+            color="accent"
+            @click="
+              overlay_export = false;"
+          >
+            {{ $t("global.close_sheet") }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-overlay>    
   </v-container>
 </template>
 
@@ -266,7 +280,11 @@ import { mapGetters } from "vuex";
 //import ThreatList from "../components/threats/ThreatList.vue";
 export default {
   props: ["threat", "audits"],
-  data: () => ({}),
+  data: () => ({
+    overlay_export: false,
+    description_value: "",
+    description_title: ""
+  }),
   components: {
     //ThreatList,
   },
@@ -280,6 +298,10 @@ export default {
       );
       return tempObj[this.$i18n.locale];
     },
+    fillOverlay(title, description){
+      this.description_title = title;
+      this.description_value = description;
+    }  
   },
 };
 </script>
@@ -288,8 +310,5 @@ export default {
 .trunc {
   max-width: 360px;
   vertical-align: bottom;
-}
-.tooltipIcon {
-  float: right;
 }
 </style>
