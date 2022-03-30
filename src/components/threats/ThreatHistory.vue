@@ -28,7 +28,7 @@
                   small
                   color="accent"
                   class="trunc"
-                  @click="overlay_export = true
+                  @click="overlay_observation = true
                           fillOverlay($t('global.description'), threat.description)"
                 >
                   mdi-dots-vertical
@@ -101,7 +101,7 @@
                         small
                         color="accent"
                         class="trunc"
-                        @click="overlay_export = true
+                        @click="overlay_observation = true
                                 fillOverlay($t('threats.updated_description'), n.description_new)"
                       >
                         mdi-dots-vertical
@@ -121,7 +121,7 @@
                         small
                         color="accent"
                         class="trunc"
-                        @click="overlay_export = true
+                        @click="overlay_observation = true
                                 fillOverlay($t('threats.previous_description'), n.description_old)"
                       >
                         mdi-dots-vertical
@@ -140,7 +140,7 @@
                         small
                         color="accent"
                         class="trunc"
-                        @click="overlay_export = true
+                        @click="overlay_observation = true
                                 fillOverlay($t('threats.added_description'), n.description_new)"
                       >
                         mdi-dots-vertical
@@ -159,7 +159,7 @@
                         small
                         color="accent"
                         class="trunc"
-                        @click="overlay_export = true
+                        @click="overlay_observation = true
                                 fillOverlay($t('threats.deleted_description'), n.description_old)"
                       >
                         mdi-dots-vertical
@@ -251,13 +251,15 @@
         </v-timeline>
       </v-col>
     </v-row>
-    <v-overlay :dark="false" :value="overlay_export">
-      <v-card outlined>
+    <v-overlay :dark="false" :value="overlay_observation" >
+      <v-card outlined >
         <v-card-text>
           <p class="display-2 text--secondary">
             {{ description_title }}
           </p>
-          {{ description_value }}
+          <div  class="scrollable_observations">
+            {{ description_value }}
+         </div>
         </v-card-text>
         <v-card-actions>
           <v-btn
@@ -265,7 +267,7 @@
             plain
             color="accent"
             @click="
-              overlay_export = false;"
+              overlay_observation = false;"
           >
             {{ $t("global.close_sheet") }}
           </v-btn>
@@ -281,9 +283,9 @@ import { mapGetters } from "vuex";
 export default {
   props: ["threat", "audits"],
   data: () => ({
-    overlay_export: false,
+    overlay_observation: false,
     description_value: "",
-    description_title: ""
+    description_title: "",
   }),
   components: {
     //ThreatList,
@@ -310,5 +312,10 @@ export default {
 .trunc {
   max-width: 360px;
   vertical-align: bottom;
+}
+.scrollable_observations{
+  max-height: 350px;
+  max-width: 800px;
+  overflow: auto;
 }
 </style>
