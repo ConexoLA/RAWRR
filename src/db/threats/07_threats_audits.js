@@ -1,4 +1,4 @@
-const init = require("../00_initdb.js");
+ const init = require("../00_initdb.js");
 
 //PARAMETERS:
 //  threats_audit is an array with the following structure: ["threat_id", "changed_fields", "observation"].
@@ -46,7 +46,7 @@ export function queryAll() {
       if (db) {
         db.serialize(function () {
           let sql =
-            "SELECT id, threat_id, changed_fields, observation, type, created FROM threats_audits ORDER BY created DESC";
+            "SELECT id, threat_id, changed_fields, observation, type, created FROM threats_audits ORDER BY threat_id DESC, created DESC";
           db.all(sql, [], (err, rows) => {
             if (err) {
               reject(err);
