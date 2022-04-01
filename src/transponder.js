@@ -16,6 +16,7 @@ import * as recommendations from "./db/recommendations/10_recommendations";
 import * as recommendation_vulnerability_associations from "./db/recommendations/11_recommendation_vulnerability_associations";
 import * as export_report from "./exportReport/file_extensions";
 import * as export_image from "./exportImage/file_extensions";
+import * as export_threat_history from "./exportThreatHistory/file_extensions";
 import * as database_management from "./db/fs_management";
 
 export function setIPCMainListeners() {
@@ -1240,6 +1241,40 @@ export function setIPCMainListeners() {
         event.returnValue = ["error", ""];
     }
   });
+
+  ipcMain.on("exportThreatHistory", (event, arg) => {
+    console.log(arg[0]);
+    switch (arg[0]) {
+      case "txt":
+        break;
+      case "md":
+        try {
+          export_threat_history
+            .md(arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7])
+            .then(
+              function (data) {
+                event.returnValue = ["resolve", data];
+              },
+              function (err) {
+                console.log(err);
+                event.returnValue = ["reject", err];
+              }
+            );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = ["error", error];
+        }
+        break;
+      case "json":
+        break;
+      case "docx":
+        break;
+      default:
+        console.log(arg[0], " does not have a valid export method.");
+        event.returnValue = ["error", ""];
+    }
+  });
+
 
   ipcMain.on("backupDatabase", (event, arg) => {
     try {
