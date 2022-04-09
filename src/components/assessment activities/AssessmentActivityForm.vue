@@ -41,6 +41,7 @@
               deletable-chips
               item-text="name"
               item-value="id"
+              @change="checkChange()"
             ></v-select>
           </v-row>
           <v-row
@@ -52,7 +53,7 @@
               <v-btn
                 class="mr-4 black--text font-weight-regular"
                 color="primary"
-                :disabled="!valid || enabledUpdateButton()"
+                :disabled="shouldDisableButton()"
                 @click="updateElement(formDataTemp.assessmentActivity)"
                 >{{ $t("global.update") }}
               </v-btn>
@@ -98,6 +99,7 @@ export default {
   },
   data: () => ({
     valid: true,
+    changedRelated: true,
     alertType: null,
     formDataTemp: null,
   }),
@@ -137,6 +139,7 @@ export default {
       }
       await this.updateAssessmentActivity(assessmentActivity);
       await this.fetchAllAssessmentActivities();
+      this.changedRelated = await true;
       await this.$emit("toggle");
     },
     async insertElement(assessmentActivity) {
@@ -175,11 +178,28 @@ export default {
           this.formDataTemp.assessmentActivity[arr_keys[i]] !=
           this.formDataTemp.assessmentActivity_aux[arr_keys[i]]
         ) {
-          var b_disabled = false;
+          b_disabled = false;
           break;
         }
       }
-      return b_disabled
+      return b_disabled;
+    },
+    checkChange() {
+      if (
+        JSON.stringify(this.formDataTemp.assessmentActivity.oldAssetsId) ==
+        JSON.stringify(this.formDataTemp.assessmentActivity.newAssetsId)
+      ) {
+        this.changedRelated = true;
+      } else {
+        this.changedRelated = false;
+      }
+    },
+    shouldDisableButton() {
+      if (!this.valid || (this.changedRelated && this.enabledUpdateButton())) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
 };
