@@ -40,6 +40,7 @@
               deletable-chips
               item-text="name"
               item-value="id"
+              @change="checkChange()"
             ></v-select>
           </v-row>
           <v-row no-gutters justify="center">
@@ -67,7 +68,7 @@
               <v-btn
                 class="mr-4 black--text font-weight-regular"
                 color="primary"
-                :disabled="!valid || enabledUpdateButton(true)"
+                :disabled="shouldDisableButton()"
                 @click="updateElement(formDataTemp.recommendation)"
                 >{{ $t("global.update") }}
               </v-btn>
@@ -113,6 +114,7 @@ export default {
   },
   data: () => ({
     valid: true,
+    changedRelated: true,
     alertType: null,
     formDataTemp: null,
   }),
@@ -163,6 +165,7 @@ export default {
       }
       await this.updateRecommendation(recommendation);
       await this.fetchAllRecommendations();
+      this.changedRelated = await true;
       await this.$emit("toggle");
     },
     async insertElement(recommendation) {
@@ -208,6 +211,23 @@ export default {
         }
       }
       return b_disabled
+    },
+    checkChange() {
+      if (
+        JSON.stringify(this.formDataTemp.recommendation.oldVulnerabilitiesId) ==
+        JSON.stringify(this.formDataTemp.recommendation.newVulnerabilitiesId)
+      ) {
+        this.changedRelated = true;
+      } else {
+        this.changedRelated = false;
+      }
+    },
+    shouldDisableButton() {
+      if (!this.valid || (this.changedRelated && this.enabledUpdateButton())) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
 };
