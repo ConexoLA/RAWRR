@@ -33,6 +33,7 @@
     "implementation_time": "Tempo de implementação",
     "vulnerabilities": "Vulnerabilidades relacionadas",
     "report_save": "Escolha um local onde você quer salvar seu relatório",
+    "threat_history_save": "Escolha um local onde você gostaria de salvar seu histórico de ameaças",
     "delete_success": "Removido com sucesso",
     "delete_error": "Um erro ocorreu ao tentar remover",
     "none": "Nenhum(a)",
@@ -46,7 +47,8 @@
     "threats": "Ameaças",
     "vulnerabilities": "Vulnerabilidades",
     "recommendations": "Recomendações",
-    "report": "Relatório"
+    "report": "Relatório",
+    "threats_history": "Histórico de ameaças"
   },
   "home": {
     "welcome_message_1": "Risk Assessment Workflow for Recommendation Roadmaps",
@@ -122,6 +124,23 @@
     "edit_error": "A ameaça não pôde ser modificada. Por favor se certifique de que o nome seja único",
     "insert_success": "Ameaça inserida com sucesso",
     "insert_error": "A ameaça não pôde ser inserida. Por favor se certifique de que o nome seja único",
+    "threat_history":{
+      "identifier": "ID",
+      "name": "Histórico de ameaças:",
+      "changes_history_empty": "Nenhuma alteração encontrada.",
+      "change_number": "Alteração ",
+      "created": "Criação",
+      "creation_date": "Data de criação:",
+      "asset_name": "Nome do ativo:",
+      "description": "Descrição:",
+      "impact": "Impact:",
+      "likelihood": "Probabilidade:",
+      "threat_type_name": "Nome do tipo de ameaça:",
+      "name_change": "Nome:",
+      "observation": "Observação:",
+      "new": "Nova:",
+      "old": "Velha:"
+    },
     "risk_matrix": {
       "vcard_name": "Matriz de risco",
       "show": "Matrix de risco",
@@ -190,6 +209,12 @@
     "insert_error": "A recomendação não pôde ser inserida. Por favor se certifique de que o nome seja único"
   },
   "reports": {
+    "threat_history":{
+      "export": "Exportar histórico de ameaças",
+      "export_info": "Exporte o histórico de ameaças com as ameaças ativas",
+      "export_error": "O histórico de ameaças não pôde ser exportado",
+      "export_success": "Histórico de ameaças exportado com sucesso"
+    },
     "title": "Seleção de conteúdo relatado",
     "subtitle": "Você pode reordenar e remover elementos na seção de conteúdo de relatório",
     "to_add": "Conteúdo fora do relatório",
