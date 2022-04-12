@@ -191,14 +191,24 @@ export function md(
                   "\t * **" + i18n.t("threats.threat_history.name") + "** \n"
                 );
                 for (var k = 0; k < n_changes; k++) {
-                  let identifier_change = n_changes - k;
-                  fileContents.push(
-                    "\t\t * **" +
-                      i18n.t("threats.threat_history.change_number") +
-                      identifier_change.toString() +
-                      "**" +
-                      "\n"
-                  );
+                  let identifier_change = n_changes - k - 1;
+                  if( k == n_changes - 1){
+                    fileContents.push(
+                      "\t\t * **" +
+                        i18n.t("threats.threat_history.created")
+                        + "**" +
+                        "\n"
+                    );
+                  }else{
+                    fileContents.push(
+                      "\t\t * **" +
+                        i18n.t("threats.threat_history.change_number") +
+                        identifier_change.toString() +
+                        "**" +
+                        "\n"
+                    );
+                  }
+
 
                   fileContents.push(
                     "\t\t\t 1. **" +
