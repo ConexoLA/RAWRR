@@ -319,7 +319,7 @@ export default {
           id: 4,
           type: "txt",
           name: this.$t("reports.txt.name"),
-          disabled: true,
+          disabled: false,
         },
       ],
       showSections: {
@@ -463,7 +463,7 @@ export default {
             this.getMain,
             this.getAllMergedThreats,
             this.getAllThreatsHistory(),
-            this.$t("reports.md.title"),
+            this.$t("reports.threat_history.md.title"),
             this.$t("global.threat_history_save"),
             i18n.locale,
           ];
@@ -475,7 +475,7 @@ export default {
             this.getMain,
             this.getAllMergedThreats,
             this.getAllThreatsHistory(),
-            this.$t("reports.md.title"),
+            this.$t("reports.threat_history.docx.title"),
             this.$t("global.threat_history_save"),
             i18n.locale,
           ];
@@ -487,7 +487,7 @@ export default {
             this.getMain,
             this.getAllMergedThreats,
             this.getAllThreatsHistory(),
-            this.$t("reports.md.title"),
+            this.$t("reports.threat_history.json.title"),
             this.$t("global.threat_history_save"),
             i18n.locale,
           ];
@@ -499,7 +499,7 @@ export default {
             this.getMain,
             this.getAllMergedThreats,
             this.getAllThreatsHistory(),
-            this.$t("reports.md.title"),
+            this.$t("reports.threat_history.txt.title"),
             this.$t("global.threat_history_save"),
             i18n.locale,
           ];
