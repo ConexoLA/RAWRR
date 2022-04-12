@@ -213,7 +213,23 @@
       "export": "Exportar histórico de ameaças",
       "export_info": "Exporte o histórico de ameaças com as ameaças ativas",
       "export_error": "O histórico de ameaças não pôde ser exportado",
-      "export_success": "Histórico de ameaças exportado com sucesso"
+      "export_success": "Histórico de ameaças exportado com sucesso",
+      "md": {
+        "name": "Arquivo de Texto MarkDown",
+        "title": "Exportar histórico de ameaças como .md"
+      },
+      "docx": {
+        "name": "Arquivo do Microsoft Word",
+        "title": "Exportar histórico de ameaças como .docx"
+      },
+      "json": {
+        "name": "Arquivo Javascript Object Notation",
+        "title": "Exportar histórico de ameaças como .json"
+      },
+      "txt": {
+        "name": "Arquivo de Texto",
+        "title": "Exportar histórico de ameaças como .txt"
+      }
     },
     "title": "Seleção de conteúdo relatado",
     "subtitle": "Você pode reordenar e remover elementos na seção de conteúdo de relatório",

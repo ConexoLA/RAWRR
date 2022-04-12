@@ -213,7 +213,23 @@
       "export": "Export Threat History",
       "export_info": "Export the threat history with the active threats",
       "export_error": "The threat history could not be exported",
-      "export_success": "Threat history exported successfully"
+      "export_success": "Threat history exported successfully",
+      "md": {
+        "name": "MarkDown Text File",
+        "title": "Export threat history as .md"
+      },
+      "docx": {
+        "name": "Microsoft Word File",
+        "title": "Export threat history as .docx"
+      },
+      "json": {
+        "name": "Javascript Object Notation File",
+        "title": "Export threat history as .json"
+      },
+      "txt": {
+        "name": "Text File",
+        "title": "Export threat history as .txt"
+      }
     },
     "title": "Report content selection",
     "subtitle": "You can reorder and remove elements in the report content section",
