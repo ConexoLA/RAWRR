@@ -1282,6 +1282,22 @@ export function setIPCMainListeners() {
         }
         break;
       case "json":
+        try {
+          export_threat_history
+            .json(arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7])
+            .then(
+              function (data) {
+                event.returnValue = ["resolve", data];
+              },
+              function (err) {
+                console.log(err);
+                event.returnValue = ["reject", err];
+              }
+            );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = ["error", error];
+        }
         break;
       case "docx":
         break;
