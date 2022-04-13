@@ -1300,6 +1300,22 @@ export function setIPCMainListeners() {
         }
         break;
       case "docx":
+        try {
+          export_threat_history
+            .docx(arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7])
+            .then(
+              function (data) {
+                event.returnValue = ["resolve", data];
+              },
+              function (err) {
+                console.log(err);
+                event.returnValue = ["reject", err];
+              }
+            );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = ["error", error];
+        }
         break;
       default:
         console.log(arg[0], " does not have a valid export method.");
