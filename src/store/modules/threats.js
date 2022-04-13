@@ -6,6 +6,7 @@ const state = {
   threats: [],
   active_threat_history: null,
   audits: null,
+  all_audits: null,
 };
 
 const getters = {
@@ -36,6 +37,7 @@ const getters = {
     return _threat_types;
   },
   getAllThreats: (state) => state.threats,
+  getAllThreatsHistory: (state) => state.all_audits,
   getAllMergedThreats: (state, rootState) => {
     //This performs a join operation, this should be removed and replaced with proper db queries in the future.
     rootState.fetchAllAssets;
@@ -336,6 +338,50 @@ const actions = {
     commit("setActiveThreatHistory", threat);
     commit("setActiveThreatAudits", audits_array);
   },
+  async changeAllThreatHistory({ commit }) {
+    const audits_response = await ipcRenderer.sendSync("queryAll", [
+      "threats_audits",
+    ]);
+
+    var audits_array = [];
+    for (var i = 0; i < audits_response.length; i++) {
+      var jsonData = {};
+      var iter_json = JSON.parse(audits_response[i]["changed_fields"]);
+      var iter_json_keys = Object.keys(iter_json);
+
+      for (var j = 0; j < iter_json_keys.length; j++) {
+        jsonData[iter_json_keys[j] + "_old"] =
+          iter_json[iter_json_keys[j]]["old_data"];
+        jsonData[iter_json_keys[j] + "_new"] =
+          iter_json[iter_json_keys[j]]["new_data"];
+      }
+      jsonData["created"] = audits_response[i]["created"];
+      jsonData["type"] = audits_response[i]["type"];
+      jsonData["observation"] = audits_response[i]["observation"];
+      jsonData["threat_id"] = audits_response[i]["threat_id"];
+      jsonData["audit_id"] = audits_response[i]["id"];
+      audits_array.push(jsonData);
+    }
+    commit("setAllThreatsHistory", audits_array);
+  },
+  async exportThreatHistory({ dispatch }, threat_history) {
+    const response = await ipcRenderer.sendSync(
+      "exportThreatHistory",
+      threat_history
+    );
+    if (response[0] === "error" || response[0] === "reject") {
+      dispatch("setNotification", {
+        text: i18n.t("reports.threat_history.export_error"),
+        color: "error",
+      });
+    } else {
+      if (response[1]) {
+        dispatch("setNotification", {
+          text: i18n.t("reports.threat_history.export_success"),
+        });
+      }
+    }
+  },
   async exportImage({ dispatch }, imageBase64) {
     const response = await ipcRenderer.sendSync("export", imageBase64);
     if (response[0] === "error" || response[0] === "reject") {
@@ -382,6 +428,7 @@ const mutations = {
   setActiveThreatHistory: (state, active_threat_history) =>
     (state.active_threat_history = active_threat_history),
   setActiveThreatAudits: (state, audits) => (state.audits = audits),
+  setAllThreatsHistory: (state, all_audits) => (state.all_audits = all_audits),
 };
 
 export default {

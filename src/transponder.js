@@ -16,6 +16,7 @@ import * as recommendations from "./db/recommendations/10_recommendations";
 import * as recommendation_vulnerability_associations from "./db/recommendations/11_recommendation_vulnerability_associations";
 import * as export_report from "./exportReport/file_extensions";
 import * as export_image from "./exportImage/file_extensions";
+import * as export_threat_history from "./exportThreatHistory/file_extensions";
 import * as database_management from "./db/fs_management";
 
 export function setIPCMainListeners() {
@@ -174,7 +175,7 @@ export function setIPCMainListeners() {
           console.log(error);
           event.returnValue = [];
         }
-        break;        
+        break;
       case "vulnerabilities":
         try {
           arr = [
@@ -420,7 +421,7 @@ export function setIPCMainListeners() {
           console.log(error);
           event.returnValue = [];
         }
-        break;        
+        break;
       case "vulnerabilities":
         try {
           vulnerabilities.queryAll().then(
@@ -1044,7 +1045,7 @@ export function setIPCMainListeners() {
         event.returnValue = [];
     }
   });
-  
+
   ipcMain.on("import", (event, arg) => {
     console.log(arg[0]);
     switch (arg[0]) {
@@ -1220,21 +1221,102 @@ export function setIPCMainListeners() {
         }
         break;
       case "png":
-          try {
-            export_image.png(arg[1], arg[2], arg[3], arg[4]).then(
-                function (data) {
-                  event.returnValue = ["resolve", data];
-                },
-                function (err) {
-                  console.log(err);
-                  event.returnValue = ["reject", err];
-                }
-              );
-          } catch (error) {
-            console.log(error);
-            event.returnValue = ["error", error];
-          }
-          break;
+        try {
+          export_image.png(arg[1], arg[2], arg[3], arg[4]).then(
+            function (data) {
+              event.returnValue = ["resolve", data];
+            },
+            function (err) {
+              console.log(err);
+              event.returnValue = ["reject", err];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = ["error", error];
+        }
+        break;
+      default:
+        console.log(arg[0], " does not have a valid export method.");
+        event.returnValue = ["error", ""];
+    }
+  });
+
+  ipcMain.on("exportThreatHistory", (event, arg) => {
+    console.log(arg[0]);
+    switch (arg[0]) {
+      case "txt":
+        try {
+          export_threat_history
+            .txt(arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7])
+            .then(
+              function (data) {
+                event.returnValue = ["resolve", data];
+              },
+              function (err) {
+                console.log(err);
+                event.returnValue = ["reject", err];
+              }
+            );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = ["error", error];
+        }
+        break;
+      case "md":
+        try {
+          export_threat_history
+            .md(arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7])
+            .then(
+              function (data) {
+                event.returnValue = ["resolve", data];
+              },
+              function (err) {
+                console.log(err);
+                event.returnValue = ["reject", err];
+              }
+            );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = ["error", error];
+        }
+        break;
+      case "json":
+        try {
+          export_threat_history
+            .json(arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7])
+            .then(
+              function (data) {
+                event.returnValue = ["resolve", data];
+              },
+              function (err) {
+                console.log(err);
+                event.returnValue = ["reject", err];
+              }
+            );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = ["error", error];
+        }
+        break;
+      case "docx":
+        try {
+          export_threat_history
+            .docx(arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7])
+            .then(
+              function (data) {
+                event.returnValue = ["resolve", data];
+              },
+              function (err) {
+                console.log(err);
+                event.returnValue = ["reject", err];
+              }
+            );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = ["error", error];
+        }
+        break;
       default:
         console.log(arg[0], " does not have a valid export method.");
         event.returnValue = ["error", ""];
