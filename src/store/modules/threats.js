@@ -156,10 +156,7 @@ const actions = {
   },
   async addThreat({ commit }, threat) {
     const response = await ipcRenderer.sendSync("insert", ["threats", threat]);
-    const asset_response = await ipcRenderer.sendSync("getOne", [
-      "assets",
-      threat,
-    ]);
+    const asset_response = ipcRenderer.sendSync("getOne", ["assets", threat]);
     if (response.length == 0) {
       this.dispatch("setNotification", {
         text: i18n.t("threats.insert_error"),

@@ -282,6 +282,7 @@ export default {
       this.formData.title = this.$t("recommendations.form_edit");
       this.formData.type = "Edit";
       this.formData.recommendation = recommendation;
+      this.formData.recommendation_aux = Object.assign({}, recommendation);
       this.formData.recommendation.oldVulnerabilitiesId =
         this.obtainVulnerabilityAssociations(recommendation.id);
       this.formData.recommendation.newVulnerabilitiesId =

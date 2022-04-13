@@ -274,13 +274,19 @@
         </v-timeline>
       </v-col>
     </v-row>
-    <v-overlay :dark="false" :value="overlay_observation">
-      <v-card outlined>
+    <v-overlay :dark="false" :value="overlay_observation" @keydown.esc="toggle">
+      <v-card outlined v-click-outside="toggle">
         <v-card-text>
           <p class="display-2 text--secondary">
             {{ description_title }}
           </p>
-          <div class="scrollable_observations">
+          <div
+            :style="`
+          max-height: ${(windowSize.y * 50) / 100}px;
+          max-width: ${(windowSize.x * 50) / 100}px;
+          overflow-y: auto;`"
+            v-resize="onResize"
+          >
             {{ description_value }}
           </div>
         </v-card-text>
@@ -303,7 +309,22 @@ export default {
     overlay_observation: false,
     description_value: "",
     description_title: "",
+    windowSize: {
+      x: 0,
+      y: 0,
+    },
   }),
+  mounted() {
+    document.addEventListener("keydown", (e) => {
+      // If  ESC key was pressed
+      if (e.keyCode == 27) {
+        this.overlay_observation = false;
+
+        // or if you have created a dialog as a custom component, emit an event
+        // this.$emit('closeDialog')
+      }
+    });
+  },
   components: {
     //ThreatList,
   },
@@ -321,6 +342,12 @@ export default {
       this.description_title = title;
       this.description_value = description;
     },
+    onResize() {
+      this.windowSize = { x: window.innerWidth, y: window.innerHeight };
+    },
+    toggle() {
+      this.overlay_observation = !this.overlay_observation;
+    },
   },
 };
 </script>
@@ -329,10 +356,5 @@ export default {
 .trunc {
   max-width: 360px;
   vertical-align: bottom;
-}
-.scrollable_observations {
-  max-height: 350px;
-  max-width: 800px;
-  overflow: auto;
 }
 </style>

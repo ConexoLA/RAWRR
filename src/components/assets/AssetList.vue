@@ -234,6 +234,7 @@ export default {
       this.formData.title = this.$t("assets.form_edit");
       this.formData.type = "Edit";
       this.formData.asset = asset;
+      this.formData.asset_aux = Object.assign({}, asset);
       this.formData.resetFormValidation = false;
       this.sheet = !this.sheet;
     },
