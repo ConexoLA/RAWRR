@@ -1097,3 +1097,599 @@ export function json(
     }
   });
 }
+
+export function docx(
+  secciones_report,
+  getMain,
+  threats,
+  threat_history,
+  titlemd,
+  message,
+  locale
+) {
+  return new Promise(function(resolve, reject) {
+    try {
+      var options = {
+        title: titlemd,
+        message: message
+        //nameFieldLabel: "Project Name:"
+        // defaultPath:  directory to show (optional)
+      };
+
+      let path = dialog.showSaveDialogSync(options);
+      i18n.locale = locale;
+
+      if (path) {
+        path = path + ".docx";
+
+        var fileContents = [];
+        var docxChildren = [];
+
+        docxChildren.push(
+          new Paragraph({
+            text: i18n.t("header.threats_history"),
+            heading: HeadingLevel.TITLE,
+          })
+        );
+
+        docxChildren.push(
+          new TableOfContents("Summary", {
+            hyperlink: true,
+            headingStyleRange: "1-5",
+          })
+        );
+
+        let keys = Object.keys(secciones_report);
+
+        keys.forEach(key => {
+          let item = secciones_report[key];
+          if (item.name == "Threats") {
+            const n = getMain[item.interest][0].tasks.length;
+            let wrote = 0;
+            for (var i = 0; i < n; i++) {
+              wrote += 1;
+              let title = getMain[item.interest][0].tasks[i].title;
+              if (i == 0) {
+                docxChildren.push(
+                  new Paragraph({
+                    text: item.title,
+                    heading: HeadingLevel.HEADING_1,
+                    pageBreakBefore: true,
+                    numbering: {
+                      reference: "rawrr-numbering",
+                      level: 0,
+                    },
+                  })
+                );
+
+                docxChildren.push(
+                  new Paragraph({
+                    text: title,
+                    heading: HeadingLevel.HEADING_2,
+                    numbering: {
+                      reference: "rawrr-numbering",
+                      level: 1,
+                    },
+                  })
+                );
+              }else{
+                docxChildren.push(
+                  new Paragraph({
+                    text: title,
+                    heading: HeadingLevel.HEADING_2,
+                    pageBreakBefore: true,
+                    numbering: {
+                      reference: "rawrr-numbering",
+                      level: 1,
+                    },
+                  })
+                );
+              }
+              let description = getMain[item.interest][0].tasks[i].description;
+              if (description === null) {
+                description = "";
+              }
+              
+
+
+              docxChildren.push(
+                new Paragraph({
+                  text: i18n.t("threats.current_threats_values"),
+                  heading: HeadingLevel.HEADING_3,
+                  numbering: {
+                    reference: "rawrr-numbering",
+                    level: 2,
+                  },
+                })
+              );
+
+              // Adding Identifier of the threat
+              docxChildren.push(
+                new Paragraph({
+                  text: i18n.t("threats.threat_history.identifier") + ": " + getMain[item.interest][0].tasks[i].identifier,
+                  numbering: {
+                    reference: "rawrr-numbering",
+                    level: 3,
+                  },
+                })
+              );
+
+              // Adding description of the threat
+              docxChildren.push(
+                new Paragraph({
+                  text: i18n.t("global.description") + ": " + description ,
+                  numbering: {
+                    reference: "rawrr-numbering",
+                    level: 3,
+                  },
+                })
+              );
+
+              // Getting related asset, impact and likelihood
+              switch (item.name) {
+                case "Threats":
+                  for (var k = 0; k < threats.length; k++) {
+                    if (
+                      threats[k].id ==
+                      getMain[item.interest][0].tasks[i].identifier
+                    ) {
+                      if (threats[k].threat_type_name === undefined) {
+                        threats[k].threat_type_name = i18n.t("global.none");
+                      }
+
+                      docxChildren.push(
+                        new Paragraph({
+                          text: i18n.t("global.threat_type") + ": " + threats[k].threat_type_name ,
+                          numbering: {
+                            reference: "rawrr-numbering",
+                            level: 3,
+                          },
+                        })
+                      );
+
+                      var related_asset = 0;
+                      for (
+                        var p = 0;
+                        p < getMain.report_assets[0].tasks.length;
+                        p++
+                      ) {
+                        if (
+                          getMain.report_assets[0].tasks[p].title ==
+                          threats[k].asset_name
+                        ) {
+                          related_asset = 1;
+                          docxChildren.push(
+                            new Paragraph({
+                              text: i18n.t("global.asset") + ": " + threats[k].asset_name  ,
+                              numbering: {
+                                reference: "rawrr-numbering",
+                                level: 3,
+                              },
+                            })
+                          );
+                        }
+                      }
+
+                      if (related_asset == 0) {
+                        docxChildren.push(
+                          new Paragraph({
+                            text: i18n.t("global.asset") + ": " + i18n.t("global.none")  ,
+                            numbering: {
+                              reference: "rawrr-numbering",
+                              level: 3,
+                            },
+                          })
+                        );
+                      }
+
+                      docxChildren.push(
+                        new Paragraph({
+                          text: i18n.t("global.impact") + ": " + threats[k].impact  ,
+                          numbering: {
+                            reference: "rawrr-numbering",
+                            level: 3,
+                          },
+                        })
+                      );
+
+                      docxChildren.push(
+                        new Paragraph({
+                          text: i18n.t("global.likelihood") + ": " + threats[k].likelihood,
+                          numbering: {
+                            reference: "rawrr-numbering",
+                            level: 3,
+                          },
+                        })
+                      );
+                    }
+                  }
+                  break;
+                default:
+              }
+
+              // Adding audits
+
+              let specific_changes = threat_history.filter(
+                threat =>
+                  threat.threat_id ==
+                  getMain[item.interest][0].tasks[i].identifier
+              );
+
+              const n_changes = specific_changes.length;
+
+              if (n_changes > 0) {
+                docxChildren.push(
+                  new Paragraph({
+                    text: i18n.t("threats.threat_history.name") ,
+                    heading: HeadingLevel.HEADING_3,
+                    numbering: {
+                      reference: "rawrr-numbering",
+                      level: 2,
+                    },
+                  })
+                );
+
+                for (var k = 0; k < n_changes; k++) {
+                  let identifier_change = n_changes - k - 1;
+                  if (k == n_changes - 1) {
+                    docxChildren.push(
+                      new Paragraph({
+                        text: i18n.t("threats.threat_history.created"),
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 3,
+                        },
+                      })
+                    );
+                  } else {
+                    docxChildren.push(
+                      new Paragraph({
+                        text: i18n.t("threats.threat_history.change_number") + identifier_change.toString() ,
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 3,
+                        },
+                      })
+                    );
+                  }
+
+                  docxChildren.push(
+                    new Paragraph({
+                      text: i18n.t("threats.threat_history.creation_date") + " " + specific_changes[k].created ,
+                      numbering: {
+                        reference: "rawrr-numbering",
+                        level: 4,
+                      },
+                    })
+                  );
+
+                  if (specific_changes[k].observation !== null) {
+                    docxChildren.push(
+                      new Paragraph({
+                        text: i18n.t("threats.threat_history.observation") + " " + specific_changes[k].observation ,
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 4,
+                        },
+                      })
+                    );
+                  }
+
+                  // Name
+                  if (specific_changes[k].name_old !== undefined) {
+                    docxChildren.push(
+                      new Paragraph({
+                        text: i18n.t("threats.threat_history.name_change"),
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 4,
+                        },
+                      })
+                    );
+
+                    docxChildren.push(
+                      new Paragraph({
+                        text: i18n.t("threats.threat_history.new") + " " + specific_changes[k].name_new,
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 5,
+                        },
+                      })
+                    );
+                    docxChildren.push(
+                      new Paragraph({
+                        text: i18n.t("threats.threat_history.old") + " " + specific_changes[k].name_old,
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 5,
+                        },
+                      })
+                    );
+                  }
+
+                  // Description
+                  if (specific_changes[k].description_old !== undefined) {
+                    docxChildren.push(
+                      new Paragraph({
+                        text: i18n.t("threats.threat_history.description"),
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 4,
+                        },
+                      })
+                    );
+
+                    docxChildren.push(
+                      new Paragraph({
+                        text: i18n.t("threats.threat_history.new") + " " + specific_changes[k].description_new,
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 5,
+                        },
+                      })
+                    );
+
+                    docxChildren.push(
+                      new Paragraph({
+                        text: i18n.t("threats.threat_history.old") + " " + specific_changes[k].description_old ,
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 5,
+                        },
+                      })
+                    );
+                  }
+
+                  // Impact
+                  if (specific_changes[k].impact_old !== undefined) {
+                    docxChildren.push(
+                      new Paragraph({
+                        text: i18n.t("threats.threat_history.impact"),
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 4,
+                        },
+                      })
+                    );
+
+                    docxChildren.push(
+                      new Paragraph({
+                        text: i18n.t("threats.threat_history.new") + " " + specific_changes[k].impact_new,
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 5,
+                        },
+                      })
+                    );
+
+                    docxChildren.push(
+                      new Paragraph({
+                        text: i18n.t("threats.threat_history.old") + " " + specific_changes[k].impact_old,
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 5,
+                        },
+                      })
+                    );
+                  }
+
+                  // Likelihood
+                  if (specific_changes[k].likelihood_old !== undefined) {
+                    docxChildren.push(
+                      new Paragraph({
+                        text: i18n.t("threats.threat_history.likelihood"),
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 4,
+                        },
+                      })
+                    );
+
+                    docxChildren.push(
+                      new Paragraph({
+                        text: i18n.t("threats.threat_history.new") + " " + specific_changes[k].likelihood_new ,
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 5,
+                        },
+                      })
+                    );
+
+                    docxChildren.push(
+                      new Paragraph({
+                        text: i18n.t("threats.threat_history.old") + " " + specific_changes[k].likelihood_old,
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 5,
+                        },
+                      })
+                    );
+                  }
+
+                  // Threat type name
+                  if (specific_changes[k].threat_type_name_old !== undefined) {
+                    docxChildren.push(
+                      new Paragraph({
+                        text: i18n.t("threats.threat_history.threat_type_name"),
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 4,
+                        },
+                      })
+                    );
+
+                    docxChildren.push(
+                      new Paragraph({
+                        text: i18n.t("threats.threat_history.new") + " " + specific_changes[k].threat_type_name_new,
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 5,
+                        },
+                      })
+                    );
+
+                    docxChildren.push(
+                      new Paragraph({
+                        text: i18n.t("threats.threat_history.old") + " " + specific_changes[k].threat_type_name_old ,
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 5,
+                        },
+                      })
+                    );
+                  }
+
+                  // Asset name
+                  if (specific_changes[k].asset_name_old !== undefined) {
+                    docxChildren.push(
+                      new Paragraph({
+                        text: i18n.t("threats.threat_history.asset_name"),
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 4,
+                        },
+                      })
+                    );
+
+                    docxChildren.push(
+                      new Paragraph({
+                        text: i18n.t("threats.threat_history.new")  + " " + specific_changes[k].asset_name_new,
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 5,
+                        },
+                      })
+                    );
+
+                    docxChildren.push(
+                      new Paragraph({
+                        text: i18n.t("threats.threat_history.old") + " " + specific_changes[k].asset_name_old ,
+                        numbering: {
+                          reference: "rawrr-numbering",
+                          level: 5,
+                        },
+                      })
+                    );
+                  }
+
+                  console.log(specific_changes[k]);
+                }
+              } else {
+                docxChildren.push(
+                  new Paragraph({
+                    text: i18n.t("threats.threat_history.name")  + " " + i18n.t("threats.threat_history.changes_history_empty") ,
+                    heading: HeadingLevel.HEADING_3,
+                    numbering: {
+                      reference: "rawrr-numbering",
+                      level: 2,
+                    },
+                  })
+                );
+              }
+            }
+          }
+        });
+
+        try {
+          const doc = new Document({
+            numbering: {
+              config: [
+                {
+                  reference: "rawrr-numbering",
+                  levels: [
+                    {
+                      level: 0,
+                      format: "upperRoman",
+                      text: "%1",
+                      alignment: AlignmentType.START,
+                      style: {
+                        paragraph: {
+                          indent: { left: 260, hanging: 260 },
+                        },
+                      },
+                    },
+                    {
+                      level: 1,
+                      format: "decimal",
+                      text: "%2.",
+                      alignment: AlignmentType.DISTRIBUTE,
+                      style: {
+                        paragraph: {
+                          indent: { left: 520, hanging: 260 },
+                        },
+                      },
+                    },
+                    {
+                      level: 2,
+                      format: "upperLetter",
+                      text: "%3)",
+                      alignment: AlignmentType.DISTRIBUTE,
+                      style: {
+                        paragraph: {
+                          indent: { left: 780, hanging: 260 },
+                        },
+                      },
+                    },
+                    {
+                      level: 3,
+                      format: "decimal",
+                      text: "%4)",
+                      alignment: AlignmentType.START,
+                      style: {
+                        paragraph: {
+                          indent: { left: 1050, hanging: 260 },
+                        },
+                      },
+                    },
+                    {
+                      level: 4,
+                      format: "lowerRoman",
+                      text: "%5)",
+                      alignment: AlignmentType.START,
+                      style: {
+                        paragraph: {
+                          indent: { left: 1340, hanging: 260 },
+                        },
+                      },
+                    },
+                    {
+                      level: 5,
+                      format: "lowerLetter",
+                      text: "%6)",
+                      alignment: AlignmentType.START,
+                      style: {
+                        paragraph: {
+                          indent: { left: 1700, hanging: 260 },
+                        },
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+            features: {
+              updateFields: true,
+            },
+            sections: [
+              {
+                children: docxChildren,
+              },
+            ],
+          });
+          // Used to export the file into a .docx file
+          Packer.toBuffer(doc).then((buffer) => {
+            fs.writeFileSync(path, buffer);
+          });
+        } catch (e) {
+          console.log(err);
+          reject(err);
+        }
+      } else {
+        resolve();
+      }
+      resolve(path);
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
