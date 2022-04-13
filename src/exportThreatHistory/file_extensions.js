@@ -8,7 +8,7 @@ import {
   AlignmentType,
   HeadingLevel,
   TableOfContents,
-  SectionType
+  SectionType,
 } from "docx";
 import i18n from "../i18n.js";
 
@@ -21,11 +21,11 @@ export function md(
   message,
   locale
 ) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     try {
       var options = {
         title: titlemd,
-        message: message
+        message: message,
         //nameFieldLabel: "Project Name:"
         // defaultPath:  directory to show (optional)
       };
@@ -37,14 +37,13 @@ export function md(
         path = path + ".md";
 
         let keys = Object.keys(secciones_report);
-        console.log(keys);
 
         var title = "# " + i18n.t("header.threats_history") + "\n\n";
         var separator = "---\n";
         var fileContents = [];
         var toc = [];
 
-        keys.forEach(key => {
+        keys.forEach((key) => {
           let item = secciones_report[key];
           if (item.name == "Threats") {
             const n = getMain[item.interest][0].tasks.length;
@@ -65,10 +64,7 @@ export function md(
                 "  * [" +
                   title +
                   "](#" +
-                  title
-                    .toLowerCase()
-                    .split(" ")
-                    .join("-") +
+                  title.toLowerCase().split(" ").join("-") +
                   ")\n"
               );
 
@@ -170,7 +166,7 @@ export function md(
               // Adding audits
 
               let specific_changes = threat_history.filter(
-                threat =>
+                (threat) =>
                   threat.threat_id ==
                   getMain[item.interest][0].tasks[i].identifier
               );
@@ -361,8 +357,6 @@ export function md(
                         "~~\n"
                     );
                   }
-
-                  console.log(specific_changes[k]);
                 }
               } else {
                 fileContents.push(
@@ -391,7 +385,7 @@ export function md(
               toc.join("").concat(separator.concat(fileContents.join("")))
             ),
             "utf-8",
-            err => {
+            (err) => {
               if (err) {
                 // eslint-disable no-console
                 console.log(err);
@@ -422,11 +416,11 @@ export function txt(
   message,
   locale
 ) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     try {
       var options = {
         title: titlemd,
-        message: message
+        message: message,
         //nameFieldLabel: "Project Name:"
         // defaultPath:  directory to show (optional)
       };
@@ -438,14 +432,13 @@ export function txt(
         path = path + ".txt";
 
         let keys = Object.keys(secciones_report);
-        console.log(keys);
 
         var title = i18n.t("header.threats_history") + "\n\n";
         var separator = "---\n";
         var fileContents = [];
         var toc = [];
 
-        keys.forEach(key => {
+        keys.forEach((key) => {
           let item = secciones_report[key];
           if (item.name == "Threats") {
             const n = getMain[item.interest][0].tasks.length;
@@ -562,7 +555,7 @@ export function txt(
               // Adding audits
 
               let specific_changes = threat_history.filter(
-                threat =>
+                (threat) =>
                   threat.threat_id ==
                   getMain[item.interest][0].tasks[i].identifier
               );
@@ -776,8 +769,6 @@ export function txt(
                         "\n"
                     );
                   }
-
-                  console.log(specific_changes[k]);
                 }
               } else {
                 fileContents.push(
@@ -806,7 +797,7 @@ export function txt(
               toc.join("").concat(separator.concat(fileContents.join("")))
             ),
             "utf-8",
-            err => {
+            (err) => {
               if (err) {
                 // eslint-disable no-console
                 console.log(err);
@@ -837,11 +828,11 @@ export function json(
   message,
   locale
 ) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     try {
       var options = {
         title: titlemd,
-        message: message
+        message: message,
         //nameFieldLabel: "Project Name:"
         // defaultPath:  directory to show (optional)
       };
@@ -853,17 +844,16 @@ export function json(
         path = path + ".json";
 
         let keys = Object.keys(secciones_report);
-        console.log(keys);
 
         var reportJson = {
           reportTitle: i18n.t("header.threats_history"),
-          threats: []
+          threats: [],
         };
 
         var fileContents = [];
         var toc = [];
 
-        keys.forEach(key => {
+        keys.forEach((key) => {
           let item = secciones_report[key];
           if (item.name == "Threats") {
             const n = getMain[item.interest][0].tasks.length;
@@ -875,13 +865,11 @@ export function json(
               let title = getMain[item.interest][0].tasks[i].title;
               var threat_number = i + 1;
 
-              console.log(threat_number);
-
               var threatSectionMain = {
                 threatNumber: threat_number,
                 title: title,
                 currentValues: {},
-                historyOfChanges: []
+                historyOfChanges: [],
               };
 
               var threatSection = {};
@@ -929,9 +917,8 @@ export function json(
                       }
 
                       if (related_asset == 0) {
-                        threatSection[i18n.t("global.asset")] = i18n.t(
-                          "global.none"
-                        );
+                        threatSection[i18n.t("global.asset")] =
+                          i18n.t("global.none");
                       }
 
                       threatSection[i18n.t("global.impact")] =
@@ -950,7 +937,7 @@ export function json(
               // Adding audits
 
               let specific_changes = threat_history.filter(
-                threat =>
+                (threat) =>
                   threat.threat_id ==
                   getMain[item.interest][0].tasks[i].identifier
               );
@@ -981,9 +968,8 @@ export function json(
 
                   // Name
                   if (specific_changes[k].name_old !== undefined) {
-                    threatChange[
-                      i18n.t("threats.threat_history.name_change")
-                    ] = {};
+                    threatChange[i18n.t("threats.threat_history.name_change")] =
+                      {};
                     threatChange[i18n.t("threats.threat_history.name_change")][
                       i18n.t("threats.threat_history.new")
                     ] = specific_changes[k].name_new;
@@ -995,9 +981,8 @@ export function json(
 
                   // Description
                   if (specific_changes[k].description_old !== undefined) {
-                    threatChange[
-                      i18n.t("threats.threat_history.description")
-                    ] = {};
+                    threatChange[i18n.t("threats.threat_history.description")] =
+                      {};
                     threatChange[i18n.t("threats.threat_history.description")][
                       i18n.t("threats.threat_history.new")
                     ] = specific_changes[k].description_new;
@@ -1020,9 +1005,8 @@ export function json(
 
                   // Likelihood
                   if (specific_changes[k].likelihood_old !== undefined) {
-                    threatChange[
-                      i18n.t("threats.threat_history.likelihood")
-                    ] = {};
+                    threatChange[i18n.t("threats.threat_history.likelihood")] =
+                      {};
                     threatChange[i18n.t("threats.threat_history.likelihood")][
                       i18n.t("threats.threat_history.new")
                     ] = specific_changes[k].likelihood_new;
@@ -1048,9 +1032,8 @@ export function json(
 
                   // Asset name
                   if (specific_changes[k].asset_name_old !== undefined) {
-                    threatChange[
-                      i18n.t("threats.threat_history.asset_name")
-                    ] = {};
+                    threatChange[i18n.t("threats.threat_history.asset_name")] =
+                      {};
                     threatChange[i18n.t("threats.threat_history.asset_name")][
                       i18n.t("threats.threat_history.new")
                     ] = specific_changes[k].asset_name_new;
@@ -1077,7 +1060,7 @@ export function json(
         const data = JSON.stringify(reportJson);
 
         try {
-          fs.writeFile(path, data, "utf-8", err => {
+          fs.writeFile(path, data, "utf-8", (err) => {
             if (err) {
               // eslint-disable no-console
               console.log(err);
@@ -1107,11 +1090,11 @@ export function docx(
   message,
   locale
 ) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     try {
       var options = {
         title: titlemd,
-        message: message
+        message: message,
         //nameFieldLabel: "Project Name:"
         // defaultPath:  directory to show (optional)
       };
@@ -1141,7 +1124,7 @@ export function docx(
 
         let keys = Object.keys(secciones_report);
 
-        keys.forEach(key => {
+        keys.forEach((key) => {
           let item = secciones_report[key];
           if (item.name == "Threats") {
             const n = getMain[item.interest][0].tasks.length;
@@ -1172,7 +1155,7 @@ export function docx(
                     },
                   })
                 );
-              }else{
+              } else {
                 docxChildren.push(
                   new Paragraph({
                     text: title,
@@ -1189,8 +1172,6 @@ export function docx(
               if (description === null) {
                 description = "";
               }
-              
-
 
               docxChildren.push(
                 new Paragraph({
@@ -1206,7 +1187,10 @@ export function docx(
               // Adding Identifier of the threat
               docxChildren.push(
                 new Paragraph({
-                  text: i18n.t("threats.threat_history.identifier") + ": " + getMain[item.interest][0].tasks[i].identifier,
+                  text:
+                    i18n.t("threats.threat_history.identifier") +
+                    ": " +
+                    getMain[item.interest][0].tasks[i].identifier,
                   numbering: {
                     reference: "rawrr-numbering",
                     level: 3,
@@ -1217,7 +1201,7 @@ export function docx(
               // Adding description of the threat
               docxChildren.push(
                 new Paragraph({
-                  text: i18n.t("global.description") + ": " + description ,
+                  text: i18n.t("global.description") + ": " + description,
                   numbering: {
                     reference: "rawrr-numbering",
                     level: 3,
@@ -1239,7 +1223,10 @@ export function docx(
 
                       docxChildren.push(
                         new Paragraph({
-                          text: i18n.t("global.threat_type") + ": " + threats[k].threat_type_name ,
+                          text:
+                            i18n.t("global.threat_type") +
+                            ": " +
+                            threats[k].threat_type_name,
                           numbering: {
                             reference: "rawrr-numbering",
                             level: 3,
@@ -1260,7 +1247,10 @@ export function docx(
                           related_asset = 1;
                           docxChildren.push(
                             new Paragraph({
-                              text: i18n.t("global.asset") + ": " + threats[k].asset_name  ,
+                              text:
+                                i18n.t("global.asset") +
+                                ": " +
+                                threats[k].asset_name,
                               numbering: {
                                 reference: "rawrr-numbering",
                                 level: 3,
@@ -1273,7 +1263,10 @@ export function docx(
                       if (related_asset == 0) {
                         docxChildren.push(
                           new Paragraph({
-                            text: i18n.t("global.asset") + ": " + i18n.t("global.none")  ,
+                            text:
+                              i18n.t("global.asset") +
+                              ": " +
+                              i18n.t("global.none"),
                             numbering: {
                               reference: "rawrr-numbering",
                               level: 3,
@@ -1284,7 +1277,8 @@ export function docx(
 
                       docxChildren.push(
                         new Paragraph({
-                          text: i18n.t("global.impact") + ": " + threats[k].impact  ,
+                          text:
+                            i18n.t("global.impact") + ": " + threats[k].impact,
                           numbering: {
                             reference: "rawrr-numbering",
                             level: 3,
@@ -1294,7 +1288,10 @@ export function docx(
 
                       docxChildren.push(
                         new Paragraph({
-                          text: i18n.t("global.likelihood") + ": " + threats[k].likelihood,
+                          text:
+                            i18n.t("global.likelihood") +
+                            ": " +
+                            threats[k].likelihood,
                           numbering: {
                             reference: "rawrr-numbering",
                             level: 3,
@@ -1310,7 +1307,7 @@ export function docx(
               // Adding audits
 
               let specific_changes = threat_history.filter(
-                threat =>
+                (threat) =>
                   threat.threat_id ==
                   getMain[item.interest][0].tasks[i].identifier
               );
@@ -1320,7 +1317,7 @@ export function docx(
               if (n_changes > 0) {
                 docxChildren.push(
                   new Paragraph({
-                    text: i18n.t("threats.threat_history.name") ,
+                    text: i18n.t("threats.threat_history.name"),
                     heading: HeadingLevel.HEADING_3,
                     numbering: {
                       reference: "rawrr-numbering",
@@ -1344,7 +1341,9 @@ export function docx(
                   } else {
                     docxChildren.push(
                       new Paragraph({
-                        text: i18n.t("threats.threat_history.change_number") + identifier_change.toString() ,
+                        text:
+                          i18n.t("threats.threat_history.change_number") +
+                          identifier_change.toString(),
                         numbering: {
                           reference: "rawrr-numbering",
                           level: 3,
@@ -1355,7 +1354,10 @@ export function docx(
 
                   docxChildren.push(
                     new Paragraph({
-                      text: i18n.t("threats.threat_history.creation_date") + " " + specific_changes[k].created ,
+                      text:
+                        i18n.t("threats.threat_history.creation_date") +
+                        " " +
+                        specific_changes[k].created,
                       numbering: {
                         reference: "rawrr-numbering",
                         level: 4,
@@ -1366,7 +1368,10 @@ export function docx(
                   if (specific_changes[k].observation !== null) {
                     docxChildren.push(
                       new Paragraph({
-                        text: i18n.t("threats.threat_history.observation") + " " + specific_changes[k].observation ,
+                        text:
+                          i18n.t("threats.threat_history.observation") +
+                          " " +
+                          specific_changes[k].observation,
                         numbering: {
                           reference: "rawrr-numbering",
                           level: 4,
@@ -1389,7 +1394,10 @@ export function docx(
 
                     docxChildren.push(
                       new Paragraph({
-                        text: i18n.t("threats.threat_history.new") + " " + specific_changes[k].name_new,
+                        text:
+                          i18n.t("threats.threat_history.new") +
+                          " " +
+                          specific_changes[k].name_new,
                         numbering: {
                           reference: "rawrr-numbering",
                           level: 5,
@@ -1398,7 +1406,10 @@ export function docx(
                     );
                     docxChildren.push(
                       new Paragraph({
-                        text: i18n.t("threats.threat_history.old") + " " + specific_changes[k].name_old,
+                        text:
+                          i18n.t("threats.threat_history.old") +
+                          " " +
+                          specific_changes[k].name_old,
                         numbering: {
                           reference: "rawrr-numbering",
                           level: 5,
@@ -1421,7 +1432,10 @@ export function docx(
 
                     docxChildren.push(
                       new Paragraph({
-                        text: i18n.t("threats.threat_history.new") + " " + specific_changes[k].description_new,
+                        text:
+                          i18n.t("threats.threat_history.new") +
+                          " " +
+                          specific_changes[k].description_new,
                         numbering: {
                           reference: "rawrr-numbering",
                           level: 5,
@@ -1431,7 +1445,10 @@ export function docx(
 
                     docxChildren.push(
                       new Paragraph({
-                        text: i18n.t("threats.threat_history.old") + " " + specific_changes[k].description_old ,
+                        text:
+                          i18n.t("threats.threat_history.old") +
+                          " " +
+                          specific_changes[k].description_old,
                         numbering: {
                           reference: "rawrr-numbering",
                           level: 5,
@@ -1454,7 +1471,10 @@ export function docx(
 
                     docxChildren.push(
                       new Paragraph({
-                        text: i18n.t("threats.threat_history.new") + " " + specific_changes[k].impact_new,
+                        text:
+                          i18n.t("threats.threat_history.new") +
+                          " " +
+                          specific_changes[k].impact_new,
                         numbering: {
                           reference: "rawrr-numbering",
                           level: 5,
@@ -1464,7 +1484,10 @@ export function docx(
 
                     docxChildren.push(
                       new Paragraph({
-                        text: i18n.t("threats.threat_history.old") + " " + specific_changes[k].impact_old,
+                        text:
+                          i18n.t("threats.threat_history.old") +
+                          " " +
+                          specific_changes[k].impact_old,
                         numbering: {
                           reference: "rawrr-numbering",
                           level: 5,
@@ -1487,7 +1510,10 @@ export function docx(
 
                     docxChildren.push(
                       new Paragraph({
-                        text: i18n.t("threats.threat_history.new") + " " + specific_changes[k].likelihood_new ,
+                        text:
+                          i18n.t("threats.threat_history.new") +
+                          " " +
+                          specific_changes[k].likelihood_new,
                         numbering: {
                           reference: "rawrr-numbering",
                           level: 5,
@@ -1497,7 +1523,10 @@ export function docx(
 
                     docxChildren.push(
                       new Paragraph({
-                        text: i18n.t("threats.threat_history.old") + " " + specific_changes[k].likelihood_old,
+                        text:
+                          i18n.t("threats.threat_history.old") +
+                          " " +
+                          specific_changes[k].likelihood_old,
                         numbering: {
                           reference: "rawrr-numbering",
                           level: 5,
@@ -1520,7 +1549,10 @@ export function docx(
 
                     docxChildren.push(
                       new Paragraph({
-                        text: i18n.t("threats.threat_history.new") + " " + specific_changes[k].threat_type_name_new,
+                        text:
+                          i18n.t("threats.threat_history.new") +
+                          " " +
+                          specific_changes[k].threat_type_name_new,
                         numbering: {
                           reference: "rawrr-numbering",
                           level: 5,
@@ -1530,7 +1562,10 @@ export function docx(
 
                     docxChildren.push(
                       new Paragraph({
-                        text: i18n.t("threats.threat_history.old") + " " + specific_changes[k].threat_type_name_old ,
+                        text:
+                          i18n.t("threats.threat_history.old") +
+                          " " +
+                          specific_changes[k].threat_type_name_old,
                         numbering: {
                           reference: "rawrr-numbering",
                           level: 5,
@@ -1553,7 +1588,10 @@ export function docx(
 
                     docxChildren.push(
                       new Paragraph({
-                        text: i18n.t("threats.threat_history.new")  + " " + specific_changes[k].asset_name_new,
+                        text:
+                          i18n.t("threats.threat_history.new") +
+                          " " +
+                          specific_changes[k].asset_name_new,
                         numbering: {
                           reference: "rawrr-numbering",
                           level: 5,
@@ -1563,7 +1601,10 @@ export function docx(
 
                     docxChildren.push(
                       new Paragraph({
-                        text: i18n.t("threats.threat_history.old") + " " + specific_changes[k].asset_name_old ,
+                        text:
+                          i18n.t("threats.threat_history.old") +
+                          " " +
+                          specific_changes[k].asset_name_old,
                         numbering: {
                           reference: "rawrr-numbering",
                           level: 5,
@@ -1571,13 +1612,14 @@ export function docx(
                       })
                     );
                   }
-
-                  console.log(specific_changes[k]);
                 }
               } else {
                 docxChildren.push(
                   new Paragraph({
-                    text: i18n.t("threats.threat_history.name")  + " " + i18n.t("threats.threat_history.changes_history_empty") ,
+                    text:
+                      i18n.t("threats.threat_history.name") +
+                      " " +
+                      i18n.t("threats.threat_history.changes_history_empty"),
                     heading: HeadingLevel.HEADING_3,
                     numbering: {
                       reference: "rawrr-numbering",

@@ -1,4 +1,4 @@
- const init = require("../00_initdb.js");
+const init = require("../00_initdb.js");
 
 //PARAMETERS:
 //  threats_audit is an array with the following structure: ["threat_id", "changed_fields", "observation"].

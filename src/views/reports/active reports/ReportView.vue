@@ -51,9 +51,9 @@
                 :aria-label="$t('reports.export_info')"
                 class="black--text font-weight-regular"
                 @click="overlay_export_report = true"
-                >
+              >
                 <v-icon class="pr-2">mdi-file-export </v-icon>
-                  {{ $t("reports.export") }}
+                {{ $t("reports.export") }}
               </v-btn>
             </template>
             <span>{{ $t("reports.export_info") }}</span>
@@ -448,12 +448,10 @@ export default {
           /* eslint-disable no-console */
           console.log(format, " does not have a valid export method.");
       }
-
       this.exportReport(export_aux);
       this.overlay = true;
     },
     onExportThreatHistory: function (format) {
-      console.log(this.getAllThreatsHistory());
       let threat_history_aux = [];
       switch (format) {
         case "md":
@@ -524,7 +522,7 @@ export default {
       setTimeout(() => {
         this.$refs.export_threat_option.$el.focus();
       }, 0);
-    }
+    },
   },
   computed: {
     ...mapGetters([
@@ -534,7 +532,7 @@ export default {
       "getAllMergedThreats",
       "getAllMergedVulnerabilities",
       "getAllMergedRecommendations",
-      "getActiveThreatAudits"
+      "getActiveThreatAudits",
     ]),
     ...mapActions(["initializeMain", "changeAllThreatHistory"]),
   },

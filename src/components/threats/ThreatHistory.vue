@@ -28,8 +28,10 @@
                   small
                   color="accent"
                   class="trunc"
-                  @click="overlay_observation = true
-                          fillOverlay($t('global.description'), threat.description)"
+                  @click="
+                    overlay_observation = true;
+                    fillOverlay($t('global.description'), threat.description);
+                  "
                 >
                   mdi-dots-vertical
                 </v-icon>
@@ -94,15 +96,21 @@
                     <b class="d-inline text-truncate trunc"
                       >{{ $t("threats.updated_description") }}:
                     </b>
-                    <span class="d-inline-block text-truncate trunc"
-                      >{{ n.description_new }}</span>
+                    <span class="d-inline-block text-truncate trunc">{{
+                      n.description_new
+                    }}</span>
                     <template>
                       <v-icon
                         small
                         color="accent"
                         class="trunc"
-                        @click="overlay_observation = true
-                                fillOverlay($t('threats.updated_description'), n.description_new)"
+                        @click="
+                          overlay_observation = true;
+                          fillOverlay(
+                            $t('threats.updated_description'),
+                            n.description_new
+                          );
+                        "
                       >
                         mdi-dots-vertical
                       </v-icon>
@@ -121,8 +129,13 @@
                         small
                         color="accent"
                         class="trunc"
-                        @click="overlay_observation = true
-                                fillOverlay($t('threats.previous_description'), n.description_old)"
+                        @click="
+                          overlay_observation = true;
+                          fillOverlay(
+                            $t('threats.previous_description'),
+                            n.description_old
+                          );
+                        "
                       >
                         mdi-dots-vertical
                       </v-icon>
@@ -132,16 +145,21 @@
                     <b class="d-inline text-truncate trunc">
                       {{ $t("threats.added_description") }}:
                     </b>
-                    <span class="d-inline-block text-truncate trunc"
-                      >{{ n.description_new }}</span
-                    >
+                    <span class="d-inline-block text-truncate trunc">{{
+                      n.description_new
+                    }}</span>
                     <template>
                       <v-icon
                         small
                         color="accent"
                         class="trunc"
-                        @click="overlay_observation = true
-                                fillOverlay($t('threats.added_description'), n.description_new)"
+                        @click="
+                          overlay_observation = true;
+                          fillOverlay(
+                            $t('threats.added_description'),
+                            n.description_new
+                          );
+                        "
                       >
                         mdi-dots-vertical
                       </v-icon>
@@ -159,8 +177,13 @@
                         small
                         color="accent"
                         class="trunc"
-                        @click="overlay_observation = true
-                                fillOverlay($t('threats.deleted_description'), n.description_old)"
+                        @click="
+                          overlay_observation = true;
+                          fillOverlay(
+                            $t('threats.deleted_description'),
+                            n.description_old
+                          );
+                        "
                       >
                         mdi-dots-vertical
                       </v-icon>
@@ -251,29 +274,23 @@
         </v-timeline>
       </v-col>
     </v-row>
-    <v-overlay :dark="false" :value="overlay_observation" >
-      <v-card outlined >
+    <v-overlay :dark="false" :value="overlay_observation">
+      <v-card outlined>
         <v-card-text>
           <p class="display-2 text--secondary">
             {{ description_title }}
           </p>
-          <div  class="scrollable_observations">
+          <div class="scrollable_observations">
             {{ description_value }}
-         </div>
+          </div>
         </v-card-text>
         <v-card-actions>
-          <v-btn
-            text
-            plain
-            color="accent"
-            @click="
-              overlay_observation = false;"
-          >
+          <v-btn text plain color="accent" @click="overlay_observation = false">
             {{ $t("global.close_sheet") }}
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-overlay>    
+    </v-overlay>
   </v-container>
 </template>
 
@@ -300,10 +317,10 @@ export default {
       );
       return tempObj[this.$i18n.locale];
     },
-    fillOverlay(title, description){
+    fillOverlay(title, description) {
       this.description_title = title;
       this.description_value = description;
-    }  
+    },
   },
 };
 </script>
@@ -313,7 +330,7 @@ export default {
   max-width: 360px;
   vertical-align: bottom;
 }
-.scrollable_observations{
+.scrollable_observations {
   max-height: 350px;
   max-width: 800px;
   overflow: auto;

@@ -175,7 +175,7 @@ export function setIPCMainListeners() {
           console.log(error);
           event.returnValue = [];
         }
-        break;        
+        break;
       case "vulnerabilities":
         try {
           arr = [
@@ -421,7 +421,7 @@ export function setIPCMainListeners() {
           console.log(error);
           event.returnValue = [];
         }
-        break;        
+        break;
       case "vulnerabilities":
         try {
           vulnerabilities.queryAll().then(
@@ -1045,7 +1045,7 @@ export function setIPCMainListeners() {
         event.returnValue = [];
     }
   });
-  
+
   ipcMain.on("import", (event, arg) => {
     console.log(arg[0]);
     switch (arg[0]) {
@@ -1221,21 +1221,21 @@ export function setIPCMainListeners() {
         }
         break;
       case "png":
-          try {
-            export_image.png(arg[1], arg[2], arg[3], arg[4]).then(
-                function (data) {
-                  event.returnValue = ["resolve", data];
-                },
-                function (err) {
-                  console.log(err);
-                  event.returnValue = ["reject", err];
-                }
-              );
-          } catch (error) {
-            console.log(error);
-            event.returnValue = ["error", error];
-          }
-          break;
+        try {
+          export_image.png(arg[1], arg[2], arg[3], arg[4]).then(
+            function (data) {
+              event.returnValue = ["resolve", data];
+            },
+            function (err) {
+              console.log(err);
+              event.returnValue = ["reject", err];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = ["error", error];
+        }
+        break;
       default:
         console.log(arg[0], " does not have a valid export method.");
         event.returnValue = ["error", ""];
@@ -1322,7 +1322,6 @@ export function setIPCMainListeners() {
         event.returnValue = ["error", ""];
     }
   });
-
 
   ipcMain.on("backupDatabase", (event, arg) => {
     try {

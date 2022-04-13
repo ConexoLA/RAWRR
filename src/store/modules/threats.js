@@ -6,7 +6,7 @@ const state = {
   threats: [],
   active_threat_history: null,
   audits: null,
-  all_audits: null
+  all_audits: null,
 };
 
 const getters = {
@@ -343,7 +343,7 @@ const actions = {
   },
   async changeAllThreatHistory({ commit }) {
     const audits_response = await ipcRenderer.sendSync("queryAll", [
-      "threats_audits"
+      "threats_audits",
     ]);
 
     var audits_array = [];
@@ -431,7 +431,7 @@ const mutations = {
   setActiveThreatHistory: (state, active_threat_history) =>
     (state.active_threat_history = active_threat_history),
   setActiveThreatAudits: (state, audits) => (state.audits = audits),
-  setAllThreatsHistory: (state, all_audits) => (state.all_audits = all_audits)
+  setAllThreatsHistory: (state, all_audits) => (state.all_audits = all_audits),
 };
 
 export default {
