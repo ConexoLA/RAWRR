@@ -313,7 +313,7 @@ export default {
           id: 3,
           type: "json",
           name: this.$t("reports.json.name"),
-          disabled: true,
+          disabled: false,
         },
         {
           id: 4,
