@@ -307,7 +307,7 @@ export default {
           id: 2,
           type: "docx",
           name: this.$t("reports.docx.name"),
-          disabled: true,
+          disabled: false,
         },
         {
           id: 3,
