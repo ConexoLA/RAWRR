@@ -42,6 +42,7 @@
               deletable-chips
               item-text="name"
               item-value="id"
+              @change="checkChange()"
             ></v-select>
           </v-row>
           <v-row
@@ -53,7 +54,7 @@
               <v-btn
                 class="mr-4 black--text font-weight-regular"
                 color="primary"
-                :disabled="!valid"
+                :disabled="shouldDisableButton()"
                 @click="updateElement(formDataTemp.assessmentActivity)"
                 >{{ $t("global.update") }}
               </v-btn>
@@ -99,6 +100,7 @@ export default {
   },
   data: () => ({
     valid: true,
+    changedRelated: true,
     alertType: null,
     formDataTemp: null,
   }),
@@ -118,27 +120,28 @@ export default {
         this.formDataTemp.resetFormValidation = false;
       }
     },
-    updateElement(assessmentActivity) {
+    async updateElement(assessmentActivity) {
       if (assessmentActivity.newAssetsId != assessmentActivity.oldAssetsId) {
-        let _activityAssetAssociation = {
+        let _activityAssetAssociation = await {
           assessment_activity_id: assessmentActivity.id,
           asset_id: null,
         };
-        assessmentActivity.oldAssetsId.forEach((oldAssetId) => {
+        await assessmentActivity.oldAssetsId.forEach((oldAssetId) => {
           _activityAssetAssociation.asset_id = oldAssetId;
           this.deleteAssessmentActivityAssetAssociation(
             _activityAssetAssociation
           );
         });
-        assessmentActivity.newAssetsId.forEach((newAssetId) => {
+        await assessmentActivity.newAssetsId.forEach((newAssetId) => {
           _activityAssetAssociation.asset_id = newAssetId;
           this.addAssessmentActivityAssetAssociation(_activityAssetAssociation);
         });
-        this.fetchAllAssessmentActivityAssetAssociations();
+        await this.fetchAllAssessmentActivityAssetAssociations();
       }
-      this.updateAssessmentActivity(assessmentActivity);
-      this.fetchAllAssessmentActivities();
-      this.$emit("toggle");
+      await this.updateAssessmentActivity(assessmentActivity);
+      await this.fetchAllAssessmentActivities();
+      this.changedRelated = await true;
+      await this.$emit("toggle");
     },
     async insertElement(assessmentActivity) {
       this.addAssessmentActivity(assessmentActivity);
@@ -160,6 +163,44 @@ export default {
         await this.fetchAllAssessmentActivities();
       }
       await this.$refs.form.reset();
+    },
+    enabledUpdateButton() {
+      var b_disabled = true;
+      var arr_keys = Object.keys(this.formDataTemp.assessmentActivity);
+
+      var old_ass_index = arr_keys.indexOf("oldAssetsId");
+      arr_keys.splice(old_ass_index, 1);
+      var new_ass_index = arr_keys.indexOf("newAssetsId");
+      arr_keys.splice(new_ass_index, 1);
+
+      var arrayLength = arr_keys.length;
+      for (var i = 0; i < arrayLength; i++) {
+        if (
+          this.formDataTemp.assessmentActivity[arr_keys[i]] !=
+          this.formDataTemp.assessmentActivity_aux[arr_keys[i]]
+        ) {
+          b_disabled = false;
+          break;
+        }
+      }
+      return b_disabled;
+    },
+    checkChange() {
+      if (
+        JSON.stringify(this.formDataTemp.assessmentActivity.oldAssetsId) ==
+        JSON.stringify(this.formDataTemp.assessmentActivity.newAssetsId)
+      ) {
+        this.changedRelated = true;
+      } else {
+        this.changedRelated = false;
+      }
+    },
+    shouldDisableButton() {
+      if (!this.valid || (this.changedRelated && this.enabledUpdateButton())) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
 };

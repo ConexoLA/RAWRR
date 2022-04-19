@@ -69,7 +69,7 @@
           <template v-slot:[`item.name`]="{ item }">
             <span
               class="d-inline-block text-truncate"
-              :style="`max-width: ${(windowSize.x * 15) / 100}px`"
+              :style="`max-width: ${(windowSize.x * 24) / 100}px`"
               :title="item.name"
             >
               {{ item.name }}
@@ -79,7 +79,7 @@
           <template v-slot:[`item.description`]="{ item }">
             <span
               class="d-inline-block text-truncate"
-              :style="`max-width: ${(windowSize.x * 30) / 100}px`"
+              :style="`max-width: ${(windowSize.x * 24) / 100}px`"
               :title="item.description"
             >
               {{ item.description }}
@@ -88,7 +88,7 @@
 
           <template v-slot:[`item.asset_name`]="{ item }">
             <v-responsive
-              :style="`max-width: ${(windowSize.x * 20) / 100}px`"
+              :style="`max-width: ${(windowSize.x * 23) / 100}px`"
               max-height="100px"
               style="display: block; overflow: auto"
             >
@@ -104,13 +104,11 @@
             </v-responsive>
           </template>
 
-          <template v-slot:[`item.edit`]="props">
+          <template v-slot:[`item.actions`]="props">
             <v-btn text icon color="accent" @click="showEditDialog(props.item)">
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
-          </template>
 
-          <template v-slot:[`item.delete`]="props">
             <v-btn
               text
               icon
@@ -209,13 +207,8 @@ export default {
         },
         { text: this.$t("global.assets"), value: "asset_name" },
         {
-          text: this.$t("global.edit"),
-          value: "edit",
-          sortable: false,
-        },
-        {
-          text: this.$t("global.delete"),
-          value: "delete",
+          text: this.$t("global.actions"),
+          value: "actions",
           sortable: false,
         },
       ];
@@ -258,6 +251,7 @@ export default {
       this.formData.title = this.$t("activities.form_edit");
       this.formData.type = "Edit";
       this.formData.assessmentActivity = activity;
+      this.formData.assessmentActivity_aux = Object.assign({}, activity);
       this.formData.assessmentActivity.oldAssetsId =
         this.obtainAssetAssociations(activity.id);
       this.formData.assessmentActivity.newAssetsId =

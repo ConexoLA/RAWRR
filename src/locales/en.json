@@ -5,6 +5,7 @@
     "search": "Search",
     "edit": "Edit",
     "delete": "Delete",
+    "actions": "Actions",
     "delete_confirm": "Confirm delete",
     "cancel": "Cancel",
     "close_sheet": "Close",
@@ -32,6 +33,7 @@
     "implementation_time": "Implementation time",
     "vulnerabilities": "Related vulnerabilities",
     "report_save": "Choose a location where you would like to save your report",
+    "threat_history_save": "Choose a location where you would like to save your threat history",
     "delete_success": "Successfully deleted",
     "delete_error": "An error occured while trying to delete",
     "none": "None",
@@ -45,7 +47,8 @@
     "threats": "Threats",
     "vulnerabilities": "Vulnerabilities",
     "recommendations": "Recommendations",
-    "report": "Report"
+    "report": "Report",
+    "threats_history": "Threats History"
   },
   "home": {
     "welcome_message_1": "Risk Assessment Workflow for Recommendation Roadmaps",
@@ -121,15 +124,63 @@
     "edit_error": "Threat could not be modified. Please make sure the name is unique",
     "insert_success": "Threat inserted successfully",
     "insert_error": "Threat could not be inserted. Please make sure the name is unique",
+    "threat_history": {
+      "identifier": "ID",
+      "name": "History of changes:",
+      "changes_history_empty": "No changes found.",
+      "change_number": "Change ",
+      "created": "Creation",
+      "creation_date": "Creation date:",
+      "asset_name": "Asset name:",
+      "description": "Description:",
+      "impact": "Impact:",
+      "likelihood": "Likelihood:",
+      "threat_type_name": "Threat type name:",
+      "name_change": "Name:",
+      "observation": "Observation:",
+      "new": "New:",
+      "old": "Old:"
+    },
     "risk_matrix": {
-      "vcard_name": "Risk Matrix",
-      "show": "Risk Matrix",
+      "vcard_name": "Risk matrix",
+      "show": "Risk matrix",
       "h_axis": "Likelihood",
       "v_axis": "Impact",
-      "hide_message": "Hide Risk Matrix",
-      "value": "Risk Magnitude",
-      "name": "Name"
-    }
+      "export_message": "Export as image",
+      "export_error": "Error exporting the image",
+      "export_success": "Image exported succesfully",
+      "value": "Risk magnitude",
+      "name": "Name",
+      "export_title": "Export risk matrix as .png",
+      "export_subtitle": "Choose a location where you would like to save the image"
+    },
+    "previous_name": "Previous name",
+    "updated_name": "Updated name",
+    "added_name": "New name",
+    "previous_description": "Previous description",
+    "updated_description": "Updated description",
+    "added_description": "Added description",
+    "deleted_description": "Deleted description",
+    "previous_threat_type": "Previous threat type",
+    "updated_threat_type": "Updated threat type",
+    "added_threat_type": "Added threat type",
+    "deleted_threat_type": "Deleted threat type",
+    "previous_asset": "Previous asset",
+    "updated_asset": "Updated asset",
+    "added_asset": "Added asset",
+    "deleted_asset": "Deleted asset",
+    "previous_impact": "Previous impact",
+    "updated_impact": "Updated impact",
+    "added_impact": "Added impact",
+    "deleted_impact": "Deleted impact",
+    "previous_likelihood": "Previous likelihood",
+    "updated_likelihood": "Updated likelihood",
+    "added_likelihood": "Added likelihood",
+    "deleted_likelihood": "Deleted likelihood",
+    "current_threats_values": "Current Threat values",
+    "created_threat": "Created",
+    "modified_threat": "Modified",
+    "observation": "Reason for the change"
   },
   "vulnerabilities": {
     "title": "Listing all vulnerabilities",
@@ -158,6 +209,28 @@
     "insert_error": "Recommendation could not be inserted. Please make sure the name is unique"
   },
   "reports": {
+    "threat_history": {
+      "export": "Export Threat History",
+      "export_info": "Export the threat history with the active threats",
+      "export_error": "The threat history could not be exported",
+      "export_success": "Threat history exported successfully",
+      "md": {
+        "name": "MarkDown Text File",
+        "title": "Export threat history as .md"
+      },
+      "docx": {
+        "name": "Microsoft Word File",
+        "title": "Export threat history as .docx"
+      },
+      "json": {
+        "name": "Javascript Object Notation File",
+        "title": "Export threat history as .json"
+      },
+      "txt": {
+        "name": "Text File",
+        "title": "Export threat history as .txt"
+      }
+    },
     "title": "Report content selection",
     "subtitle": "You can reorder and remove elements in the report content section",
     "to_add": "Content not in report",

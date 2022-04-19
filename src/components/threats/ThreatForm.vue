@@ -24,7 +24,7 @@
               v-model="formDataTemp.threat.description"
               :label="$t('global.description')"
               outlined
-              rows="5"
+              rows="4"
               no-resize
             ></v-textarea>
           </v-row>
@@ -34,7 +34,7 @@
                 color="accent"
                 item-color="accent"
                 v-model="formDataTemp.threat.threat_type_id"
-                :items="getAllThreatTypes"
+                :items="getAllThreatTypes()"
                 item-text="name_translation"
                 item-value="id"
                 :label="$t('global.threat_type')"
@@ -46,7 +46,7 @@
                 color="accent"
                 item-color="accent"
                 v-model="formDataTemp.threat.asset_id"
-                :items="getAllAssets"
+                :items="getAllAssets()"
                 item-text="name"
                 item-value="id"
                 :label="$t('global.asset')"
@@ -82,6 +82,20 @@
           </v-row>
           <v-row
             no-gutters
+            justify="center"
+            v-if="formDataTemp.type === 'Edit'"
+          >
+            <v-col cols="8">
+              <v-text-field
+                color="accent"
+                v-model="formDataTemp.threat.observation"
+                :label="$t('threats.observation')"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+
+          <v-row
+            no-gutters
             class="text-end"
             v-if="formDataTemp.type === 'Edit'"
           >
@@ -89,7 +103,7 @@
               <v-btn
                 class="mr-4 black--text font-weight-regular"
                 color="primary"
-                :disabled="!valid"
+                :disabled="!valid || enabledUpdateButton()"
                 @click="updateElement(formDataTemp.threat)"
                 >{{ $t("global.update") }}
               </v-btn>
@@ -126,7 +140,6 @@ export default {
     this.formDataTemp = this.formData;
   },
   computed: {
-    ...mapGetters(["getAllThreatTypes", "getAllAssets"]),
     nameRules() {
       return [
         (v) => !!v || this.$t("forms.name_restriction_1"),
@@ -159,6 +172,7 @@ export default {
   }),
   methods: {
     ...mapActions(["fetchAllThreats", "addThreat", "updateThreat"]),
+    ...mapGetters(["getAllThreatTypes", "getAllAssets"]),
     resetFormValidation() {
       if (this.$refs.form) {
         this.$refs.form.resetValidation();
@@ -169,16 +183,16 @@ export default {
       this.formDataTemp.threat.impact = 0;
       this.formDataTemp.threat.likelihood = 0;
     },
-    updateElement(threat) {
+    async updateElement(threat) {
       if (!threat.impact) {
-        threat.impact = 0;
+        threat.impact = await 0;
       }
       if (!threat.likelihood) {
-        threat.likelihood = 0;
+        threat.likelihood = await 0;
       }
-      this.updateThreat(threat);
-      this.fetchAllThreats();
-      this.$emit("toggle");
+      await this.updateThreat(threat);
+      await this.fetchAllThreats();
+      await this.$emit("toggle");
     },
     async insertElement(threat) {
       if (!threat.impact) {
@@ -191,6 +205,24 @@ export default {
       await this.fetchAllThreats();
       await this.$refs.form.reset();
       await this.resetImpactLikelihood();
+    },
+    enabledUpdateButton() {
+      var b_disabled = true;
+      var arr_keys = Object.keys(this.formDataTemp.threat);
+      var observation_index = arr_keys.indexOf("observation");
+      arr_keys.splice(observation_index, 1);
+      var arrayLength = arr_keys.length;
+
+      for (var i = 0; i < arrayLength; i++) {
+        if (
+          this.formDataTemp.threat[arr_keys[i]] !=
+          this.formDataTemp.threat_aux[arr_keys[i]]
+        ) {
+          var b_disabled = false;
+          break;
+        }
+      }
+      return b_disabled;
     },
   },
 };

@@ -130,3 +130,39 @@ export function remove(threat_type) {
     }
   });
 }
+
+//PARAMETERS:
+//  Asset is an array with the following structure: ["id"].
+//    id is the table's Primary Key.
+//EXPECTED OUTPUT:
+//  Returns a promise.
+//    Resolve: an object containing the threat type info.
+//    Reject: empty array or an error.
+export function getOne(threat_type) {
+  return new Promise(function (resolve, reject) {
+    try {
+      let db = init.open();
+      let threat_types = [];
+      if (db) {
+        db.serialize(function () {
+          let sql =
+            "SELECT * FROM threat_types WHERE id = ?";
+          db.all(sql, threat_type, (err, rows) => {
+            if (err) {
+              reject(err);
+            } else {
+              rows.forEach((row) => {
+                threat_types.push(row);
+              });
+              resolve(threat_types[0]);
+            }
+          });
+        });
+      } else {
+        reject(threat_types);
+      }
+    } catch (err) {
+      reject(err);
+    }
+  });
+}

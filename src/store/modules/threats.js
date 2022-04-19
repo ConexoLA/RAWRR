@@ -4,6 +4,9 @@ import i18n from "../../i18n.js";
 const state = {
   threat_types: [],
   threats: [],
+  active_threat_history: null,
+  audits: null,
+  all_audits: null,
 };
 
 const getters = {
@@ -34,6 +37,7 @@ const getters = {
     return _threat_types;
   },
   getAllThreats: (state) => state.threats,
+  getAllThreatsHistory: (state) => state.all_audits,
   getAllMergedThreats: (state, rootState) => {
     //This performs a join operation, this should be removed and replaced with proper db queries in the future.
     rootState.fetchAllAssets;
@@ -58,6 +62,8 @@ const getters = {
 
     return _threats;
   },
+  getActiveThreatHistory: (state) => state.active_threat_history,
+  getActiveThreatAudits: (state) => state.audits,
 };
 
 const actions = {
@@ -150,17 +156,69 @@ const actions = {
   },
   async addThreat({ commit }, threat) {
     const response = await ipcRenderer.sendSync("insert", ["threats", threat]);
+    const asset_response = ipcRenderer.sendSync("getOne", ["assets", threat]);
     if (response.length == 0) {
       this.dispatch("setNotification", {
         text: i18n.t("threats.insert_error"),
         color: "error",
       });
     } else {
+      var audit_threat_json = {};
+
+      if (threat.name != undefined) {
+        audit_threat_json["name"] = {
+          old_data: null,
+          new_data: threat.name,
+        };
+      }
+      if (threat.description != undefined) {
+        audit_threat_json["description"] = {
+          old_data: null,
+          new_data: threat.description,
+        };
+      }
+      if (threat.impact != undefined) {
+        audit_threat_json["impact"] = {
+          old_data: null,
+          new_data: threat.impact,
+        };
+      }
+      if (threat.likelihood != undefined) {
+        audit_threat_json["likelihood"] = {
+          old_data: null,
+          new_data: threat.likelihood,
+        };
+      }
+
+      if (threat.threat_type_id != undefined) {
+        audit_threat_json["threat_type_name"] = {
+          old_data: null,
+          new_data: threat.threat_type_id,
+        };
+      }
+      if (threat.asset_id != undefined && asset_response) {
+        audit_threat_json["asset_name"] = {
+          old_data: null,
+          new_data: asset_response.name,
+        };
+      }
+      var threat_audit = {
+        threat_id: response[6],
+        changed_fields: JSON.stringify(audit_threat_json),
+        observation: null,
+        type: 0,
+      };
       this.dispatch("setNotification", {
         text: i18n.t("threats.insert_success"),
       });
     }
     commit("newThreat", response);
+    if (threat_audit != undefined) {
+      const threat_audit_response = await ipcRenderer.sendSync("insert", [
+        "threats_audits",
+        threat_audit,
+      ]);
+    }
   },
   async deleteThreat({ commit }, threat) {
     const response = await ipcRenderer.sendSync("remove", ["threats", threat]);
@@ -177,6 +235,14 @@ const actions = {
     commit("removeThreat", response);
   },
   async updateThreat({ commit }, threat) {
+    const threat_response = await ipcRenderer.sendSync("getOne", [
+      "threats",
+      threat,
+    ]);
+    const asset_response = await ipcRenderer.sendSync("getOne", [
+      "assets",
+      threat,
+    ]);
     const response = await ipcRenderer.sendSync("update", ["threats", threat]);
     if (response.length == 0) {
       this.dispatch("setNotification", {
@@ -184,11 +250,152 @@ const actions = {
         color: "error",
       });
     } else {
+      var audit_threat_json = {};
+
+      if (threat_response.name != threat.name) {
+        audit_threat_json["name"] = {
+          old_data: threat_response.name,
+          new_data: threat.name,
+        };
+      }
+      if (threat_response.description != threat.description) {
+        audit_threat_json["description"] = {
+          old_data: threat_response.description,
+          new_data: threat.description,
+        };
+      }
+      if (threat_response.impact != threat.impact) {
+        audit_threat_json["impact"] = {
+          old_data: threat_response.impact,
+          new_data: threat.impact,
+        };
+      }
+      if (threat_response.likelihood != threat.likelihood) {
+        audit_threat_json["likelihood"] = {
+          old_data: threat_response.likelihood,
+          new_data: threat.likelihood,
+        };
+      }
+
+      if (threat_response.threat_type_id != threat.threat_type_id) {
+        audit_threat_json["threat_type_name"] = {
+          old_data: threat_response.threat_type_id,
+          new_data: threat.threat_type_id,
+        };
+      }
+      if (threat_response.asset_id != threat.asset_id) {
+        if (!asset_response) {
+          audit_threat_json["asset_name"] = {
+            old_data: threat.asset_name,
+            new_data: null,
+          };
+        } else {
+          audit_threat_json["asset_name"] = {
+            old_data: threat.asset_name,
+            new_data: asset_response.name,
+          };
+        }
+      }
+      var threat_audit = {
+        threat_id: threat.id,
+        changed_fields: JSON.stringify(audit_threat_json),
+        observation: threat.observation,
+        type: 1,
+      };
+      const threat_audit_response = await ipcRenderer.sendSync("insert", [
+        "threats_audits",
+        threat_audit,
+      ]);
+
       this.dispatch("setNotification", {
         text: i18n.t("threats.edit_success"),
       });
     }
     commit("changeThreat", response);
+  },
+  async changeActiveThreatHistory({ commit }, threat) {
+    const audits_response = await ipcRenderer.sendSync("allAudits", [
+      "threats_audits",
+      threat,
+    ]);
+    var audits_array = [];
+    for (var i = 0; i < audits_response.length; i++) {
+      var jsonData = {};
+      var iter_json = JSON.parse(audits_response[i]["changed_fields"]);
+      var iter_json_keys = Object.keys(iter_json);
+
+      for (var j = 0; j < iter_json_keys.length; j++) {
+        jsonData[iter_json_keys[j] + "_old"] =
+          iter_json[iter_json_keys[j]]["old_data"];
+        jsonData[iter_json_keys[j] + "_new"] =
+          iter_json[iter_json_keys[j]]["new_data"];
+      }
+      jsonData["created"] = audits_response[i]["created"];
+      jsonData["type"] = audits_response[i]["type"];
+      jsonData["observation"] = audits_response[i]["observation"];
+      audits_array.push(jsonData);
+    }
+    commit("setActiveThreatHistory", threat);
+    commit("setActiveThreatAudits", audits_array);
+  },
+  async changeAllThreatHistory({ commit }) {
+    const audits_response = await ipcRenderer.sendSync("queryAll", [
+      "threats_audits",
+    ]);
+
+    var audits_array = [];
+    for (var i = 0; i < audits_response.length; i++) {
+      var jsonData = {};
+      var iter_json = JSON.parse(audits_response[i]["changed_fields"]);
+      var iter_json_keys = Object.keys(iter_json);
+
+      for (var j = 0; j < iter_json_keys.length; j++) {
+        jsonData[iter_json_keys[j] + "_old"] =
+          iter_json[iter_json_keys[j]]["old_data"];
+        jsonData[iter_json_keys[j] + "_new"] =
+          iter_json[iter_json_keys[j]]["new_data"];
+      }
+      jsonData["created"] = audits_response[i]["created"];
+      jsonData["type"] = audits_response[i]["type"];
+      jsonData["observation"] = audits_response[i]["observation"];
+      jsonData["threat_id"] = audits_response[i]["threat_id"];
+      jsonData["audit_id"] = audits_response[i]["id"];
+      audits_array.push(jsonData);
+    }
+    commit("setAllThreatsHistory", audits_array);
+  },
+  async exportThreatHistory({ dispatch }, threat_history) {
+    const response = await ipcRenderer.sendSync(
+      "exportThreatHistory",
+      threat_history
+    );
+    if (response[0] === "error" || response[0] === "reject") {
+      dispatch("setNotification", {
+        text: i18n.t("reports.threat_history.export_error"),
+        color: "error",
+      });
+    } else {
+      if (response[1]) {
+        dispatch("setNotification", {
+          text: i18n.t("reports.threat_history.export_success"),
+        });
+      }
+    }
+  },
+  async exportImage({ dispatch }, imageBase64) {
+    const response = await ipcRenderer.sendSync("export", imageBase64);
+    if (response[0] === "error" || response[0] === "reject") {
+      dispatch("setNotification", {
+        text: i18n.t("threats.risk_matrix.export_error"),
+        color: "error",
+      });
+    } else {
+      if (response[1]) {
+        dispatch("setNotification", {
+          text: i18n.t("threats.risk_matrix.export_success"),
+        });
+      }
+    }
   },
 };
 
@@ -218,6 +425,10 @@ const mutations = {
     }
   },
   backup: (rootState, value) => (rootState.backup = value),
+  setActiveThreatHistory: (state, active_threat_history) =>
+    (state.active_threat_history = active_threat_history),
+  setActiveThreatAudits: (state, audits) => (state.audits = audits),
+  setAllThreatsHistory: (state, all_audits) => (state.all_audits = all_audits),
 };
 
 export default {

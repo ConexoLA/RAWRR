@@ -5,6 +5,7 @@
     "search": "Buscar",
     "edit": "Editar",
     "delete": "Eliminar",
+    "actions": "Acciones",
     "delete_confirm": "Confirmar eliminación",
     "cancel": "Cancelar",
     "close_sheet": "Cerrar",
@@ -20,7 +21,7 @@
     "id": "ID",
     "name": "Nombre",
     "description": "Descripción",
-    "asset": "Activos",
+    "asset": "Activo",
     "assets": "Activos relacionados",
     "asset_category": "Categoría del activo",
     "threat_type": "Tipo de amenaza",
@@ -32,6 +33,7 @@
     "implementation_time": "Tiempo de implementación",
     "vulnerabilities": "Vulnerabilidades relacionadas",
     "report_save": "Selecciona una ubicación donde te gustaría guardar el reporte",
+    "threat_history_save": "Selecciona una ubicación donde te gustaría guardar el historial de cambios de las amenazas",
     "delete_success": "Eliminado satisfactoriamente",
     "delete_error": "Ha ocurrido un error al tratar de eliminar",
     "none": "Ninguna",
@@ -45,7 +47,8 @@
     "threats": "Amenazas",
     "vulnerabilities": "Vulnerabilidades",
     "recommendations": "Recomendaciones",
-    "report": "Reporte"
+    "report": "Reporte",
+    "threats_history": "Historial de amenazas"
   },
   "home": {
     "welcome_message_1": "Risk Assessment Workflow for Recommendation Roadmaps",
@@ -121,15 +124,63 @@
     "edit_error": "La amenaza no pudo ser modificada. Por favor compruebe que el nombre sea único",
     "insert_success": "La amenaza ha sido insertada exitosamente",
     "insert_error": "La amenaza no pudo ser insertada. Por favor compruebe que el nombre sea único",
+    "threat_history": {
+      "identifier": "ID",
+      "name": "Histórico de cambios':",
+      "changes_history_empty": "Ningun cambio encontrado.",
+      "change_number": "Cambio ",
+      "created": "Creación",
+      "creation_date": "Fecha de creación:",
+      "asset_name": "Nombre de activo:",
+      "description": "Descripción:",
+      "impact": "Impacto:",
+      "likelihood": "Probabilidad:",
+      "threat_type_name": "Nombre de tipo de amenaza:",
+      "name_change": "Nombre:",
+      "observation": "Observación:",
+      "new": "Nuevo:",
+      "old": "Viejo:"
+    },
     "risk_matrix": {
-      "vcard_name": "Matriz de Riesgo",
-      "show": "Matriz de Riesgo",
+      "vcard_name": "Matriz de riesgo",
+      "show": "Matriz de riesgo",
       "h_axis": "Probabilidad",
       "v_axis": "Impacto",
-      "hide_message": "Ocultar Matriz de Riesgo",
-      "value": "Magnitud de Riesgo",
-      "name": "Nombre"
-    }
+      "export_message": "Exportar como imagen",
+      "export_error": "Ha ocurrido un error exportando la matrix de riesgo",
+      "export_success": "Matriz de riesgo exportada satisfactoriamente",
+      "value": "Magnitud de riesgo",
+      "name": "Nombre",
+      "export_title": "Exportar la matriz de riesgo como un .png",
+      "export_subtitle": "Selecciona una ubicación donde te gustaría guardar la imagen"
+    },
+    "previous_name": "Nombre anterior",
+    "updated_name": "Nombre actualizado",
+    "added_name": "Nombre agregado",
+    "previous_description": "Descripción anterior",
+    "updated_description": "Descripción actualizada",
+    "added_description": "Descripcion agregada",
+    "deleted_description": "Descripcion eliminada",
+    "previous_threat_type": "Tipo de amenaza anterior",
+    "updated_threat_type": "Tipo de amenaza actualizado",
+    "added_threat_type": "Tipo de amenaza vinculado",
+    "deleted_threat_type": "Tipo de amenaza desvinculado",
+    "previous_asset": "Activo anterior",
+    "updated_asset": "Activo actualizado",
+    "added_asset": "Activo vinculado",
+    "deleted_asset": "Activo desvinculado",
+    "previous_impact": "Impacto anterior",
+    "updated_impact": "Impacto actualizado",
+    "added_impact": "Impacto agregado",
+    "deleted_impact": "Impacto eliminado",
+    "previous_likelihood": "Probabilidad anterior",
+    "updated_likelihood": "Probabilidad actualizada",
+    "added_likelihood": "Probabilidad añadida",
+    "deleted_likelihood": "Probabilidad eliminada",
+    "current_threats_values": "Valores actuales de la amenaza",
+    "created_threat": "Creado",
+    "modified_threat": "Modificado",
+    "observation": "Motivo del cambio"
   },
   "vulnerabilities": {
     "title": "Listando todas las vulnerabilidades",
@@ -158,6 +209,28 @@
     "insert_error": "La recomendación no pudo ser insertada. Por favor compruebe que el nombre sea único"
   },
   "reports": {
+    "threat_history": {
+      "export": "Exportar histórico de amenazas",
+      "export_info": "Exportar histórico de amenazas con las amenazas activas",
+      "export_error": "El histórico de cambios no pudo ser exportado",
+      "export_success": "El histórico de cambios fue exportado con éxito",
+      "md": {
+        "name": "Archivo MarkDown",
+        "title": "Exportar histórico de amenazas como .md"
+      },
+      "docx": {
+        "name": "Archivo de Microsoft Word",
+        "title": "Exportar histórico de amenazas como .docx"
+      },
+      "json": {
+        "name": "Archivo de Notación de Objeto de Javascript",
+        "title": "Exportar histórico de amenazas como .json"
+      },
+      "txt": {
+        "name": "Archivo de texto",
+        "title": "Exportar histórico de amenazas como .txt"
+      }
+    },
     "title": "Selección del contenido del reporte",
     "subtitle": "Puedes reordenar y eliminar elementos de la sección de contenido del reporte",
     "to_add": "Contenido fuera del reporte",

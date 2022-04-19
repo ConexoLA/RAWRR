@@ -50,7 +50,7 @@
               <v-btn
                 class="mr-4 black--text font-weight-regular"
                 color="primary"
-                :disabled="!valid"
+                :disabled="!valid || enabledUpdateButton()"
                 @click="updateElement(formDataTemp.asset)"
                 >{{ $t("global.update") }}
               </v-btn>
@@ -108,15 +108,31 @@ export default {
         this.formDataTemp.resetFormValidation = false;
       }
     },
-    updateElement(asset) {
-      this.updateAsset(asset);
-      this.fetchAllAssets();
-      this.$emit("toggle");
+    async updateElement(asset) {
+      await this.updateAsset(asset);
+      await this.fetchAllAssets();
+      await this.$emit("toggle");
     },
     insertElement(asset) {
       this.addAsset(asset);
       this.fetchAllAssets();
       this.$refs.form.reset();
+    },
+    enabledUpdateButton() {
+      var b_disabled = true;
+      var arr_keys = Object.keys(this.formDataTemp.asset);
+      var arrayLength = arr_keys.length;
+
+      for (var i = 0; i < arrayLength; i++) {
+        if (
+          this.formDataTemp.asset[arr_keys[i]] !=
+          this.formDataTemp.asset_aux[arr_keys[i]]
+        ) {
+          var b_disabled = false;
+          break;
+        }
+      }
+      return b_disabled;
     },
   },
 };
