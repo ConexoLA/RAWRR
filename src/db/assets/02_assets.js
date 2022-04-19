@@ -130,3 +130,39 @@ export function remove(asset) {
     }
   });
 }
+
+//PARAMETERS:
+//  Asset is an array with the following structure: ["id"].
+//    id is the table's Primary Key.
+//EXPECTED OUTPUT:
+//  Returns a promise.
+//    Resolve: an object containing the asset info.
+//    Reject: empty array or an error.
+export function getOne(asset) {
+  return new Promise(function (resolve, reject) {
+    try {
+      let db = init.open();
+      let assets = [];
+      if (db) {
+        db.serialize(function () {
+          let sql =
+            "SELECT * FROM assets WHERE id = ?";
+          db.all(sql, asset, (err, rows) => {
+            if (err) {
+              reject(err);
+            } else {
+              rows.forEach((row) => {
+                assets.push(row);
+              });
+              resolve(assets[0]);
+            }
+          });
+        });
+      } else {
+        reject(assets);
+      }
+    } catch (err) {
+      reject(err);
+    }
+  });
+}

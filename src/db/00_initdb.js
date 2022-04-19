@@ -61,6 +61,9 @@ export function open() {
           "CREATE TABLE IF NOT EXISTS threats (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, threat_type_id INTEGER, name TEXT NOT NULL UNIQUE, description TEXT, asset_id INTEGER, impact INTEGER, likelihood INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (threat_type_id) REFERENCES threat_types(id) ON DELETE SET NULL, FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE SET NULL, CHECK(impact BETWEEN 0 AND 10), CHECK(likelihood BETWEEN 0 AND 10))"
         );
         db.run(
+          "CREATE TABLE IF NOT EXISTS threats_audits (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, threat_id INTEGER, changed_fields JSON NOT NULL, observation TEXT, type INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (threat_id) REFERENCES threats(id) ON DELETE SET NULL)"
+        );        
+        db.run(
           "CREATE TABLE IF NOT EXISTS vulnerabilities (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, description TEXT, assessment_activity_id INTEGER, asset_id INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (assessment_activity_id) REFERENCES assessment_activities(id) ON DELETE SET NULL, FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE SET NULL)"
         );
         db.run(
@@ -198,6 +201,7 @@ export function loadTestValues() {
         db.run("DROP TABLE IF EXISTS assessment_activities");
         db.run("DROP TABLE IF EXISTS assessment_activity_asset_associations");
         db.run("DROP TABLE IF EXISTS threats");
+        db.run("DROP TABLE IF EXISTS threats_audits");
         db.run("DROP TABLE IF EXISTS vulnerabilities");
         db.run("DROP TABLE IF EXISTS vulnerability_threat_associations");
         db.run("DROP TABLE IF EXISTS recommendations");
@@ -216,6 +220,9 @@ export function loadTestValues() {
         db.run(
           "CREATE TABLE IF NOT EXISTS threats (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, threat_type_id INTEGER, name TEXT NOT NULL UNIQUE, description TEXT, asset_id INTEGER, impact INTEGER, likelihood INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (threat_type_id) REFERENCES threat_types(id) ON DELETE SET NULL, FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE SET NULL, CHECK(impact BETWEEN 0 AND 10), CHECK(likelihood BETWEEN 0 AND 10))"
         );
+        db.run(
+          "CREATE TABLE IF NOT EXISTS threats_audits (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, threat_id INTEGER, changed_fields JSON NOT NULL, observation TEXT, type INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (threat_id) REFERENCES threats(id) ON DELETE SET NULL)"
+        );        
         db.run(
           "CREATE TABLE IF NOT EXISTS vulnerabilities (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, description TEXT, assessment_activity_id INTEGER, asset_id INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (assessment_activity_id) REFERENCES assessment_activities(id) ON DELETE SET NULL, FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE SET NULL)"
         );
@@ -385,6 +392,22 @@ export function loadTestValues() {
           }
         );
         db.run(
+          "INSERT INTO threats_audits (threat_id, changed_fields, observation, type) VALUES (?, ?, ?, ?)",
+          [
+            "1",
+            '{"name":{"old_data":null,"new_data":"A hacker takes control of the website"},"description":{"old_data":null,"new_data":"With the possibility of losing the information"},\
+            "impact":{"old_data":null,"new_data":"2"},"likelihood":{"old_data":null,"new_data":"1"},\
+            "threat_type_name":{"old_data":null,"new_data":2},"asset_name":{"old_data":null,"new_data":"Web server"}}',
+            "",
+            "0",
+          ],
+          function (err) {
+            if (err) {
+              reject(err.message);
+            }
+          }
+        );
+        db.run(
           "INSERT INTO threats (threat_type_id, name, description, asset_id, impact, likelihood) VALUES (?, ?, ?, ?, ?, ?)",
           [
             "6",
@@ -393,6 +416,22 @@ export function loadTestValues() {
             "4",
             "6",
             "4",
+          ],
+          function (err) {
+            if (err) {
+              reject(err.message);
+            }
+          }
+        );
+        db.run(
+          "INSERT INTO threats_audits (threat_id, changed_fields, observation, type) VALUES (?, ?, ?, ?)",
+          [
+            "2",
+            '{"name":{"old_data":null,"new_data":"Arrest of directors"},"description":{"old_data":null,"new_data":"Because of the work they do in the organization"},\
+            "impact":{"old_data":null,"new_data":"6"},"likelihood":{"old_data":null,"new_data":"4"},\
+            "threat_type_name":{"old_data":null,"new_data":6},"asset_name":{"old_data":null,"new_data":"Directors and board members"}}',
+            "",
+            "0",
           ],
           function (err) {
             if (err) {
@@ -417,6 +456,22 @@ export function loadTestValues() {
           }
         );
         db.run(
+          "INSERT INTO threats_audits (threat_id, changed_fields, observation, type) VALUES (?, ?, ?, ?)",
+          [
+            "3",
+            '{"name":{"old_data":null,"new_data":"Device seizure and targeted theft"},"description":{"old_data":null,"new_data":"Looking for sensitive information inside it"},\
+            "impact":{"old_data":null,"new_data":"2"},"likelihood":{"old_data":null,"new_data":"3"},\
+            "threat_type_name":{"old_data":null,"new_data":2},"asset_name":{"old_data":null,"new_data":"BYOD computers"}}',
+            "",
+            "0",
+          ],
+          function (err) {
+            if (err) {
+              reject(err.message);
+            }
+          }
+        );
+        db.run(
           "INSERT INTO threats (threat_type_id, name, description, asset_id, impact, likelihood) VALUES (?, ?, ?, ?, ?, ?)",
           [
             "4",
@@ -424,6 +479,23 @@ export function loadTestValues() {
             "Funding becomes scarce or nonexistent because of a change in the political/legal landscape or funder priorities",
             null,
             "4",
+            "0",
+          ],
+          function (err) {
+            if (err) {
+              reject(err.message);
+            }
+          }
+        );
+        db.run(
+          "INSERT INTO threats_audits (threat_id, changed_fields, observation, type) VALUES (?, ?, ?, ?)",
+          [
+            "4",
+            '{"name":{"old_data":null,"new_data":"Loss of funding sources"},\
+            "description":{"old_data":null,"new_data":"Funding becomes scarce or nonexistent because of a change in the political/legal landscape or funder priorities"},\
+            "impact":{"old_data":null,"new_data":"4"},"likelihood":{"old_data":null,"new_data":"0"},\
+            "threat_type_name":{"old_data":null,"new_data":4},"asset_name":{"old_data":null,"new_data":null}}',
+            "",
             "0",
           ],
           function (err) {
@@ -449,6 +521,23 @@ export function loadTestValues() {
           }
         );
         db.run(
+          "INSERT INTO threats_audits (threat_id, changed_fields, observation, type) VALUES (?, ?, ?, ?)",
+          [
+            "5",
+            '{"name":{"old_data":null,"new_data":"Anonymous death threats to the sources"},\
+            "description":{"old_data":null,"new_data":"Putting some of them in high levels of stress affecting their willingness to collaborate with the organization"},\
+            "impact":{"old_data":null,"new_data":"3"},"likelihood":{"old_data":null,"new_data":"5"},\
+            "threat_type_name":{"old_data":null,"new_data":3},"asset_name":{"old_data":null,"new_data":"Sources"}}',
+            "",
+            "0",
+          ],
+          function (err) {
+            if (err) {
+              reject(err.message);
+            }
+          }
+        );
+        db.run(
           "INSERT INTO threats (threat_type_id, name, description, asset_id, impact, likelihood) VALUES (?, ?, ?, ?, ?, ?)",
           [
             "1",
@@ -457,6 +546,23 @@ export function loadTestValues() {
             "2",
             "1",
             "2",
+          ],
+          function (err) {
+            if (err) {
+              reject(err.message);
+            }
+          }
+        );
+        db.run(
+          "INSERT INTO threats_audits (threat_id, changed_fields, observation, type) VALUES (?, ?, ?, ?)",
+          [
+            "6",
+            '{"name":{"old_data":null,"new_data":"Police raid the office violently"},\
+            "description":{"old_data":null,"new_data":"Potentially seizing the organizational equipment"},\
+            "impact":{"old_data":null,"new_data":"1"},"likelihood":{"old_data":null,"new_data":"2"},\
+            "threat_type_name":{"old_data":null,"new_data":1},"asset_name":{"old_data":null,"new_data":"Office computers"}}',
+            "",
+            "0",
           ],
           function (err) {
             if (err) {
@@ -481,6 +587,22 @@ export function loadTestValues() {
           }
         );
         db.run(
+          "INSERT INTO threats_audits (threat_id, changed_fields, observation, type) VALUES (?, ?, ?, ?)",
+          [
+            "7",
+            '{"name":{"old_data":null,"new_data":"Smear campaign"},"description":{"old_data":null,"new_data":"Affecting the credibility of the organization"},\
+            "impact":{"old_data":null,"new_data":"7"},"likelihood":{"old_data":null,"new_data":"8"},\
+            "threat_type_name":{"old_data":null,"new_data":7},"asset_name":{"old_data":null,"new_data":"Organization public position"}}',
+            "",
+            "0",
+          ],
+          function (err) {
+            if (err) {
+              reject(err.message);
+            }
+          }
+        );
+        db.run(
           "INSERT INTO threats (threat_type_id, name, description, asset_id, impact, likelihood) VALUES (?, ?, ?, ?, ?, ?)",
           [
             "2",
@@ -489,6 +611,23 @@ export function loadTestValues() {
             "5",
             "2",
             "5",
+          ],
+          function (err) {
+            if (err) {
+              reject(err.message);
+            }
+          }
+        );
+        db.run(
+          "INSERT INTO threats_audits (threat_id, changed_fields, observation, type) VALUES (?, ?, ?, ?)",
+          [
+            "8",
+            '{"name":{"old_data":null,"new_data":"Personal information of the sources leaked"},\
+            "description":{"old_data":null,"new_data":"Putting them in risk of retaliation"},\
+            "impact":{"old_data":null,"new_data":"2"},"likelihood":{"old_data":null,"new_data":"5"},\
+            "threat_type_name":{"old_data":null,"new_data":2},"asset_name":{"old_data":null,"new_data":"Sources"}}',
+            "",
+            "0",
           ],
           function (err) {
             if (err) {
@@ -513,6 +652,22 @@ export function loadTestValues() {
           }
         );
         db.run(
+          "INSERT INTO threats_audits (threat_id, changed_fields, observation, type) VALUES (?, ?, ?, ?)",
+          [
+            "9",
+            '{"name":{"old_data":null,"new_data":"Office router is damaged"},"description":{"old_data":null,"new_data":"Bringing down the office network"},\
+            "impact":{"old_data":null,"new_data":"2"},"likelihood":{"old_data":null,"new_data":"6"},\
+            "threat_type_name":{"old_data":null,"new_data":2},"asset_name":{"old_data":null,"new_data":"Office network"}}',
+            "",
+            "0",
+          ],
+          function (err) {
+            if (err) {
+              reject(err.message);
+            }
+          }
+        );
+        db.run(
           "INSERT INTO threats (threat_type_id, name, description, asset_id, impact, likelihood) VALUES (?, ?, ?, ?, ?, ?)",
           [
             "5",
@@ -520,6 +675,23 @@ export function loadTestValues() {
             "Putting in jeopardy the public functioning of the organization",
             null,
             "5",
+            "0",
+          ],
+          function (err) {
+            if (err) {
+              reject(err.message);
+            }
+          }
+        );
+        db.run(
+          "INSERT INTO threats_audits (threat_id, changed_fields, observation, type) VALUES (?, ?, ?, ?)",
+          [
+            "10",
+            '{"name":{"old_data":null,"new_data":"The work the organization does is criminalized"},\
+            "description":{"old_data":null,"new_data":"Putting in jeopardy the public functioning of the organization"},\
+            "impact":{"old_data":null,"new_data":"5"},"likelihood":{"old_data":null,"new_data":"0"},\
+            "threat_type_name":{"old_data":null,"new_data":5},"asset_name":{"old_data":null,"new_data":null}}',
+            "",
             "0",
           ],
           function (err) {
@@ -545,6 +717,23 @@ export function loadTestValues() {
           }
         );
         db.run(
+          "INSERT INTO threats_audits (threat_id, changed_fields, observation, type) VALUES (?, ?, ?, ?)",
+          [
+            "11",
+            '{"name":{"old_data":null,"new_data":"Staff leave the organization because of personal security concerns"},\
+            "description":{"old_data":null,"new_data":"Putting at risk the operations of the organization in terms of installed capacity and the ability of filling positions."},\
+            "impact":{"old_data":null,"new_data":"1"},"likelihood":{"old_data":null,"new_data":"10"},\
+            "threat_type_name":{"old_data":null,"new_data":1},"asset_name":{"old_data":null,"new_data":"General staff"}}',
+            "",
+            "0",
+          ],
+          function (err) {
+            if (err) {
+              reject(err.message);
+            }
+          }
+        );
+        db.run(
           "INSERT INTO threats (threat_type_id, name, description, asset_id, impact, likelihood) VALUES (?, ?, ?, ?, ?, ?)",
           ["2", "Social media accounts hacked", "", "9", "2", "9"],
           function (err) {
@@ -554,8 +743,40 @@ export function loadTestValues() {
           }
         );
         db.run(
+          "INSERT INTO threats_audits (threat_id, changed_fields, observation, type) VALUES (?, ?, ?, ?)",
+          [
+            "12",
+            '{"name":{"old_data":null,"new_data":"Social media accounts hacked"},"description":{"old_data":null,"new_data":null},\
+            "impact":{"old_data":null,"new_data":"2"},"likelihood":{"old_data":null,"new_data":"9"},\
+            "threat_type_name":{"old_data":null,"new_data":2},"asset_name":{"old_data":null,"new_data":"Social network accounts"}}',
+            "",
+            "0",
+          ],
+          function (err) {
+            if (err) {
+              reject(err.message);
+            }
+          }
+        );
+        db.run(
           "INSERT INTO threats (threat_type_id, name, description, asset_id, impact, likelihood) VALUES (?, ?, ?, ?, ?, ?)",
           ["2", "Email accounts hacked", "", "10", "2", "10"],
+          function (err) {
+            if (err) {
+              reject(err.message);
+            }
+          }
+        );
+        db.run(
+          "INSERT INTO threats_audits (threat_id, changed_fields, observation, type) VALUES (?, ?, ?, ?)",
+          [
+            "13",
+            '{"name":{"old_data":null,"new_data":"Email accounts hacked"},"description":{"old_data":null,"new_data":null},\
+            "impact":{"old_data":null,"new_data":"2"},"likelihood":{"old_data":null,"new_data":"10"},\
+            "threat_type_name":{"old_data":null,"new_data":2},"asset_name":{"old_data":null,"new_data":"Email accounts"}}',
+            "",
+            "0",
+          ],
           function (err) {
             if (err) {
               reject(err.message);
@@ -579,6 +800,23 @@ export function loadTestValues() {
           }
         );
         db.run(
+          "INSERT INTO threats_audits (threat_id, changed_fields, observation, type) VALUES (?, ?, ?, ?)",
+          [
+            "14",
+            '{"name":{"old_data":null,"new_data":"Physical assault to staff"},\
+            "description":{"old_data":null,"new_data":"Causing considerable physical harm"},\
+            "impact":{"old_data":null,"new_data":"1"},"likelihood":{"old_data":null,"new_data":"10"},\
+            "threat_type_name":{"old_data":null,"new_data":1},"asset_name":{"old_data":null,"new_data":"General staff"}}',
+            "",
+            "0",
+          ],
+          function (err) {
+            if (err) {
+              reject(err.message);
+            }
+          }
+        );
+        db.run(
           "INSERT INTO threats (threat_type_id, name, description, asset_id, impact, likelihood) VALUES (?, ?, ?, ?, ?, ?)",
           [
             "4",
@@ -587,6 +825,23 @@ export function loadTestValues() {
             "7",
             "4",
             "7",
+          ],
+          function (err) {
+            if (err) {
+              reject(err.message);
+            }
+          }
+        );
+        db.run(
+          "INSERT INTO threats_audits (threat_id, changed_fields, observation, type) VALUES (?, ?, ?, ?)",
+          [
+            "15",
+            '{"name":{"old_data":null,"new_data":"Organization funds freezed by government"},\
+            "description":{"old_data":null,"new_data":"Temporal lack of funds availability"},\
+            "impact":{"old_data":null,"new_data":"4"},"likelihood":{"old_data":null,"new_data":"7"},\
+            "threat_type_name":{"old_data":null,"new_data":4},"asset_name":{"old_data":null,"new_data":"Money funds"}}',
+            "",
+            "0",
           ],
           function (err) {
             if (err) {
@@ -1551,6 +1806,7 @@ export function deleteDatabase() {
         db.run("DROP TABLE IF EXISTS assessment_activity_asset_associations");
         db.run("DROP TABLE IF EXISTS threat_types");
         db.run("DROP TABLE IF EXISTS threats");
+        db.run("DROP TABLE IF EXISTS threats_audits");
         db.run("DROP TABLE IF EXISTS vulnerabilities");
         db.run("DROP TABLE IF EXISTS vulnerability_threat_associations");
         db.run("DROP TABLE IF EXISTS recommendations");
@@ -1575,6 +1831,9 @@ export function deleteDatabase() {
         db.run(
           "CREATE TABLE IF NOT EXISTS threats (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, threat_type_id INTEGER, name TEXT NOT NULL UNIQUE, description TEXT, asset_id INTEGER, impact INTEGER, likelihood INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (threat_type_id) REFERENCES threat_types(id) ON DELETE SET NULL, FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE SET NULL, CHECK(impact BETWEEN 0 AND 10), CHECK(likelihood BETWEEN 0 AND 10))"
         );
+        db.run(
+          "CREATE TABLE IF NOT EXISTS threats_audits (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, threat_id INTEGER, changed_fields JSON NOT NULL, observation TEXT, type INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (threat_id) REFERENCES threats(id) ON DELETE SET NULL)"
+        );        
         db.run(
           "CREATE TABLE IF NOT EXISTS vulnerabilities (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL UNIQUE, description TEXT, assessment_activity_id INTEGER, asset_id INTEGER, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (assessment_activity_id) REFERENCES assessment_activities(id) ON DELETE SET NULL, FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE SET NULL)"
         );

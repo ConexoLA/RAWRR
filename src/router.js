@@ -5,6 +5,7 @@ import Home from "./views/HomeView.vue";
 import Assets from "./views/AssetsView.vue";
 import Activities from "./views/ActivitiesView.vue";
 import Threats from "./views/ThreatsView.vue";
+import ThreatsHistory from "./views/ThreatHistoryView.vue";
 import Vulnerabilities from "./views/VulnerabilitiesView.vue";
 import Recommendations from "./views/RecommendationsView.vue";
 import Report from "./views/reports/active reports/ReportView";
@@ -34,6 +35,11 @@ const router = new Router({
       path: "/threats",
       name: "threats",
       component: Threats,
+    },
+    {
+      path: "/threats/history",
+      name: "threatsHistory",
+      component: ThreatsHistory,
     },
     {
       path: "/vulnerabilities",

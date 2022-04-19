@@ -39,21 +39,48 @@
         </v-card>
       </v-col>
       <v-col cols="auto" align-self="center">
-        <v-tooltip bottom close-delay="100">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              medium
-              color="primary"
-              v-bind="attrs"
-              v-on="on"
-              :aria-label="$t('reports.export_info')"
-              class="black--text font-weight-regular"
-              @click="overlay_export = true"
-              >{{ $t("reports.export") }}</v-btn
-            >
-          </template>
-          <span>{{ $t("reports.export_info") }}</span>
-        </v-tooltip>
+        <v-card class="pa-2" elevation="0">
+          <v-tooltip bottom close-delay="100">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                medium
+                color="primary"
+                v-bind="attrs"
+                v-on="on"
+                ref="export_option"
+                :aria-label="$t('reports.export_info')"
+                class="black--text font-weight-regular"
+                @click="overlay_export_report = true"
+              >
+                <v-icon class="pr-2">mdi-file-export </v-icon>
+                {{ $t("reports.export") }}
+              </v-btn>
+            </template>
+            <span>{{ $t("reports.export_info") }}</span>
+          </v-tooltip>
+        </v-card>
+      </v-col>
+      <v-col cols="auto" align-self="center">
+        <v-card class="pa-2" elevation="0">
+          <v-tooltip bottom close-delay="100">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                medium
+                color="primary"
+                v-bind="attrs"
+                v-on="on"
+                ref="export_threat_option"
+                :aria-label="$t('reports.threat_history.export_info')"
+                class="black--text font-weight-regular"
+                @click="overlay_export_threat_history = true"
+              >
+                <v-icon class="pr-2">mdi-timeline-clock </v-icon>
+                {{ $t("reports.threat_history.export") }}
+              </v-btn>
+            </template>
+            <span>{{ $t("reports.threat_history.export_info") }}</span>
+          </v-tooltip>
+        </v-card>
       </v-col>
     </v-row>
     <v-row justify="center">
@@ -139,15 +166,16 @@
       </v-col>
     </v-row>
 
-    <v-overlay :dark="false" :value="overlay_export">
+    <v-overlay :dark="false" :value="overlay_export_report">
       <v-card outlined>
         <v-card-text>
           <p class="display-2 text--secondary">
             {{ $t("reports.choose") }}
           </p>
-          <div v-for="item in supportedFiles" :key="item.id">
+          <div v-for="item in supportedExportReportFiles" :key="item.id">
             <v-btn
               text
+              ref="report_generator_option"
               color="accent"
               :disabled="item.disabled"
               @click="onExportReport(`${item.type}`)"
@@ -157,7 +185,48 @@
           </div>
         </v-card-text>
         <v-card-actions>
-          <v-btn text plain color="accent" @click="overlay_export = false">
+          <v-btn
+            text
+            plain
+            color="accent"
+            @click="
+              overlay_export_report = false;
+              focusOnExportButton();
+            "
+          >
+            {{ $t("global.return") }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-overlay>
+    <v-overlay :dark="false" :value="overlay_export_threat_history">
+      <v-card outlined>
+        <v-card-text>
+          <p class="display-2 text--secondary">
+            {{ $t("reports.choose") }}
+          </p>
+          <div v-for="item in supportedExportThreatHistoryFiles" :key="item.id">
+            <v-btn
+              text
+              ref="report_generator_threat_history_option"
+              color="accent"
+              :disabled="item.disabled"
+              @click="onExportThreatHistory(`${item.type}`)"
+            >
+              {{ `${item.name} (${item.type})` }}
+            </v-btn>
+          </div>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn
+            text
+            plain
+            color="accent"
+            @click="
+              overlay_export_threat_history = false;
+              focusOnThreatHistoryButton();
+            "
+          >
             {{ $t("global.return") }}
           </v-btn>
         </v-card-actions>
@@ -173,6 +242,20 @@ import { mapGetters, mapActions } from "vuex";
 import i18n from "../../../i18n.js";
 
 export default {
+  updated() {
+    if (
+      this.$refs.report_generator_option != undefined &&
+      this.$refs.report_generator_option.length > 0
+    ) {
+      this.$refs.report_generator_option[0].$el.focus();
+    }
+    if (
+      this.$refs.report_generator_threat_history_option != undefined &&
+      this.$refs.report_generator_threat_history_option.length > 0
+    ) {
+      this.$refs.report_generator_threat_history_option[0].$el.focus();
+    }
+  },
   components: {
     draggable,
     ReportSection,
@@ -184,9 +267,36 @@ export default {
         y: 0,
       },
       overlay_custom_section: false,
-      overlay_export: false,
+      overlay_export_report: false,
+      overlay_export_threat_history: false,
       hide_left_column: false,
-      supportedFiles: [
+      supportedExportReportFiles: [
+        {
+          id: 1,
+          type: "md",
+          name: this.$t("reports.md.name"),
+          disabled: false,
+        },
+        {
+          id: 2,
+          type: "docx",
+          name: this.$t("reports.docx.name"),
+          disabled: false,
+        },
+        {
+          id: 3,
+          type: "json",
+          name: this.$t("reports.json.name"),
+          disabled: false,
+        },
+        {
+          id: 4,
+          type: "txt",
+          name: this.$t("reports.txt.name"),
+          disabled: false,
+        },
+      ],
+      supportedExportThreatHistoryFiles: [
         {
           id: 1,
           type: "md",
@@ -266,7 +376,8 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["exportReport"]),
+    ...mapActions(["exportReport", "exportThreatHistory"]),
+    ...mapGetters(["getAllThreatsHistory"]),
     toggleSections: function (section) {
       this.showSections[section] = !this.showSections[section];
     },
@@ -337,12 +448,80 @@ export default {
           /* eslint-disable no-console */
           console.log(format, " does not have a valid export method.");
       }
-
       this.exportReport(export_aux);
+      this.overlay = true;
+    },
+    onExportThreatHistory: function (format) {
+      let threat_history_aux = [];
+      switch (format) {
+        case "md":
+          threat_history_aux = [
+            format,
+            this.secciones_report,
+            this.getMain,
+            this.getAllMergedThreats,
+            this.getAllThreatsHistory(),
+            this.$t("reports.threat_history.md.title"),
+            this.$t("global.threat_history_save"),
+            i18n.locale,
+          ];
+          break;
+        case "docx":
+          threat_history_aux = [
+            format,
+            this.secciones_report,
+            this.getMain,
+            this.getAllMergedThreats,
+            this.getAllThreatsHistory(),
+            this.$t("reports.threat_history.docx.title"),
+            this.$t("global.threat_history_save"),
+            i18n.locale,
+          ];
+          break;
+        case "json":
+          threat_history_aux = [
+            format,
+            this.secciones_report,
+            this.getMain,
+            this.getAllMergedThreats,
+            this.getAllThreatsHistory(),
+            this.$t("reports.threat_history.json.title"),
+            this.$t("global.threat_history_save"),
+            i18n.locale,
+          ];
+          break;
+        case "txt":
+          threat_history_aux = [
+            format,
+            this.secciones_report,
+            this.getMain,
+            this.getAllMergedThreats,
+            this.getAllThreatsHistory(),
+            this.$t("reports.threat_history.txt.title"),
+            this.$t("global.threat_history_save"),
+            i18n.locale,
+          ];
+          break;
+        default:
+          /* eslint-disable no-console */
+          console.log(format, " does not have a valid export method.");
+      }
+
+      this.exportThreatHistory(threat_history_aux);
       this.overlay = true;
     },
     onResize() {
       this.windowSize = { x: window.innerWidth, y: window.innerHeight };
+    },
+    focusOnExportButton() {
+      setTimeout(() => {
+        this.$refs.export_option.$el.focus();
+      }, 0);
+    },
+    focusOnThreatHistoryButton() {
+      setTimeout(() => {
+        this.$refs.export_threat_option.$el.focus();
+      }, 0);
     },
   },
   computed: {
@@ -353,11 +532,13 @@ export default {
       "getAllMergedThreats",
       "getAllMergedVulnerabilities",
       "getAllMergedRecommendations",
+      "getActiveThreatAudits",
     ]),
-    ...mapActions(["initializeMain"]),
+    ...mapActions(["initializeMain", "changeAllThreatHistory"]),
   },
   created() {
     this.initializeMain;
+    this.changeAllThreatHistory;
   },
 };
 </script>

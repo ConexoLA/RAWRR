@@ -86,7 +86,7 @@
           <template v-slot:[`item.name`]="{ item }">
             <span
               class="d-inline-block text-truncate"
-              :style="`max-width: ${(windowSize.x * 8) / 100}px`"
+              :style="`max-width: ${(windowSize.x * 12) / 100}px`"
               :title="item.name"
             >
               {{ item.name }}
@@ -96,7 +96,7 @@
           <template v-slot:[`item.description`]="{ item }">
             <span
               class="d-inline-block text-truncate"
-              :style="`max-width: ${(windowSize.x * 8) / 100}px`"
+              :style="`max-width: ${(windowSize.x * 13) / 100}px`"
               :title="item.description"
             >
               {{ item.description }}
@@ -106,7 +106,7 @@
           <template v-slot:[`item.threat_type_name`]="{ item }">
             <span
               class="d-inline-block text-truncate"
-              :style="`max-width: ${(windowSize.x * 8) / 100}px`"
+              :style="`max-width: ${(windowSize.x * 10) / 100}px`"
               :title="item.threat_type_name"
             >
               {{ item.threat_type_name }}
@@ -116,7 +116,7 @@
           <template v-slot:[`item.asset_name`]="{ item }">
             <span
               class="d-inline-block text-truncate"
-              :style="`max-width: ${(windowSize.x * 8) / 100}px`"
+              :style="`max-width: ${(windowSize.x * 10) / 100}px`"
               :title="item.asset_name"
             >
               {{ item.asset_name }}
@@ -135,13 +135,10 @@
             </span>
           </template>
 
-          <template v-slot:[`item.edit`]="props">
+          <template v-slot:[`item.actions`]="props">
             <v-btn text icon color="accent" @click="showEditDialog(props.item)" v-bind:ref="`ref-${props.item.id}`">
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
-          </template>
-
-          <template v-slot:[`item.delete`]="props">
             <v-btn
               text
               icon
@@ -149,6 +146,14 @@
               @click="showDeleteDialog([props.item])"
             >
               <v-icon>mdi-delete</v-icon>
+            </v-btn>
+            <v-btn
+              text
+              icon
+              color="accent"
+              @click="selectActiveThreatH(props.item)"
+            >
+              <v-icon>mdi-history</v-icon>
             </v-btn>
           </template>
         </v-data-table>
@@ -179,6 +184,19 @@
       <v-card class="mx-auto">
         <v-card-title>
           {{ $t("threats.risk_matrix.vcard_name") }}
+          <v-spacer></v-spacer>
+          <v-btn
+            ref="nrm"
+            text
+            color="primary"
+            @click="
+              matrix = !matrix;
+              focusOn('rm');
+            "
+          >
+            <v-icon>mdi-close</v-icon>
+            {{ $t("global.close_sheet") }}
+          </v-btn>
         </v-card-title>
 
         <GChart
@@ -192,15 +210,12 @@
 
         <v-card-actions class="justify-center">
           <v-btn
-            ref="nrm"
+            ref="svi"
+            text
             color="primary"
-            class="black--text font-weight-regular"
-            @click="
-              matrix = !matrix;
-              focusOn('rm');
-            "
+            @click="callExportImage(), focusOn('svi')"
           >
-            {{ $t("threats.risk_matrix.hide_message") }}
+            {{ $t("threats.risk_matrix.export_message") }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -252,6 +267,7 @@
 import { mapActions } from "vuex";
 import { GChart } from "vue-google-charts";
 import ThreatForm from "./ThreatForm.vue";
+
 export default {
   updated() {
     if (this.$refs.confirmation_modal != undefined &&
@@ -295,13 +311,8 @@ export default {
           value: "likelihood",
         },
         {
-          text: this.$t("global.edit"),
-          value: "edit",
-          sortable: false,
-        },
-        {
-          text: this.$t("global.delete"),
-          value: "delete",
+          text: this.$t("global.actions"),
+          value: "actions",
           sortable: false,
         },
       ];
@@ -313,7 +324,12 @@ export default {
   },
   props: ["threats"],
   methods: {
-    ...mapActions(["fetchAllThreats", "deleteThreat"]),
+    ...mapActions([
+      "fetchAllThreats",
+      "deleteThreat",
+      "changeActiveThreatHistory",
+      "exportImage",
+    ]),
     onChartReady(chart, google) {
       // Initialize Risk matrix and Counter Matrix
       var matrix = [];
@@ -397,6 +413,18 @@ export default {
       );
 
       chart.draw(chart_data, this.chart_options);
+
+      this.base64Data = chart
+        .getImageURI()
+        .replace(/^data:image\/png;base64,/, "");
+    },
+    callExportImage() {
+      this.exportImage([
+        "png",
+        this.base64Data,
+        this.$t("threats.risk_matrix.export_title"),
+        this.$t("threats.risk_matrix.export_subtitle"),
+      ]);
     },
     getCircleX(cx, r, k, n) {
       return cx + Math.min(1, n - 1) * r * Math.cos((2 * Math.PI * k) / n);
@@ -431,6 +459,7 @@ export default {
       this.formData.title = this.$t("threats.form_edit");
       this.formData.type = "Edit";
       this.formData.threat = threat;
+      this.formData.threat_aux = Object.assign({}, threat);
       this.formData.resetFormValidation = false;
       this.sheet = !this.sheet;
     },
@@ -439,6 +468,10 @@ export default {
         this.deleteElements = element;
         this.overlay = !this.overlay;
       }
+    },
+    async selectActiveThreatH(threat) {
+      await this.changeActiveThreatHistory(threat);
+      await this.$router.push("/threats/history");
     },
     confirmDelete() {
       if (this.deleteElements.length) {
@@ -459,6 +492,10 @@ export default {
         setTimeout(() => {
           this.$refs.rm.$el.focus();
         }, 0);
+      } else if (elemento == "svi") {
+        setTimeout(() => {
+          this.$refs.svi.$el.focus();
+        }, 0);
       }
     },
     focusOnEdit(focus_on) {
@@ -466,6 +503,7 @@ export default {
     },
   },
   data: () => ({
+    base64Data: "",
     chart_options: {
       titleTextStyle: {
         color: "#FFF",

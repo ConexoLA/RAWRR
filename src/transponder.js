@@ -9,11 +9,14 @@ import * as assessment_activities from "./db/assessment activities/03_assessment
 import * as assessment_activity_asset_associations from "./db/assessment activities/04_assessment_activity_asset_associations";
 import * as threat_types from "./db/threats/05_threat_types";
 import * as threats from "./db/threats/06_threats";
-import * as vulnerabilities from "./db/vulnerabilities/07_vulnerabilities";
-import * as vulnerability_threat_associations from "./db/vulnerabilities/08_vulnerability_threat_associations";
-import * as recommendations from "./db/recommendations/09_recommendations";
-import * as recommendation_vulnerability_associations from "./db/recommendations/10_recommendation_vulnerability_associations";
+import * as threats_audits from "./db/threats/07_threats_audits";
+import * as vulnerabilities from "./db/vulnerabilities/08_vulnerabilities";
+import * as vulnerability_threat_associations from "./db/vulnerabilities/09_vulnerability_threat_associations";
+import * as recommendations from "./db/recommendations/10_recommendations";
+import * as recommendation_vulnerability_associations from "./db/recommendations/11_recommendation_vulnerability_associations";
 import * as export_report from "./exportReport/file_extensions";
+import * as export_image from "./exportImage/file_extensions";
+import * as export_threat_history from "./exportThreatHistory/file_extensions";
 import * as database_management from "./db/fs_management";
 
 export function setIPCMainListeners() {
@@ -149,11 +152,35 @@ export function setIPCMainListeners() {
           event.returnValue = [];
         }
         break;
+      case "threats_audits":
+        try {
+          arr = [
+            arg[1].threat_id,
+            arg[1].changed_fields,
+            arg[1].observation,
+            arg[1].type,
+          ];
+          threats_audits.insert(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
       case "vulnerabilities":
         try {
           arr = [
             arg[1].name,
-            arg[1].description,
+            arg[1].observation,
             arg[1].assessment_activity_id,
             arg[1].asset_id,
           ];
@@ -362,6 +389,24 @@ export function setIPCMainListeners() {
       case "threats":
         try {
           threats.queryAll().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "threats_audits":
+        try {
+          threats_audits.queryAll().then(
             function (data) {
               //resolve
               event.returnValue = data;
@@ -857,6 +902,150 @@ export function setIPCMainListeners() {
     }
   });
 
+  //data is sent as arg from a synchronous call made in whichever file is contained in the views folder.
+  //PARAMETERS:
+  //  arg is an array with the following structure: ["table_name"].
+  //    table_name is the keyword identifying a database table
+  //EXPECTED OUTPUT:
+  //  Returns an object containing all rows inside a table,
+  //          a SQLite error code,
+  //          or an empty array if the table does not exist.
+  ipcMain.on("getOne", (event, arg) => {
+    let arr = [];
+    switch (arg[0]) {
+      case "asset_categories":
+        break;
+      case "assets":
+        try {
+          arr = arg[1].asset_id;
+          assets.getOne(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assessment_activities":
+        break;
+      case "assessment_activity_asset_associations":
+        break;
+      case "threat_types":
+        try {
+          arr = arg[1].threat_type_id;
+          threat_types.getOne(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "threats":
+        try {
+          arr = arg[1].id;
+          threats.getOne(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "vulnerabilities":
+        break;
+      case "vulnerability_threat_associations":
+        break;
+      case "recommendations":
+        break;
+      case "recommendation_vulnerability_associations":
+        break;
+      default:
+        console.log(arg[0], " does not have a valid remove method.");
+        event.returnValue = [];
+    }
+  });
+
+  //data is sent as arg from a synchronous call made in whichever file is contained in the views folder.
+  //PARAMETERS:
+  //  arg is an array with the following structure: ["table_name"].
+  //    table_name is the keyword identifying a database table
+  //EXPECTED OUTPUT:
+  //  Returns an array containing all rows inside a table,
+  //          a SQLite error code,
+  //          or an empty array if the table does not exist.
+  ipcMain.on("allAudits", (event, arg) => {
+    let arr = [];
+    switch (arg[0]) {
+      case "asset_categories":
+        break;
+      case "assets":
+        break;
+      case "assessment_activities":
+        break;
+      case "assessment_activity_asset_associations":
+        break;
+      case "threat_types":
+        break;
+      case "threats":
+        break;
+      case "threats_audits":
+        try {
+          arr = arg[1].id;
+          threats_audits.allAudits(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "vulnerabilities":
+        break;
+      case "vulnerability_threat_associations":
+        break;
+      case "recommendations":
+        break;
+      case "recommendation_vulnerability_associations":
+        break;
+      default:
+        console.log(arg[0], " does not have a valid remove method.");
+        event.returnValue = [];
+    }
+  });
+
   ipcMain.on("import", (event, arg) => {
     console.log(arg[0]);
     switch (arg[0]) {
@@ -1017,6 +1206,103 @@ export function setIPCMainListeners() {
               arg[10],
               arg[11]
             )
+            .then(
+              function (data) {
+                event.returnValue = ["resolve", data];
+              },
+              function (err) {
+                console.log(err);
+                event.returnValue = ["reject", err];
+              }
+            );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = ["error", error];
+        }
+        break;
+      case "png":
+        try {
+          export_image.png(arg[1], arg[2], arg[3], arg[4]).then(
+            function (data) {
+              event.returnValue = ["resolve", data];
+            },
+            function (err) {
+              console.log(err);
+              event.returnValue = ["reject", err];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = ["error", error];
+        }
+        break;
+      default:
+        console.log(arg[0], " does not have a valid export method.");
+        event.returnValue = ["error", ""];
+    }
+  });
+
+  ipcMain.on("exportThreatHistory", (event, arg) => {
+    console.log(arg[0]);
+    switch (arg[0]) {
+      case "txt":
+        try {
+          export_threat_history
+            .txt(arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7])
+            .then(
+              function (data) {
+                event.returnValue = ["resolve", data];
+              },
+              function (err) {
+                console.log(err);
+                event.returnValue = ["reject", err];
+              }
+            );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = ["error", error];
+        }
+        break;
+      case "md":
+        try {
+          export_threat_history
+            .md(arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7])
+            .then(
+              function (data) {
+                event.returnValue = ["resolve", data];
+              },
+              function (err) {
+                console.log(err);
+                event.returnValue = ["reject", err];
+              }
+            );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = ["error", error];
+        }
+        break;
+      case "json":
+        try {
+          export_threat_history
+            .json(arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7])
+            .then(
+              function (data) {
+                event.returnValue = ["resolve", data];
+              },
+              function (err) {
+                console.log(err);
+                event.returnValue = ["reject", err];
+              }
+            );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = ["error", error];
+        }
+        break;
+      case "docx":
+        try {
+          export_threat_history
+            .docx(arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7])
             .then(
               function (data) {
                 event.returnValue = ["resolve", data];
