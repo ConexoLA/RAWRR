@@ -319,20 +319,47 @@ const actions = {
       threat,
     ]);
     var audits_array = [];
+    var tab_counter = 9;
     for (var i = 0; i < audits_response.length; i++) {
       var jsonData = {};
+      jsonData["created"] = [audits_response[i]["created"], tab_counter];
+      tab_counter++;
+      jsonData["type"] = [audits_response[i]["type"], tab_counter];
+      tab_counter++;
       var iter_json = JSON.parse(audits_response[i]["changed_fields"]);
       var iter_json_keys = Object.keys(iter_json);
 
       for (var j = 0; j < iter_json_keys.length; j++) {
-        jsonData[iter_json_keys[j] + "_old"] =
-          iter_json[iter_json_keys[j]]["old_data"];
-        jsonData[iter_json_keys[j] + "_new"] =
-          iter_json[iter_json_keys[j]]["new_data"];
+        if (iter_json[iter_json_keys[j]]["new_data"]){
+          var new_value = [iter_json[iter_json_keys[j]]["new_data"], tab_counter];
+          if (iter_json_keys[j] == "description"){
+            tab_counter+=4;
+          }else{
+            tab_counter++;
+          }
+        }else{
+          var new_value = null;
+        }
+        jsonData[iter_json_keys[j] + "_new"] = new_value
+        if (iter_json[iter_json_keys[j]]["old_data"]){
+          var old_value = [iter_json[iter_json_keys[j]]["old_data"], tab_counter];
+          if (iter_json_keys[j] == "description"){
+            tab_counter+=4;
+          }else{
+            tab_counter++;
+          }
+        }else{
+          var old_value = null;
+        }
+        jsonData[iter_json_keys[j] + "_old"] = old_value
       }
-      jsonData["created"] = audits_response[i]["created"];
-      jsonData["type"] = audits_response[i]["type"];
-      jsonData["observation"] = audits_response[i]["observation"];
+      if (audits_response[i]["observation"] && audits_response[i]["observation"] != ""){
+        var obs_value = [audits_response[i]["observation"], tab_counter];
+      }else{
+        var obs_value = audits_response[i]["observation"];
+      }
+      jsonData["observation"] = obs_value;
+      tab_counter++;
       audits_array.push(jsonData);
     }
     commit("setActiveThreatHistory", threat);
