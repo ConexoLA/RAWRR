@@ -27,6 +27,23 @@
               no-resize
             ></v-textarea>
           </v-row>
+          <v-row no-gutters justify="center">
+            <v-col cols="5">
+              <v-text-field
+                color="accent"
+                v-model="formDataTemp.recommendation.implementation_cost"
+                :label="$t('global.implementation_cost')"
+              ></v-text-field>
+            </v-col>
+            <v-spacer></v-spacer>
+            <v-col cols="5">
+              <v-text-field
+                color="accent"
+                v-model="formDataTemp.recommendation.implementation_time"
+                :label="$t('global.implementation_time')"
+              ></v-text-field>
+            </v-col>
+          </v-row>
           <v-row no-gutters>
             <v-select
               color="accent"
@@ -42,22 +59,6 @@
               item-value="id"
               @change="checkChange()"
             ></v-select>
-          </v-row>
-          <v-row no-gutters justify="center">
-            <v-col cols="5" class="mr-5">
-              <v-text-field
-                color="accent"
-                v-model="formDataTemp.recommendation.implementation_cost"
-                :label="$t('global.implementation_cost')"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="5" class="ml-5">
-              <v-text-field
-                color="accent"
-                v-model="formDataTemp.recommendation.implementation_time"
-                :label="$t('global.implementation_time')"
-              ></v-text-field>
-            </v-col>
           </v-row>
           <v-row
             no-gutters
@@ -210,7 +211,7 @@ export default {
           break;
         }
       }
-      return b_disabled
+      return b_disabled;
     },
     checkChange() {
       if (
