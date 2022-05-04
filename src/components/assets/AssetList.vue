@@ -188,7 +188,6 @@ export default {
         {
           text: this.$t("global.id"),
           align: "start",
-          sortable: false,
           value: "id",
         },
         { text: this.$t("global.name"), value: "name" },

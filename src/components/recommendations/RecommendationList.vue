@@ -68,7 +68,7 @@
           <template v-slot:[`item.name`]="{ item }">
             <span
               class="d-inline-block text-truncate"
-              :style="`max-width: ${(windowSize.x * 8) / 100}px`"
+              :style="`max-width: ${(windowSize.x * 6) / 100}px`"
               :title="item.name"
             >
               {{ item.name }}
@@ -78,7 +78,7 @@
           <template v-slot:[`item.description`]="{ item }">
             <span
               class="d-inline-block text-truncate"
-              :style="`max-width: ${(windowSize.x * 8) / 100}px`"
+              :style="`max-width: ${(windowSize.x * 7) / 100}px`"
               :title="item.description"
             >
               {{ item.description }}
@@ -216,7 +216,6 @@ export default {
         {
           text: this.$t("global.id"),
           align: "start",
-          sortable: false,
           value: "id",
         },
         { text: this.$t("global.name"), value: "name" },
