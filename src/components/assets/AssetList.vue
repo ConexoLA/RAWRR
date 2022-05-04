@@ -98,7 +98,7 @@
           </template>
 
           <template v-slot:[`item.actions`]="props">
-            <v-btn text icon color="accent" @click="showEditDialog(props.item)">
+            <v-btn text icon color="accent" @click="showEditDialog(props.item)" v-bind:ref="`ref-${props.item.id}`">
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
 
@@ -157,17 +157,18 @@
               class="ml-5 text--primary"
             >
               (ID: {{ element.id }}) - {{ element.name }}
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text color="accent" @click="overlay = false
+                                                 focusOnEdit(element.id)" ref="confirmation_modal">
+                {{ $t("global.cancel") }}
+              </v-btn>
+              <v-btn text color="error" @click="confirmDelete()">
+                {{ $t("global.delete") }}
+              </v-btn>
+            </v-card-actions>
             </div>
           </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn text color="accent" @click="overlay = false">
-              {{ $t("global.cancel") }}
-            </v-btn>
-            <v-btn text color="error" @click="confirmDelete()">
-              {{ $t("global.delete") }}
-            </v-btn>
-          </v-card-actions>
         </v-card>
       </div>
     </v-overlay>
@@ -178,6 +179,12 @@
 import { mapActions } from "vuex";
 import AssetForm from "./AssetForm.vue";
 export default {
+  updated() {
+    if (this.$refs.confirmation_modal != undefined &&
+        this.$refs.confirmation_modal.length > 0) {
+      this.$refs.confirmation_modal[0].$el.focus()
+    }
+  },
   name: "AssetList",
   components: {
     AssetForm,
@@ -252,6 +259,9 @@ export default {
         this.overlay = !this.overlay;
         this.fetchAllAssets();
       }
+    },
+    focusOnEdit(focus_on) {
+      this.$refs["ref-"+focus_on].$el.focus();
     },
   },
   data: () => ({
