@@ -14,6 +14,7 @@
               v-model="formDataTemp.threat.name"
               :rules="nameRules"
               :label="$t('forms.name')"
+              autofocus
               required
             ></v-text-field>
           </v-row>
