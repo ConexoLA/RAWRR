@@ -150,8 +150,7 @@ export function getOne(threat) {
       let threats = [];
       if (db) {
         db.serialize(function () {
-          let sql =
-            "SELECT * FROM threats WHERE id = ?";
+          let sql = "SELECT * FROM threats WHERE id = ?";
           db.all(sql, threat, (err, rows) => {
             if (err) {
               reject(err);

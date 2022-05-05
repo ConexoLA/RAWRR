@@ -26,6 +26,7 @@
           medium
           color="error"
           class="ml-2 white--text font-weight-medium"
+          ref="multi-delete"
           @click="showDeleteDialog(selected)"
           >{{ $t("assets.delete_multiple") }}
         </v-btn>
@@ -98,7 +99,13 @@
           </template>
 
           <template v-slot:[`item.actions`]="props">
-            <v-btn text icon color="accent" @click="showEditDialog(props.item)" v-bind:ref="`ref-${props.item.id}`">
+            <v-btn
+              text
+              icon
+              color="accent"
+              @click="showEditDialog(props.item)"
+              v-bind:ref="`ref-${props.item.id}`"
+            >
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
 
@@ -157,17 +164,41 @@
               class="ml-5 text--primary"
             >
               (ID: {{ element.id }}) - {{ element.name }}
-            <v-card-actions>
+              <v-card-actions v-if="deleteElements.length == 1">
+                <v-spacer></v-spacer>
+                <v-btn
+                  text
+                  color="accent"
+                  @click="
+                    overlay = false;
+                    focusOnEdit(element.id);
+                  "
+                  ref="confirmation_modal"
+                >
+                  {{ $t("global.cancel") }}
+                </v-btn>
+                <v-btn text color="error" @click="confirmDelete()">
+                  {{ $t("global.delete") }}
+                </v-btn>
+              </v-card-actions>
+            </div>
+            <v-card-actions v-if="deleteElements.length > 1">
               <v-spacer></v-spacer>
-              <v-btn text color="accent" @click="overlay = false
-                                                 focusOnEdit(element.id)" ref="confirmation_modal">
+              <v-btn
+                text
+                color="accent"
+                @click="
+                  overlay = false;
+                  focusOnDelete();
+                "
+                ref="confirmation_modal"
+              >
                 {{ $t("global.cancel") }}
               </v-btn>
               <v-btn text color="error" @click="confirmDelete()">
                 {{ $t("global.delete") }}
               </v-btn>
             </v-card-actions>
-            </div>
           </v-card-text>
         </v-card>
       </div>
@@ -180,9 +211,11 @@ import { mapActions } from "vuex";
 import AssetForm from "./AssetForm.vue";
 export default {
   updated() {
-    if (this.$refs.confirmation_modal != undefined &&
-        this.$refs.confirmation_modal.length > 0) {
-      this.$refs.confirmation_modal[0].$el.focus()
+    if (
+      this.$refs.confirmation_modal != undefined &&
+      this.$refs.confirmation_modal.length > 0
+    ) {
+      this.$refs.confirmation_modal[0].$el.focus();
     }
   },
   name: "AssetList",
@@ -261,7 +294,10 @@ export default {
       }
     },
     focusOnEdit(focus_on) {
-      this.$refs["ref-"+focus_on].$el.focus();
+      this.$refs["ref-" + focus_on].$el.focus();
+    },
+    focusOnDelete() {
+      this.$refs["multi-delete"].$el.focus();
     },
   },
   data: () => ({

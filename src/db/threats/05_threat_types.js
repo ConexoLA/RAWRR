@@ -145,8 +145,7 @@ export function getOne(threat_type) {
       let threat_types = [];
       if (db) {
         db.serialize(function () {
-          let sql =
-            "SELECT * FROM threat_types WHERE id = ?";
+          let sql = "SELECT * FROM threat_types WHERE id = ?";
           db.all(sql, threat_type, (err, rows) => {
             if (err) {
               reject(err);
