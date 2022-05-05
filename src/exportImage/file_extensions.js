@@ -3,12 +3,7 @@ const { dialog } = require("electron");
 
 import i18n from "../i18n.js";
 
-export function png(
-  imageBase64,
-  titletxt,
-  message,
-  locale
-) {
+export function png(imageBase64, titletxt, message, locale) {
   return new Promise(function (resolve, reject) {
     try {
       var options = {
@@ -36,8 +31,7 @@ export function png(
           console.log(err);
           reject(err);
         }
-      
-    } else {
+      } else {
         resolve();
       }
       resolve(path);
@@ -46,4 +40,3 @@ export function png(
     }
   });
 }
-

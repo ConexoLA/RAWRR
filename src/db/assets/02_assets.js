@@ -145,8 +145,7 @@ export function getOne(asset) {
       let assets = [];
       if (db) {
         db.serialize(function () {
-          let sql =
-            "SELECT * FROM assets WHERE id = ?";
+          let sql = "SELECT * FROM assets WHERE id = ?";
           db.all(sql, asset, (err, rows) => {
             if (err) {
               reject(err);

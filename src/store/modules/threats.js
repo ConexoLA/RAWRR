@@ -330,32 +330,41 @@ const actions = {
       var iter_json_keys = Object.keys(iter_json);
 
       for (var j = 0; j < iter_json_keys.length; j++) {
-        if (iter_json[iter_json_keys[j]]["new_data"]){
-          var new_value = [iter_json[iter_json_keys[j]]["new_data"], tab_counter];
-          if (iter_json_keys[j] == "description"){
-            tab_counter+=4;
-          }else{
+        if (iter_json[iter_json_keys[j]]["new_data"]) {
+          var new_value = [
+            iter_json[iter_json_keys[j]]["new_data"],
+            tab_counter,
+          ];
+          if (iter_json_keys[j] == "description") {
+            tab_counter += 4;
+          } else {
             tab_counter++;
           }
-        }else{
+        } else {
           var new_value = null;
         }
-        jsonData[iter_json_keys[j] + "_new"] = new_value
-        if (iter_json[iter_json_keys[j]]["old_data"]){
-          var old_value = [iter_json[iter_json_keys[j]]["old_data"], tab_counter];
-          if (iter_json_keys[j] == "description"){
-            tab_counter+=4;
-          }else{
+        jsonData[iter_json_keys[j] + "_new"] = new_value;
+        if (iter_json[iter_json_keys[j]]["old_data"]) {
+          var old_value = [
+            iter_json[iter_json_keys[j]]["old_data"],
+            tab_counter,
+          ];
+          if (iter_json_keys[j] == "description") {
+            tab_counter += 4;
+          } else {
             tab_counter++;
           }
-        }else{
+        } else {
           var old_value = null;
         }
-        jsonData[iter_json_keys[j] + "_old"] = old_value
+        jsonData[iter_json_keys[j] + "_old"] = old_value;
       }
-      if (audits_response[i]["observation"] && audits_response[i]["observation"] != ""){
+      if (
+        audits_response[i]["observation"] &&
+        audits_response[i]["observation"] != ""
+      ) {
         var obs_value = [audits_response[i]["observation"], tab_counter];
-      }else{
+      } else {
         var obs_value = audits_response[i]["observation"];
       }
       jsonData["observation"] = obs_value;

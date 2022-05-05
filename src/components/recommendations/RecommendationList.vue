@@ -125,7 +125,13 @@
           </template>
 
           <template v-slot:[`item.actions`]="props">
-            <v-btn text icon color="accent" @click="showEditDialog(props.item)" v-bind:ref="`ref-${props.item.id}`">
+            <v-btn
+              text
+              icon
+              color="accent"
+              @click="showEditDialog(props.item)"
+              v-bind:ref="`ref-${props.item.id}`"
+            >
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
 
@@ -220,7 +226,7 @@
               <v-btn text color="error" @click="confirmDelete()">
                 {{ $t("global.delete") }}
               </v-btn>
-            </v-card-actions>              
+            </v-card-actions>
           </v-card-text>
         </v-card>
       </div>
@@ -233,9 +239,11 @@ import { mapActions, mapGetters } from "vuex";
 import RecommendationForm from "./RecommendationForm.vue";
 export default {
   updated() {
-    if (this.$refs.confirmation_modal != undefined &&
-        this.$refs.confirmation_modal.length > 0) {
-      this.$refs.confirmation_modal[0].$el.focus()
+    if (
+      this.$refs.confirmation_modal != undefined &&
+      this.$refs.confirmation_modal.length > 0
+    ) {
+      this.$refs.confirmation_modal[0].$el.focus();
     }
   },
   name: "RecommendationList",
@@ -338,11 +346,11 @@ export default {
       }
     },
     focusOnEdit(focus_on) {
-      this.$refs["ref-"+focus_on].$el.focus();
+      this.$refs["ref-" + focus_on].$el.focus();
     },
     focusOnDelete() {
       this.$refs["multi-delete"].$el.focus();
-    },    
+    },
   },
   data: () => ({
     sheet: false,
