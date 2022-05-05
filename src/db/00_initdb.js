@@ -76,7 +76,7 @@ export function open() {
           "CREATE TABLE IF NOT EXISTS recommendation_vulnerability_associations (recommendation_id INTEGER NOT NULL, vulnerability_id INTEGER NOT NULL, PRIMARY KEY (recommendation_id, vulnerability_id), FOREIGN KEY (recommendation_id) REFERENCES recommendations(id) ON DELETE CASCADE, FOREIGN KEY (vulnerability_id) REFERENCES vulnerabilities(id) ON DELETE CASCADE)"
         );
         db.run("INSERT OR IGNORE INTO config (data) VALUES (?)", [
-          '{"lang": "en"}',
+          '{"text": "English", "value": "en"}',
         ]);
         db.run(
           "INSERT OR IGNORE INTO asset_categories (name, description) VALUES (?, ?)",
