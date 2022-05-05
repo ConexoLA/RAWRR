@@ -26,6 +26,7 @@
           medium
           color="error"
           class="ml-2 white--text font-weight-medium"
+          ref="multi-delete"
           @click="showDeleteDialog(selected)"
           >{{ $t("activities.delete_multiple") }}
         </v-btn>
@@ -166,17 +167,41 @@
               class="ml-5 text--primary"
             >
               (ID: {{ element.id }}) - {{ element.name }}
-            <v-card-actions>
+              <v-card-actions v-if="deleteElements.length == 1">
+                <v-spacer></v-spacer>
+                <v-btn
+                  text
+                  color="accent"
+                  @click="
+                    overlay = false;
+                    focusOnEdit(element.id);
+                  "
+                  ref="confirmation_modal"
+                >
+                  {{ $t("global.cancel") }}
+                </v-btn>
+                <v-btn text color="error" @click="confirmDelete()">
+                  {{ $t("global.delete") }}
+                </v-btn>
+              </v-card-actions>
+            </div>
+            <v-card-actions v-if="deleteElements.length > 1">
               <v-spacer></v-spacer>
-              <v-btn text color="accent" @click="overlay = false
-                                                 focusOnEdit(element.id)" ref="confirmation_modal">
+              <v-btn
+                text
+                color="accent"
+                @click="
+                  overlay = false;
+                  focusOnDelete();
+                "
+                ref="confirmation_modal"
+              >
                 {{ $t("global.cancel") }}
               </v-btn>
               <v-btn text color="error" @click="confirmDelete()">
                 {{ $t("global.delete") }}
               </v-btn>
-            </v-card-actions>
-            </div>
+            </v-card-actions>           
           </v-card-text>
         </v-card>
       </div>
@@ -284,6 +309,9 @@ export default {
     focusOnEdit(focus_on) {
       this.$refs["ref-"+focus_on].$el.focus();
     },
+    focusOnDelete() {
+      this.$refs["multi-delete"].$el.focus();
+    }, 
   },
   data: () => ({
     sheet: false,
