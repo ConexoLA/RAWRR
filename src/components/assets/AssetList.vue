@@ -289,7 +289,6 @@ export default {
       this.$refs["ref-"+focus_on].$el.focus();
     },
     focusOnDelete() {
-      console.log("a")
       this.$refs["multi-delete"].$el.focus();
     }, 
   },
