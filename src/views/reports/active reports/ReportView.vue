@@ -20,43 +20,19 @@
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 medium
-                color="primary"
+                icon
+                color="accent"
                 v-bind="attrs"
                 v-on="on"
                 :aria-label="$t('reports.to_add_info')"
                 class="black--text font-weight-regular"
                 @click="hide_left_column = !hide_left_column"
               >
-                <v-icon v-if="!hide_left_column" class="pr-2"
-                  >mdi-eye-off</v-icon
-                >
-                <v-icon v-if="hide_left_column" class="pr-2">mdi-eye </v-icon>
-                {{ $t("reports.to_add") }}
+                <v-icon v-if="!hide_left_column">mdi-eye-off</v-icon>
+                <v-icon v-if="hide_left_column">mdi-eye </v-icon>
               </v-btn>
             </template>
             <span> {{ $t("reports.to_add_info") }} </span>
-          </v-tooltip>
-        </v-card>
-      </v-col>
-      <v-col cols="auto" align-self="center">
-        <v-card class="pa-2" elevation="0">
-          <v-tooltip bottom close-delay="100">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                medium
-                color="primary"
-                v-bind="attrs"
-                v-on="on"
-                ref="export_option"
-                :aria-label="$t('reports.export_info')"
-                class="black--text font-weight-regular"
-                @click="overlay_export_report = true"
-              >
-                <v-icon class="pr-2">mdi-file-export </v-icon>
-                {{ $t("reports.export") }}
-              </v-btn>
-            </template>
-            <span>{{ $t("reports.export_info") }}</span>
           </v-tooltip>
         </v-card>
       </v-col>
@@ -79,6 +55,28 @@
               </v-btn>
             </template>
             <span>{{ $t("reports.threat_history.export_info") }}</span>
+          </v-tooltip>
+        </v-card>
+      </v-col>
+      <v-col cols="auto" align-self="center">
+        <v-card class="pa-2" elevation="0">
+          <v-tooltip bottom close-delay="100">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                medium
+                color="primary"
+                v-bind="attrs"
+                v-on="on"
+                ref="export_option"
+                :aria-label="$t('reports.export_info')"
+                class="black--text font-weight-regular"
+                @click="overlay_export_report = true"
+              >
+                <v-icon class="pr-2">mdi-file-export </v-icon>
+                {{ $t("reports.export") }}
+              </v-btn>
+            </template>
+            <span>{{ $t("reports.export_info") }}</span>
           </v-tooltip>
         </v-card>
       </v-col>
