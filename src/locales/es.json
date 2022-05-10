@@ -38,7 +38,9 @@
     "delete_error": "Ha ocurrido un error al tratar de eliminar",
     "none": "Ninguna",
     "risk_matrix_accessibility": "Representación gráfica de las amenazas en una matriz 10 por 10, ubicadas en ejes de impacto y probabilidad según sus valores.",
-    "search_bar_accessibility": "Esta barra de busqueda filtra elementos de la siguiente tabla"
+    "search_bar_accessibility": "Esta barra de busqueda filtra elementos de la siguiente tabla",
+    "warning": "Advertencia",
+    "continue": "Continuar"
   },
   "header": {
     "home": "Inicio",

@@ -38,7 +38,9 @@
     "delete_error": "An error occured while trying to delete",
     "none": "None",
     "risk_matrix_accessibility": "Graphic representation of threats in a 10 by 10 matrix, located on impact and probability axes according to their values.",
-    "search_bar_accessibility": "This search bar is meant to filter elements from the table bellow"
+    "search_bar_accessibility": "This search bar is meant to filter elements from the table bellow",
+    "warning": "Warning",
+    "continue": "Continue"
   },
   "header": {
     "home": "Home",
