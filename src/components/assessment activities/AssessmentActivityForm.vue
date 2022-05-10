@@ -14,7 +14,7 @@
               v-model="formDataTemp.assessmentActivity.name"
               :rules="nameRules"
               :label="$t('forms.name')"
-              autofocus
+              ref="name_focus"
               required
             ></v-text-field>
           </v-row>
@@ -104,6 +104,11 @@ export default {
     alertType: null,
     formDataTemp: null,
   }),
+  mounted: function () {
+    this.$nextTick(function () {
+      this.$refs["name_focus"].$el.focus();
+    })
+  },  
   methods: {
     ...mapActions([
       "fetchAllAssessmentActivities",
