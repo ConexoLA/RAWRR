@@ -68,6 +68,41 @@ export function queryAll() {
 }
 
 //PARAMETERS:
+//  None.
+//EXPECTED OUTPUT:
+//  Returns a promise.
+//    Resolve: array containing all assets.
+//    Reject: empty array or an error.
+export function queryAllById() {
+  return new Promise(function (resolve, reject) {
+    try {
+      let db = init.open();
+      let assets = [];
+      if (db) {
+        db.serialize(function () {
+          let sql =
+            "SELECT id, name, asset_category_id, description, created, last_modified FROM assets ORDER BY id DESC";
+          db.all(sql, [], (err, rows) => {
+            if (err) {
+              reject(err);
+            } else {
+              rows.forEach((row) => {
+                assets.push(row);
+              });
+              resolve(assets);
+            }
+          });
+        });
+      } else {
+        reject(assets);
+      }
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
+//PARAMETERS:
 //  Asset is an array with the following structure: ["name", "asset_category_id", "description", "id"].
 //    asset_category_id is a Foreign Key. Can be null.
 //    id is the table's Primary Key.

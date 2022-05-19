@@ -68,6 +68,41 @@ export function queryAll() {
 }
 
 //PARAMETERS:
+//  None.
+//EXPECTED OUTPUT:
+//  Returns a promise.
+//    Resolve: array containing all assessment_activities.
+//    Reject: empty array or an error.
+export function queryAllById() {
+  return new Promise(function (resolve, reject) {
+    try {
+      let db = init.open();
+      let assessment_activities = [];
+      if (db) {
+        db.serialize(function () {
+          let sql =
+            "SELECT id, name, description, created, last_modified FROM assessment_activities ORDER BY id DESC";
+          db.all(sql, [], (err, rows) => {
+            if (err) {
+              reject(err);
+            } else {
+              rows.forEach((row) => {
+                assessment_activities.push(row);
+              });
+              resolve(assessment_activities);
+            }
+          });
+        });
+      } else {
+        reject(assessment_activities);
+      }
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
+//PARAMETERS:
 //  Assessment_activity is an array with the following structure: ["name", "description", "id"].
 //    name can NOT be null.
 //    id is the table's Primary Key.

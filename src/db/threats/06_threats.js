@@ -72,6 +72,41 @@ export function queryAll() {
 }
 
 //PARAMETERS:
+//  None.
+//EXPECTED OUTPUT:
+//  Returns a promise.
+//    Resolve: array containing all threats.
+//    Reject: empty array or an error.
+export function queryAllById() {
+  return new Promise(function (resolve, reject) {
+    try {
+      let db = init.open();
+      let threats = [];
+      if (db) {
+        db.serialize(function () {
+          let sql =
+            "SELECT id, threat_type_id, name, description, asset_id, impact, likelihood, created, last_modified FROM threats ORDER BY id DESC";
+          db.all(sql, [], (err, rows) => {
+            if (err) {
+              reject(err);
+            } else {
+              rows.forEach((row) => {
+                threats.push(row);
+              });
+              resolve(threats);
+            }
+          });
+        });
+      } else {
+        reject(threats);
+      }
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
+//PARAMETERS:
 //  Threat is an array with the following structure: ["threat_type_id", "name", "description", "asset_id", "impact", "likelihood", "id"].
 //    threat_type_id is a Foreign Key. Can be null.
 //    asset_id is a Foreign Key. Can be null.

@@ -70,6 +70,41 @@ export function queryAll() {
 }
 
 //PARAMETERS:
+//  None.
+//EXPECTED OUTPUT:
+//  Returns a promise.
+//    Resolve: array containing all vulnerabilities.
+//    Reject: empty array or an error.
+export function queryAllById() {
+  return new Promise(function (resolve, reject) {
+    try {
+      let db = init.open();
+      let vulnerabilities = [];
+      if (db) {
+        db.serialize(function () {
+          let sql =
+            "SELECT id, name, description, assessment_activity_id, asset_id, created, last_modified FROM vulnerabilities ORDER BY id DESC";
+          db.all(sql, [], (err, rows) => {
+            if (err) {
+              reject(err);
+            } else {
+              rows.forEach((row) => {
+                vulnerabilities.push(row);
+              });
+              resolve(vulnerabilities);
+            }
+          });
+        });
+      } else {
+        reject(vulnerabilities);
+      }
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
+//PARAMETERS:
 //  Vulnerability is an array with the following structure: ["name", "description", "assessment_activity_id", "asset_id", "id"].
 //    name can NOT be null.
 //    assessment_activity_id is a Foreign Key. Can be null.
