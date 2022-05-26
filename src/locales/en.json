@@ -141,7 +141,10 @@
       "name_change": "Name:",
       "observation": "Observation:",
       "new": "New:",
-      "old": "Old:"
+      "old": "Old:",
+      "delete": "Delete threat history",
+      "confirm_delete": "This action will delete the selected element from this threat's history",
+      "confirm_delete_all": "This action will wipe this threat's history"
     },
     "risk_matrix": {
       "vcard_name": "Risk matrix",

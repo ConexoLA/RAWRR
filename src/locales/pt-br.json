@@ -141,7 +141,10 @@
       "name_change": "Nome:",
       "observation": "Observação:",
       "new": "Nova:",
-      "old": "Velha:"
+      "old": "Velha:",
+      "delete": "Excluir histórico de alterações",
+      "confirm_delete": "Esta ação removerá o item selecionado do histórico de ameaças",
+      "confirm_delete_all": "Esta ação excluirá todo o histórico da ameaça"
     },
     "risk_matrix": {
       "vcard_name": "Matriz de risco",
