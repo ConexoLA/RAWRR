@@ -59,16 +59,4 @@ const router = new Router({
   ],
 });
 
-router.beforeEach((to, from, next) => {
-  if (from.name == "reports") {
-    if (window.confirm(i18n.t("reports.leave"))) {
-      next();
-    } else {
-      next(false);
-    }
-  } else {
-    next();
-  }
-});
-
 export default router;

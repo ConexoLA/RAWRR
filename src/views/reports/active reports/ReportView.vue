@@ -230,6 +230,29 @@
         </v-card-actions>
       </v-card>
     </v-overlay>
+    <v-dialog v-model="showDialog" width="500" @click:outside="to = null">
+      <v-card>
+        <v-card-title class="text-h5 warning">
+          {{ $t("global.warning") }}
+        </v-card-title>
+
+        <br />
+
+        <v-card-text class="color-primary">
+          {{ $t("reports.leave") }}
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="accent" text @click="closeDialog()">
+            {{ $t("global.cancel") }}
+          </v-btn>
+          <v-btn color="error" text @click="confirmLeave()">
+            {{ $t("global.continue") }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -264,6 +287,8 @@ export default {
         x: 0,
         y: 0,
       },
+      to: null,
+      showDialog: false,
       overlay_custom_section: false,
       overlay_export_report: false,
       overlay_export_threat_history: false,
@@ -378,6 +403,14 @@ export default {
     ...mapGetters(["getAllThreatsHistory"]),
     toggleSections: function (section) {
       this.showSections[section] = !this.showSections[section];
+    },
+    closeDialog() {
+      this.showDialog = false;
+      this.to = null;
+    },
+    confirmLeave() {
+      this.showDialog = false;
+      this.$router.push(this.to);
     },
     onExportReport: function (format) {
       let export_aux = [];
@@ -521,6 +554,14 @@ export default {
         this.$refs.export_threat_option.$el.focus();
       }, 0);
     },
+  },
+  async beforeRouteLeave(to, from, next) {
+    if (this.to) {
+      next();
+    } else {
+      this.to = to;
+      this.showDialog = true;
+    }
   },
   computed: {
     ...mapGetters([
