@@ -50,7 +50,7 @@
                 class="black--text font-weight-regular"
                 @click="overlay_export_threat_history = true"
               >
-                <v-icon class="pr-2">mdi-timeline-clock </v-icon>
+                <v-icon class="pr-2">mdi-history</v-icon>
                 {{ $t("reports.threat_history.export") }}
               </v-btn>
             </template>

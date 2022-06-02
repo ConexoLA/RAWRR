@@ -40,7 +40,8 @@
     "risk_matrix_accessibility": "Graphic representation of threats in a 10 by 10 matrix, located on impact and probability axes according to their values.",
     "search_bar_accessibility": "This search bar is meant to filter elements from the table bellow",
     "warning": "Warning",
-    "continue": "Continue"
+    "continue": "Continue",
+    "delete_history": "Delete Threat History"
   },
   "header": {
     "home": "Home",
