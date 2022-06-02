@@ -93,7 +93,7 @@
               >
                 {{ $t("threats.modified_threat") }}
                 <v-spacer></v-spacer>
-                <v-btn icon @click="dialogDeleteSingle = true">
+                <v-btn icon @click="dialogDeleteSingle = true, threat_to_delete = n.id[0], current_threat = threat">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </v-card-title>
@@ -409,7 +409,7 @@
           <v-btn color="accent" text @click="dialogDeleteSingle = false">
             {{ $t("global.cancel") }}
           </v-btn>
-          <v-btn color="error" text @click="yourFunctionHere()">
+          <v-btn color="error" text @click="deleteElement">
             {{ $t("global.delete") }}
           </v-btn>
         </v-card-actions>
@@ -443,6 +443,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
 //import ThreatList from "../components/threats/ThreatList.vue";
 export default {
   props: ["threat", "audits"],
@@ -450,6 +451,8 @@ export default {
     dialogDeleteSingle: false,
     dialogDeleteAll: false,
     overlay_observation: false,
+    threat_to_delete: false,
+    current_threat: null,
     description_value: "",
     description_title: "",
     tab_idx: "",
@@ -476,12 +479,21 @@ export default {
     ...mapGetters(["getAllThreatTypes"]),
   },
   methods: {
+    ...mapActions([
+      "deleteThreatAudit",
+      "changeActiveThreatHistory"
+    ]),    
     mapThreatType(id) {
       const tempObj = JSON.parse(
         this.getAllThreatTypes.find((x) => x.id === id[0]).name
       );
       return tempObj[this.$i18n.locale];
     },
+    async deleteElement() {
+      this.deleteThreatAudit(this.threat_to_delete);
+      this.dialogDeleteSingle = !this.dialogDeleteSingle;
+      this.changeActiveThreatHistory(this.threat);
+    },    
     fillOverlay(title, description, tab_idx) {
       this.description_title = title;
       this.description_value = description;

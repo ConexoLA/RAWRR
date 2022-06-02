@@ -801,6 +801,25 @@ export function setIPCMainListeners() {
           event.returnValue = [];
         }
         break;
+      case "threats_audits":
+        try {
+          arr = [arg[1]];
+          threats_audits.remove(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
       case "threats":
         try {
           arr = [arg[1].id];

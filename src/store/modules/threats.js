@@ -234,6 +234,20 @@ const actions = {
     }
     commit("removeThreat", response);
   },
+  async deleteThreatAudit({ commit }, threat_audit) {
+    const response = await ipcRenderer.sendSync("remove", ["threats_audits", threat_audit]);
+    if (response.length == 0) {
+      this.dispatch("setNotification", {
+        text: i18n.t("global.delete_error"),
+        color: "error",
+      });
+    } else {
+      this.dispatch("setNotification", {
+        text: i18n.t("global.delete_success"),
+      });
+    }
+    commit("removeThreatAudit", response);
+  },  
   async updateThreat({ commit }, threat) {
     const threat_response = await ipcRenderer.sendSync("getOne", [
       "threats",
@@ -314,6 +328,7 @@ const actions = {
     commit("changeThreat", response);
   },
   async changeActiveThreatHistory({ commit }, threat) {
+    
     const audits_response = await ipcRenderer.sendSync("allAudits", [
       "threats_audits",
       threat,
@@ -322,6 +337,7 @@ const actions = {
     var tab_counter = 9;
     for (var i = 0; i < audits_response.length; i++) {
       var jsonData = {};
+      jsonData["id"] = [audits_response[i]["id"], null];
       jsonData["created"] = [audits_response[i]["created"], tab_counter];
       tab_counter++;
       jsonData["type"] = [audits_response[i]["type"], tab_counter];
@@ -465,6 +481,8 @@ const mutations = {
     (state.active_threat_history = active_threat_history),
   setActiveThreatAudits: (state, audits) => (state.audits = audits),
   setAllThreatsHistory: (state, all_audits) => (state.all_audits = all_audits),
+  removeThreatAudit: (state, id) =>
+    state.audits.filter((audits) => audits["id"][0] !== id),    
 };
 
 export default {
