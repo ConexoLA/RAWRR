@@ -12,7 +12,7 @@
     <v-btn
       color="error"
       v-if="audits.length > 1"
-      @click="dialogDeleteAll = true"
+      @click="dialogDeleteAll = true, threat_id = threat.id, current_threat = threat"
     >
       <v-icon class="mr-2">mdi-delete-variant</v-icon>
       {{ $t("threats.threat_history.delete") }}
@@ -432,7 +432,7 @@
           <v-btn color="accent" text @click="dialogDeleteAll = false">
             {{ $t("global.cancel") }}
           </v-btn>
-          <v-btn color="error" text @click="yourFunctionHere()">
+          <v-btn color="error" text @click="deleteAllAudits">
             {{ $t("global.delete") }}
           </v-btn>
         </v-card-actions>
@@ -453,6 +453,7 @@ export default {
     overlay_observation: false,
     threat_to_delete: false,
     current_threat: null,
+    threat_id: null,
     description_value: "",
     description_title: "",
     tab_idx: "",
@@ -481,6 +482,8 @@ export default {
   methods: {
     ...mapActions([
       "deleteThreatAudit",
+      "deleteAllThreatAudit",
+      "resetThreatAudit",
       "changeActiveThreatHistory"
     ]),    
     mapThreatType(id) {
@@ -493,7 +496,12 @@ export default {
       this.deleteThreatAudit(this.threat_to_delete);
       this.dialogDeleteSingle = !this.dialogDeleteSingle;
       this.changeActiveThreatHistory(this.threat);
-    },    
+    },
+    async deleteAllAudits() {
+      this.deleteAllThreatAudit(this.threat_id);
+      this.dialogDeleteAll = !this.dialogDeleteAll;
+      this.resetThreatAudit(this.current_threat);
+    },      
     fillOverlay(title, description, tab_idx) {
       this.description_title = title;
       this.description_value = description;

@@ -132,3 +132,34 @@ export function remove(threat_audit) {
     }
   });
 }
+
+//PARAMETERS:
+//  Threat is an array with the following structure: ["id"].
+//    id is the table's Primary Key.
+//EXPECTED OUTPUT:
+//  Returns a promise.
+//    Resolve: array containing threat_audit.
+//    Reject: empty array or an error.
+export function removeAll(threat) {
+  return new Promise(function (resolve, reject) {
+    try {
+      let db = init.open();
+      if (db) {
+        db.serialize(function () {
+          let sql = "DELETE FROM threats_audits WHERE threat_id = ?";
+          db.run(sql, threat, function (err) {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(threat);
+            }
+          });
+        });
+      } else {
+        reject([]);
+      }
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
