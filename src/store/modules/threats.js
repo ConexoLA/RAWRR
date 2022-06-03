@@ -404,7 +404,7 @@ const actions = {
     commit("setActiveThreatHistory", threat);
     commit("setActiveThreatAudits", audits_array);
   },
-  async resetThreatAudit({ commit, rootState }, threat) {
+  async resetThreatAudit({ commit, dispatch }, threat) {
     const asset_response = await ipcRenderer.sendSync("getOne", [
       "assets",
       threat,
@@ -453,7 +453,7 @@ const actions = {
       "threats_audits",
       threat_audit,
     ]);
-    rootState.changeActiveThreatHistory(threat);
+    await dispatch("changeActiveThreatHistory", threat);
   },  
   async changeAllThreatHistory({ commit }) {
     const audits_response = await ipcRenderer.sendSync("queryAll", [
