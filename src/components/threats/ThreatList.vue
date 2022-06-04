@@ -255,7 +255,7 @@
                   class="mr-5"
                   text
                   color="error"
-                  @click="yourFunctionHere()"
+                  @click="deleteAudits()"
                   ><v-icon class="mr-1">mdi-history</v-icon>
                   {{ $t("global.delete_history") }}
                 </v-btn>
@@ -283,7 +283,7 @@
                   class="mr-5"
                   text
                   color="error"
-                  @click="yourFunctionHere()"
+                  @click="deleteAudits()"
                   ><v-icon class="mr-1">mdi-history</v-icon>
                   {{ $t("global.delete_history") }}
                 </v-btn>
@@ -378,6 +378,7 @@ export default {
       "fetchAllThreats",
       "deleteThreat",
       "changeActiveThreatHistory",
+      "deleteAuditElements",
       "exportImage",
     ]),
     onChartReady(chart, google) {
@@ -547,6 +548,12 @@ export default {
           this.$refs.svi.$el.focus();
         }, 0);
       }
+    },
+    deleteAudits(){
+      this.deleteElements.forEach((element) => {
+        this.deleteAuditElements(element);
+      });
+      this.overlay = !this.overlay;
     },
     focusOnEdit(focus_on) {
       this.$refs["ref-" + focus_on].$el.focus();

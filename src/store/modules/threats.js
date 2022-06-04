@@ -514,6 +514,10 @@ const actions = {
       }
     }
   },
+  async deleteAuditElements({ commit, dispatch }, threat) {
+    const response = await ipcRenderer.sendSync("removeAll", ["threats_audits", threat.id]);
+    await dispatch("resetThreatAudit", threat);
+  },
 };
 
 const mutations = {
