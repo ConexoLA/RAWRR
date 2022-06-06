@@ -235,7 +235,10 @@ const actions = {
     commit("removeThreat", response);
   },
   async deleteThreatAudit({ commit }, threat_audit) {
-    const response = await ipcRenderer.sendSync("remove", ["threats_audits", threat_audit]);
+    const response = await ipcRenderer.sendSync("remove", [
+      "threats_audits",
+      threat_audit,
+    ]);
     if (response.length == 0) {
       this.dispatch("setNotification", {
         text: i18n.t("global.delete_error"),
@@ -247,9 +250,12 @@ const actions = {
       });
     }
     commit("removeThreatAudit", response);
-  }, 
+  },
   async deleteAllThreatAudit({ commit }, threat) {
-    const response = await ipcRenderer.sendSync("removeAll", ["threats_audits", threat]);
+    const response = await ipcRenderer.sendSync("removeAll", [
+      "threats_audits",
+      threat,
+    ]);
     if (response.length == 0) {
       this.dispatch("setNotification", {
         text: i18n.t("global.delete_error"),
@@ -342,7 +348,6 @@ const actions = {
     commit("changeThreat", response);
   },
   async changeActiveThreatHistory({ commit }, threat) {
-    
     const audits_response = await ipcRenderer.sendSync("allAudits", [
       "threats_audits",
       threat,
@@ -454,7 +459,7 @@ const actions = {
       threat_audit,
     ]);
     await dispatch("changeActiveThreatHistory", threat);
-  },  
+  },
   async changeAllThreatHistory({ commit }) {
     const audits_response = await ipcRenderer.sendSync("queryAll", [
       "threats_audits",
@@ -515,8 +520,23 @@ const actions = {
     }
   },
   async deleteAuditElements({ commit, dispatch }, threat) {
-    const response = await ipcRenderer.sendSync("removeAll", ["threats_audits", threat.id]);
-    await dispatch("resetThreatAudit", threat);
+    const response = await ipcRenderer.sendSync("removeAll", [
+      "threats_audits",
+      threat.id,
+    ]);
+    if (response[0] === "error" || response[0] === "reject") {
+      dispatch("setNotification", {
+        text: i18n.t("global.delete_error"),
+        color: "error",
+      });
+    } else {
+      if (response[0]) {
+        await dispatch("resetThreatAudit", threat);
+        await dispatch("setNotification", {
+          text: i18n.t("global.delete_success"),
+        });
+      }
+    }
   },
 };
 
@@ -552,8 +572,7 @@ const mutations = {
   setAllThreatsHistory: (state, all_audits) => (state.all_audits = all_audits),
   removeThreatAudit: (state, id) =>
     state.audits.filter((audits) => audits["id"][0] !== id),
-  removeAllThreatAudit: (state, id) =>
-    state.audits = [],
+  removeAllThreatAudit: (state, id) => (state.audits = []),
 };
 
 export default {

@@ -251,11 +251,7 @@
                 (ID: {{ element.id }}) - {{ element.name }}
               </div>
               <v-card-actions v-if="deleteElements.length == 1">
-                <v-btn
-                  class="mr-5"
-                  text
-                  color="error"
-                  @click="deleteAudits()"
+                <v-btn class="mr-5" text color="error" @click="deleteAudits()"
                   ><v-icon class="mr-1">mdi-history</v-icon>
                   {{ $t("global.delete_history") }}
                 </v-btn>
@@ -279,11 +275,7 @@
             </div>
             <div>
               <v-card-actions v-if="deleteElements.length > 1">
-                <v-btn
-                  class="mr-5"
-                  text
-                  color="error"
-                  @click="deleteAudits()"
+                <v-btn class="mr-5" text color="error" @click="deleteAudits()"
                   ><v-icon class="mr-1">mdi-history</v-icon>
                   {{ $t("global.delete_history") }}
                 </v-btn>
@@ -549,7 +541,7 @@ export default {
         }, 0);
       }
     },
-    deleteAudits(){
+    deleteAudits() {
       this.deleteElements.forEach((element) => {
         this.deleteAuditElements(element);
       });
