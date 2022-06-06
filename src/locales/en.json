@@ -40,7 +40,8 @@
     "risk_matrix_accessibility": "Graphic representation of threats in a 10 by 10 matrix, located on impact and probability axes according to their values.",
     "search_bar_accessibility": "This search bar is meant to filter elements from the table bellow",
     "warning": "Warning",
-    "continue": "Continue"
+    "continue": "Continue",
+    "delete_history": "Delete Threat History"
   },
   "header": {
     "home": "Home",
@@ -141,7 +142,10 @@
       "name_change": "Name:",
       "observation": "Observation:",
       "new": "New:",
-      "old": "Old:"
+      "old": "Old:",
+      "delete": "Delete threat history",
+      "confirm_delete": "This action will delete the selected element from this threat's history",
+      "confirm_delete_all": "This action will wipe this threat's history"
     },
     "risk_matrix": {
       "vcard_name": "Risk matrix",

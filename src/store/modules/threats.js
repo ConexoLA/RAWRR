@@ -234,6 +234,40 @@ const actions = {
     }
     commit("removeThreat", response);
   },
+  async deleteThreatAudit({ commit }, threat_audit) {
+    const response = await ipcRenderer.sendSync("remove", [
+      "threats_audits",
+      threat_audit,
+    ]);
+    if (response.length == 0) {
+      this.dispatch("setNotification", {
+        text: i18n.t("global.delete_error"),
+        color: "error",
+      });
+    } else {
+      this.dispatch("setNotification", {
+        text: i18n.t("global.delete_success"),
+      });
+    }
+    commit("removeThreatAudit", response);
+  },
+  async deleteAllThreatAudit({ commit }, threat) {
+    const response = await ipcRenderer.sendSync("removeAll", [
+      "threats_audits",
+      threat,
+    ]);
+    if (response.length == 0) {
+      this.dispatch("setNotification", {
+        text: i18n.t("global.delete_error"),
+        color: "error",
+      });
+    } else {
+      this.dispatch("setNotification", {
+        text: i18n.t("global.delete_success"),
+      });
+    }
+    commit("removeAllThreatAudit", response);
+  },
   async updateThreat({ commit }, threat) {
     const threat_response = await ipcRenderer.sendSync("getOne", [
       "threats",
@@ -322,6 +356,7 @@ const actions = {
     var tab_counter = 9;
     for (var i = 0; i < audits_response.length; i++) {
       var jsonData = {};
+      jsonData["id"] = [audits_response[i]["id"], null];
       jsonData["created"] = [audits_response[i]["created"], tab_counter];
       tab_counter++;
       jsonData["type"] = [audits_response[i]["type"], tab_counter];
@@ -373,6 +408,57 @@ const actions = {
     }
     commit("setActiveThreatHistory", threat);
     commit("setActiveThreatAudits", audits_array);
+  },
+  async resetThreatAudit({ commit, dispatch }, threat) {
+    const asset_response = await ipcRenderer.sendSync("getOne", [
+      "assets",
+      threat,
+    ]);
+    var audit_threat_json = {};
+
+    audit_threat_json["name"] = {
+      old_data: null,
+      new_data: threat.name,
+    };
+    audit_threat_json["description"] = {
+      old_data: null,
+      new_data: threat.description,
+    };
+    audit_threat_json["impact"] = {
+      old_data: null,
+      new_data: threat.impact,
+    };
+    audit_threat_json["likelihood"] = {
+      old_data: null,
+      new_data: threat.likelihood,
+    };
+
+    audit_threat_json["threat_type_name"] = {
+      old_data: null,
+      new_data: threat.threat_type_id,
+    };
+    if (!asset_response) {
+      audit_threat_json["asset_name"] = {
+        old_data: null,
+        new_data: threat.asset_nam,
+      };
+    } else {
+      audit_threat_json["asset_name"] = {
+        old_data: null,
+        new_data: asset_response.name,
+      };
+    }
+    var threat_audit = {
+      threat_id: threat.id,
+      changed_fields: JSON.stringify(audit_threat_json),
+      observation: threat.observation,
+      type: 0,
+    };
+    const threat_audit_response = await ipcRenderer.sendSync("insert", [
+      "threats_audits",
+      threat_audit,
+    ]);
+    await dispatch("changeActiveThreatHistory", threat);
   },
   async changeAllThreatHistory({ commit }) {
     const audits_response = await ipcRenderer.sendSync("queryAll", [
@@ -433,6 +519,25 @@ const actions = {
       }
     }
   },
+  async deleteAuditElements({ commit, dispatch }, threat) {
+    const response = await ipcRenderer.sendSync("removeAll", [
+      "threats_audits",
+      threat.id,
+    ]);
+    if (response[0] === "error" || response[0] === "reject") {
+      dispatch("setNotification", {
+        text: i18n.t("global.delete_error"),
+        color: "error",
+      });
+    } else {
+      if (response[0]) {
+        await dispatch("resetThreatAudit", threat);
+        await dispatch("setNotification", {
+          text: i18n.t("global.delete_success"),
+        });
+      }
+    }
+  },
 };
 
 const mutations = {
@@ -465,6 +570,9 @@ const mutations = {
     (state.active_threat_history = active_threat_history),
   setActiveThreatAudits: (state, audits) => (state.audits = audits),
   setAllThreatsHistory: (state, all_audits) => (state.all_audits = all_audits),
+  removeThreatAudit: (state, id) =>
+    state.audits.filter((audits) => audits["id"][0] !== id),
+  removeAllThreatAudit: (state, id) => (state.audits = []),
 };
 
 export default {

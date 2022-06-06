@@ -7,6 +7,17 @@
       </v-btn>
     </router-link>
 
+    <v-spacer></v-spacer>
+
+    <v-btn
+      color="error"
+      v-if="audits.length > 1"
+      @click="dialogDeleteAll = true, threat_id = threat.id, current_threat = threat"
+    >
+      <v-icon class="mr-2">mdi-delete-variant</v-icon>
+      {{ $t("threats.threat_history.delete") }}
+    </v-btn>
+
     <v-row align="center" justify="center">
       <v-col cols="auto" class="text-center">
         <v-card class="elevation-2 text-left">
@@ -79,8 +90,13 @@
                 class="text-h5 red darken-2"
                 v-if="n.type[0] == 1"
                 :tabIndex="n.type[1]"
-                >{{ $t("threats.modified_threat") }}</v-card-title
               >
+                {{ $t("threats.modified_threat") }}
+                <v-spacer></v-spacer>
+                <v-btn icon @click="dialogDeleteSingle = true, threat_to_delete = n.id[0], current_threat = threat">
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </v-card-title>
               <v-card-title
                 class="text-h5 red darken-2"
                 v-if="n.type[0] == 0"
@@ -333,7 +349,7 @@
                   <div v-if="!n.asset_name_new && n.asset_name_old">
                     <div :tabIndex="n.asset_name_old[1]">
                       <b>{{ $t("threats.deleted_asset") }}: </b>
-                      <strike>{{ n.asset_name_old }}</strike>
+                      <strike>{{ n.asset_name_old[0] }}</strike>
                     </div>
                   </div>
                 </div>
@@ -376,16 +392,68 @@
         </v-card-actions>
       </v-card>
     </v-overlay>
+    <v-dialog v-model="dialogDeleteSingle" width="500">
+      <v-card>
+        <v-card-title class="text-h5 warning">
+          {{ $t("global.delete_confirm") }}
+        </v-card-title>
+
+        <br />
+
+        <v-card-text>
+          {{ $t("threats.threat_history.confirm_delete") }}
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="accent" text @click="dialogDeleteSingle = false">
+            {{ $t("global.cancel") }}
+          </v-btn>
+          <v-btn color="error" text @click="deleteElement">
+            {{ $t("global.delete") }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogDeleteAll" width="500">
+      <v-card>
+        <v-card-title class="text-h5 warning">
+          {{ $t("global.delete_confirm") }}
+        </v-card-title>
+
+        <br />
+
+        <v-card-text>
+          {{ $t("threats.threat_history.confirm_delete_all") }}
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="accent" text @click="dialogDeleteAll = false">
+            {{ $t("global.cancel") }}
+          </v-btn>
+          <v-btn color="error" text @click="deleteAllAudits">
+            {{ $t("global.delete") }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
 //import ThreatList from "../components/threats/ThreatList.vue";
 export default {
   props: ["threat", "audits"],
   data: () => ({
+    dialogDeleteSingle: false,
+    dialogDeleteAll: false,
     overlay_observation: false,
+    threat_to_delete: false,
+    current_threat: null,
+    threat_id: null,
     description_value: "",
     description_title: "",
     tab_idx: "",
@@ -412,12 +480,28 @@ export default {
     ...mapGetters(["getAllThreatTypes"]),
   },
   methods: {
+    ...mapActions([
+      "deleteThreatAudit",
+      "deleteAllThreatAudit",
+      "resetThreatAudit",
+      "changeActiveThreatHistory"
+    ]),    
     mapThreatType(id) {
       const tempObj = JSON.parse(
         this.getAllThreatTypes.find((x) => x.id === id[0]).name
       );
       return tempObj[this.$i18n.locale];
     },
+    async deleteElement() {
+      this.deleteThreatAudit(this.threat_to_delete);
+      this.dialogDeleteSingle = !this.dialogDeleteSingle;
+      this.changeActiveThreatHistory(this.threat);
+    },
+    async deleteAllAudits() {
+      this.deleteAllThreatAudit(this.threat_id);
+      this.dialogDeleteAll = !this.dialogDeleteAll;
+      this.resetThreatAudit(this.current_threat);
+    },      
     fillOverlay(title, description, tab_idx) {
       this.description_title = title;
       this.description_value = description;

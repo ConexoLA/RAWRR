@@ -177,7 +177,7 @@
                 >
                   {{ $t("global.cancel") }}
                 </v-btn>
-                <v-btn text color="error" @click="confirmDelete()">
+                <v-btn color="error" @click="confirmDelete()">
                   {{ $t("global.delete") }}
                 </v-btn>
               </v-card-actions>
@@ -195,7 +195,7 @@
               >
                 {{ $t("global.cancel") }}
               </v-btn>
-              <v-btn text color="error" @click="confirmDelete()">
+              <v-btn color="error" @click="confirmDelete()">
                 {{ $t("global.delete") }}
               </v-btn>
             </v-card-actions>

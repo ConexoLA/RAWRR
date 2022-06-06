@@ -246,15 +246,18 @@
             <div v-if="deleteElements.length > 1" class="text--primary">
               {{ $t("threats.delete_multiple_confirm") }}
             </div>
-            <div
-              v-for="element in deleteElements"
-              :key="element.id"
-              class="ml-5 text--primary"
-            >
-              (ID: {{ element.id }}) - {{ element.name }}
+            <div v-for="element in deleteElements" :key="element.id">
+              <div class="ml-5 text--primary">
+                (ID: {{ element.id }}) - {{ element.name }}
+              </div>
               <v-card-actions v-if="deleteElements.length == 1">
+                <v-btn class="mr-5" text color="error" @click="deleteAudits()"
+                  ><v-icon class="mr-1">mdi-history</v-icon>
+                  {{ $t("global.delete_history") }}
+                </v-btn>
                 <v-spacer></v-spacer>
                 <v-btn
+                  class="ml-5"
                   text
                   color="accent"
                   @click="
@@ -265,28 +268,35 @@
                 >
                   {{ $t("global.cancel") }}
                 </v-btn>
-                <v-btn text color="error" @click="confirmDelete()">
+                <v-btn color="error" @click="confirmDelete()">
                   {{ $t("global.delete") }}
                 </v-btn>
               </v-card-actions>
             </div>
-            <v-card-actions v-if="deleteElements.length > 1">
-              <v-spacer></v-spacer>
-              <v-btn
-                text
-                color="accent"
-                @click="
-                  overlay = false;
-                  focusOnDelete();
-                "
-                ref="confirmation_modal"
-              >
-                {{ $t("global.cancel") }}
-              </v-btn>
-              <v-btn text color="error" @click="confirmDelete()">
-                {{ $t("global.delete") }}
-              </v-btn>
-            </v-card-actions>
+            <div>
+              <v-card-actions v-if="deleteElements.length > 1">
+                <v-btn class="mr-5" text color="error" @click="deleteAudits()"
+                  ><v-icon class="mr-1">mdi-history</v-icon>
+                  {{ $t("global.delete_history") }}
+                </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn
+                  class="ml-5"
+                  text
+                  color="accent"
+                  @click="
+                    overlay = false;
+                    focusOnDelete();
+                  "
+                  ref="confirmation_modal"
+                >
+                  {{ $t("global.cancel") }}
+                </v-btn>
+                <v-btn color="error" @click="confirmDelete()">
+                  {{ $t("global.delete") }}
+                </v-btn>
+              </v-card-actions>
+            </div>
           </v-card-text>
         </v-card>
       </div>
@@ -360,6 +370,7 @@ export default {
       "fetchAllThreats",
       "deleteThreat",
       "changeActiveThreatHistory",
+      "deleteAuditElements",
       "exportImage",
     ]),
     onChartReady(chart, google) {
@@ -529,6 +540,12 @@ export default {
           this.$refs.svi.$el.focus();
         }, 0);
       }
+    },
+    deleteAudits() {
+      this.deleteElements.forEach((element) => {
+        this.deleteAuditElements(element);
+      });
+      this.overlay = !this.overlay;
     },
     focusOnEdit(focus_on) {
       this.$refs["ref-" + focus_on].$el.focus();

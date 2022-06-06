@@ -801,6 +801,25 @@ export function setIPCMainListeners() {
           event.returnValue = [];
         }
         break;
+      case "threats_audits":
+        try {
+          arr = [arg[1]];
+          threats_audits.remove(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
       case "threats":
         try {
           arr = [arg[1].id];
@@ -895,6 +914,62 @@ export function setIPCMainListeners() {
           console.log(error);
           event.returnValue = [];
         }
+        break;
+      default:
+        console.log(arg[0], " does not have a valid remove method.");
+        event.returnValue = [];
+    }
+  });
+
+  //data is sent as arg from a synchronous call made in whichever file is contained in the views folder.
+  //PARAMETERS:
+  //  arg is an array with the following structure: ["table_name", {row}].
+  //    table_name is the keyword identifying a database table
+  //    row is an object containing all necesary atributes to remove said row from a table
+  //      there's aditional information regarding these atributes in the db folder for each table
+  //EXPECTED OUTPUT:
+  //  Returns an array containing row or an empty one.
+  ipcMain.on("removeAll", (event, arg) => {
+    let arr = [];
+    switch (arg[0]) {
+      case "asset_categories":
+        break;
+      case "assets":
+        break;
+      case "assessment_activities":
+        break;
+      case "assessment_activity_asset_associations":
+        break;
+      case "threat_types":
+        break;
+      case "threats_audits":
+        try {
+          arr = [arg[1]];
+          threats_audits.removeAll(arr).then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = [];
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "threats":
+        break;
+      case "vulnerabilities":
+        break;
+      case "vulnerability_threat_associations":
+        break;
+      case "recommendations":
+        break;
+      case "recommendation_vulnerability_associations":
         break;
       default:
         console.log(arg[0], " does not have a valid remove method.");

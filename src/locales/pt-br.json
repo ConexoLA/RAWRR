@@ -40,7 +40,8 @@
     "risk_matrix_accessibility": "Representação gráfica das ameaças em uma matriz de 10 por 10, localizada nos eixos de impacto e probabilidade de acordo com seus valores.",
     "search_bar_accessibility": "Esta barra de pesquisa serve para filtrar os elementos da tabela abaixo",
     "warning": "Aviso",
-    "continue": "Continuar"
+    "continue": "Continuar",
+    "delete_history": "Excluir histórico de ameaças"
   },
   "header": {
     "home": "Início",
@@ -141,7 +142,10 @@
       "name_change": "Nome:",
       "observation": "Observação:",
       "new": "Nova:",
-      "old": "Velha:"
+      "old": "Velha:",
+      "delete": "Excluir histórico de alterações",
+      "confirm_delete": "Esta ação removerá o item selecionado do histórico de ameaças",
+      "confirm_delete_all": "Esta ação excluirá todo o histórico da ameaça"
     },
     "risk_matrix": {
       "vcard_name": "Matriz de risco",
