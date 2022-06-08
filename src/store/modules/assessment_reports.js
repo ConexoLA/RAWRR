@@ -9,7 +9,6 @@ const state = {
 const getters = {
   getMain: (state, rootState) => {
     if (state.created) {
-      console.log("Already created :(");
       return state.main;
     } else {
       var last_id = 0;
@@ -39,7 +38,6 @@ const getters = {
       }
 
       for (var threat in rootState.getAllThreats) {
-        console.log(rootState.getAllThreats[threat]);
         if (
           rootState.getAllThreats[threat].impact > 0 ||
           rootState.getAllThreats[threat].likelihood > 0
