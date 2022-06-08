@@ -502,6 +502,238 @@ export function setIPCMainListeners() {
 
   //data is sent as arg from a synchronous call made in whichever file is contained in the views folder.
   //PARAMETERS:
+  //  arg is an array with the following structure: ["table_name"].
+  //    table_name is the keyword identifying a database table
+  //EXPECTED OUTPUT:
+  //  Returns an array containing all rows inside a table,
+  //          a SQLite error code,
+  //          or an empty array if the table does not exist.
+  ipcMain.on("queryAllById", (event, arg) => {
+    switch (arg[0]) {
+      case "config":
+        try {
+          config.queryAllById().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "asset_categories":
+        try {
+          asset_categories.queryAllById().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assets":
+        try {
+          assets.queryAllById().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assessment_activities":
+        try {
+          assessment_activities.queryAllById().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "assessment_activity_asset_associations":
+        try {
+          assessment_activity_asset_associations.queryAllById().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "threat_types":
+        try {
+          threat_types.queryAllById().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "threats":
+        try {
+          threats.queryAllById().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "threats_audits":
+        try {
+          threats_audits.queryAllById().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "vulnerabilities":
+        try {
+          vulnerabilities.queryAllById().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "vulnerability_threat_associations":
+        try {
+          vulnerability_threat_associations.queryAllById().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "recommendations":
+        try {
+          recommendations.queryAllById().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      case "recommendation_vulnerability_associations":
+        try {
+          recommendation_vulnerability_associations.queryAllById().then(
+            function (data) {
+              //resolve
+              event.returnValue = data;
+            },
+            function (err) {
+              //reject
+              console.log(err);
+              event.returnValue = err.errno;
+            }
+          );
+        } catch (error) {
+          console.log(error);
+          event.returnValue = [];
+        }
+        break;
+      default:
+        console.log(arg[0], " does not have a valid query all method.");
+        event.returnValue = [];
+    }
+  });
+
+  //data is sent as arg from a synchronous call made in whichever file is contained in the views folder.
+  //PARAMETERS:
   //  arg is an array with the following structure: ["table_name", "data", "id"].
   //    table_name is the keyword identifying a database table
   //    row is an array containing all atributes to update a row from a table

@@ -68,6 +68,41 @@ export function queryAll() {
 }
 
 //PARAMETERS:
+//  None.
+//EXPECTED OUTPUT:
+//  Returns a promise.
+//    Resolve: array containing all threat_types.
+//    Reject: empty array or an error.
+export function queryAllById() {
+  return new Promise(function (resolve, reject) {
+    try {
+      let db = init.open();
+      let threat_types = [];
+      if (db) {
+        db.serialize(function () {
+          let sql =
+            "SELECT id, name, description, color, created, last_modified FROM threat_types ORDER BY id DESC";
+          db.all(sql, [], (err, rows) => {
+            if (err) {
+              reject(err);
+            } else {
+              rows.forEach((row) => {
+                threat_types.push(row);
+              });
+              resolve(threat_types);
+            }
+          });
+        });
+      } else {
+        reject(threat_types);
+      }
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
+//PARAMETERS:
 //  Threat_type is an array with the following structure: ["name", "description", "color", "id"].
 //    name can NOT be null.
 //    id is the table's Primary Key.

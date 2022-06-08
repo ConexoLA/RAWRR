@@ -68,6 +68,41 @@ export function queryAll() {
 }
 
 //PARAMETERS:
+//  None.
+//EXPECTED OUTPUT:
+//  Returns a promise.
+//    Resolve: array containing all threats_audits.
+//    Reject: empty array or an error.
+export function queryAllById() {
+  return new Promise(function (resolve, reject) {
+    try {
+      let db = init.open();
+      let threats_audits = [];
+      if (db) {
+        db.serialize(function () {
+          let sql =
+            "SELECT id, threat_id, changed_fields, observation, type, created FROM threats_audits ORDER BY threat_id ORDER BY id DESC";
+          db.all(sql, [], (err, rows) => {
+            if (err) {
+              reject(err);
+            } else {
+              rows.forEach((row) => {
+                threats_audits.push(row);
+              });
+              resolve(threats_audits);
+            }
+          });
+        });
+      } else {
+        reject(threats_audits);
+      }
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
+//PARAMETERS:
 //  threats_audit is an array with the following structure: ["threat_id"]
 //EXPECTED OUTPUT:
 //  Returns a promise.
