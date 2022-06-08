@@ -458,10 +458,8 @@ export function md(
                   ")\n"
               );
             }
-            let description = getMain[item.interest][0].tasks[i].description;
-            if (description === null) {
-              description = "";
-            }
+
+            // Adding: Title
             let title = getMain[item.interest][0].tasks[i].title;
             const j = i + 1;
             fileContents.push("1. #### " + title + "\n");
@@ -472,13 +470,20 @@ export function md(
                 title.toLowerCase().split(" ").join("-") +
                 ")\n"
             );
-            fileContents.push(
-              "\t * **" +
-                i18n.t("global.description") +
-                ":** " +
-                description +
-                "\n"
-            );
+
+            // Adding: Description
+            let description = getMain[item.interest][0].tasks[i].description;
+            if (description === null) {
+              description = "";
+            } else {
+              fileContents.push(
+                "\t * **" +
+                  i18n.t("global.description") +
+                  ":** " +
+                  description +
+                  "\n"
+              );
+            }
 
             switch (item.name) {
               case "Assets":
@@ -932,13 +937,18 @@ export function json(
             if (i == 0) {
               jsonSection["sectionName"] = item.title;
             }
+
+            // Adding: Title
+            jsonEntry["title"] = getMain[item.interest][0].tasks[i].title;
+            const j = i + 1;
+
+            // Adding: Description
             let description = getMain[item.interest][0].tasks[i].description;
             if (description === null) {
               description = "";
+            } else {
+              jsonEntry["description"] = description;
             }
-            jsonEntry["description"] = description;
-            jsonEntry["title"] = getMain[item.interest][0].tasks[i].title;
-            const j = i + 1;
 
             switch (item.name) {
               case "Assets":
@@ -1261,10 +1271,7 @@ export function docx(
                 })
               );
             }
-            let description = getMain[item.interest][0].tasks[i].description;
-            if (description === null) {
-              description = "";
-            }
+
             let title = getMain[item.interest][0].tasks[i].title;
             const j = i + 1;
             docxChildren.push(
@@ -1277,15 +1284,21 @@ export function docx(
                 },
               })
             );
-            docxChildren.push(
-              new Paragraph({
-                text: i18n.t("global.description") + ": " + description,
-                numbering: {
-                  reference: "rawrr-numbering",
-                  level: 2,
-                },
-              })
-            );
+
+            let description = getMain[item.interest][0].tasks[i].description;
+            if (description === null) {
+              description = "";
+            } else {
+              docxChildren.push(
+                new Paragraph({
+                  text: i18n.t("global.description") + ": " + description,
+                  numbering: {
+                    reference: "rawrr-numbering",
+                    level: 2,
+                  },
+                })
+              );
+            }
 
             switch (item.name) {
               case "Assets":
