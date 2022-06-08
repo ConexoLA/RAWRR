@@ -413,33 +413,35 @@ export default {
       ];
 
       for (var i = 0; i < this.threats.length; i++) {
-        data.push([
-          String(this.threats[i].id),
-          {
-            v: this.getCircleX(
-              this.threats[i].likelihood,
-              0.5,
-              counter[this.threats[i].likelihood][this.threats[i].impact],
-              matrix[this.threats[i].likelihood][this.threats[i].impact]
-            ),
-            f: this.threats[i].likelihood,
-          },
-          {
-            v: this.getCircleY(
-              this.threats[i].impact,
-              0.5,
-              counter[this.threats[i].likelihood][this.threats[i].impact],
-              matrix[this.threats[i].likelihood][this.threats[i].impact]
-            ),
-            f: this.threats[i].impact,
-          },
-          this.threats[i].impact * this.threats[i].likelihood,
-          {
-            v: 2,
-            f: this.threats[i].name,
-          },
-        ]);
-        counter[this.threats[i].likelihood][this.threats[i].impact] += 1;
+        if (this.threats[i].likelihood > 0 || this.threats[i].impact > 0) {
+          data.push([
+            String(this.threats[i].id),
+            {
+              v: this.getCircleX(
+                this.threats[i].likelihood,
+                0.5,
+                counter[this.threats[i].likelihood][this.threats[i].impact],
+                matrix[this.threats[i].likelihood][this.threats[i].impact]
+              ),
+              f: this.threats[i].likelihood,
+            },
+            {
+              v: this.getCircleY(
+                this.threats[i].impact,
+                0.5,
+                counter[this.threats[i].likelihood][this.threats[i].impact],
+                matrix[this.threats[i].likelihood][this.threats[i].impact]
+              ),
+              f: this.threats[i].impact,
+            },
+            this.threats[i].impact * this.threats[i].likelihood,
+            {
+              v: 2,
+              f: this.threats[i].name,
+            },
+          ]);
+          counter[this.threats[i].likelihood][this.threats[i].impact] += 1;
+        }
       }
 
       // Transform the Array into a proper DataTable

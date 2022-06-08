@@ -9,6 +9,7 @@ const state = {
 const getters = {
   getMain: (state, rootState) => {
     if (state.created) {
+      console.log("Already created :(");
       return state.main;
     } else {
       var last_id = 0;
@@ -38,15 +39,21 @@ const getters = {
       }
 
       for (var threat in rootState.getAllThreats) {
-        state.main.report_threats[0].tasks.push({
-          id: last_id,
-          title: rootState.getAllThreats[threat].name,
-          identifier: rootState.getAllThreats[threat].id,
-          description: rootState.getAllThreats[threat].description,
-          type: "Threats",
-          type_name: i18n.t("reports.threats"),
-        });
-        last_id += 1;
+        console.log(rootState.getAllThreats[threat]);
+        if (
+          rootState.getAllThreats[threat].impact > 0 ||
+          rootState.getAllThreats[threat].likelihood > 0
+        ) {
+          state.main.report_threats[0].tasks.push({
+            id: last_id,
+            title: rootState.getAllThreats[threat].name,
+            identifier: rootState.getAllThreats[threat].id,
+            description: rootState.getAllThreats[threat].description,
+            type: "Threats",
+            type_name: i18n.t("reports.threats"),
+          });
+          last_id += 1;
+       }
       }
 
       for (var vulnerability in rootState.getAllVulnerabilities) {
