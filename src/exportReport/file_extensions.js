@@ -479,9 +479,11 @@ export function md(
               fileContents.push(
                 "\t * **" +
                   i18n.t("global.description") +
-                  ":** " +
-                  description +
-                  "\n"
+                  ":**\n\t\t```\n\t\t" +
+                  description
+                    .replace(/\n\-/g, "\n\t\t -")
+                    .replace(/\n\*/g, "\n\t\t -") +
+                  " \n \t\t```\n"
               );
             }
 
