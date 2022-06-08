@@ -54,7 +54,7 @@ const getters = {
 
 const actions = {
   async fetchAllAssets({ commit }) {
-    const response = await ipcRenderer.sendSync("queryAll", ["assets"]);
+    const response = await ipcRenderer.sendSync("queryAllById", ["assets"]);
     if (Number.isFinite(response)) {
       switch (response) {
         //Table does not exist
@@ -129,7 +129,7 @@ const actions = {
     commit("changeAsset", response);
   },
   async fetchAllAssetCategories({ commit }) {
-    const response = await ipcRenderer.sendSync("queryAll", [
+    const response = await ipcRenderer.sendSync("queryAllById", [
       "asset_categories",
     ]);
     if (Number.isFinite(response)) {

@@ -68,7 +68,7 @@ const getters = {
 
 const actions = {
   async fetchAllThreatTypes({ commit }) {
-    const response = await ipcRenderer.sendSync("queryAll", ["threat_types"]);
+    const response = await ipcRenderer.sendSync("queryAllById", ["threat_types"]);
     if (Number.isFinite(response)) {
       switch (response) {
         //Table does not exist
@@ -122,7 +122,7 @@ const actions = {
     commit("changeThreatType", response);
   },
   async fetchAllThreats({ commit }) {
-    const response = await ipcRenderer.sendSync("queryAll", ["threats"]);
+    const response = await ipcRenderer.sendSync("queryAllById", ["threats"]);
     if (Number.isFinite(response)) {
       switch (response) {
         //Table does not exist
@@ -461,7 +461,7 @@ const actions = {
     await dispatch("changeActiveThreatHistory", threat);
   },
   async changeAllThreatHistory({ commit }) {
-    const audits_response = await ipcRenderer.sendSync("queryAll", [
+    const audits_response = await ipcRenderer.sendSync("queryAllById", [
       "threats_audits",
     ]);
 
