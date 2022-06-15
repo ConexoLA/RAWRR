@@ -51,6 +51,16 @@ const getters = {
             type_name: i18n.t("reports.threats"),
           });
           last_id += 1;
+        } else {
+          state.main.threats[0].tasks.push({
+            id: last_id,
+            title: rootState.getAllThreats[threat].name,
+            identifier: rootState.getAllThreats[threat].id,
+            description: rootState.getAllThreats[threat].description,
+            type: "Threats",
+            type_name: i18n.t("reports.threats")
+          });
+          last_id += 1;
        }
       }
 
