@@ -51,7 +51,7 @@ const getters = {
 
 const actions = {
   async fetchAllAssessmentActivities({ commit }) {
-    const response = await ipcRenderer.sendSync("queryAllById", [
+    const response = await ipcRenderer.sendSync("queryAll", [
       "assessment_activities",
     ]);
     if (Number.isFinite(response)) {

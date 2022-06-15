@@ -65,7 +65,7 @@ const getters = {
 
 const actions = {
   async fetchAllVulnerabilities({ commit }) {
-    const response = await ipcRenderer.sendSync("queryAllById", [
+    const response = await ipcRenderer.sendSync("queryAll", [
       "vulnerabilities",
     ]);
     if (Number.isFinite(response)) {

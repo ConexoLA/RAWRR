@@ -47,7 +47,7 @@ const getters = {
 
 const actions = {
   async fetchAllRecommendations({ commit }) {
-    const response = await ipcRenderer.sendSync("queryAllById", [
+    const response = await ipcRenderer.sendSync("queryAll", [
       "recommendations",
     ]);
     if (Number.isFinite(response)) {
