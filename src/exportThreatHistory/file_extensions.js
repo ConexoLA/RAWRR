@@ -892,7 +892,8 @@ export function json(
 
               let description = getMain[item.interest][0].tasks[i].description;
               if (description === null) {
-                description = "";
+                // For now, the report DOES NOT include this part
+                // description = "";
               } else {
                 // Adding description of the threat
                 threatSection[i18n.t("global.description")] = description;
@@ -929,8 +930,8 @@ export function json(
                       }
 
                       if (related_asset == 0) {
-                        threatSection[i18n.t("global.asset")] =
-                          i18n.t("global.none");
+                        // For now, the report DOES NOT include this part
+                        // threatSection[i18n.t("global.asset")] = i18n.t("global.none");
                       }
 
                       threatSection[i18n.t("global.impact")] =
