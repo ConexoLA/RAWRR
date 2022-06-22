@@ -988,6 +988,7 @@ export function json(
             // Adding: Description
             let description = getMain[item.interest][0].tasks[i].description;
             if (description === null) {
+              // For now, the report DOES NOT include this part
               description = "";
             } else {
               jsonEntry["description"] = description;
@@ -1001,10 +1002,13 @@ export function json(
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
                     if (assets[k].asset_category_name === undefined) {
+                      // For now, the report DOES NOT include this part
                       assets[k].asset_category_name = i18n.t("global.none");
+                    } else {
+                      jsonEntry["assetCategoryName"] =
+                        assets[k].asset_category_name;
                     }
-                    jsonEntry["assetCategoryName"] =
-                      assets[k].asset_category_name;
+                
                   }
                 }
                 break;
@@ -1043,7 +1047,8 @@ export function json(
                     }
 
                     if (related_assets == 0) {
-                      jsonEntry["relatedAssets"] = i18n.t("global.none");
+                      // For now, the report DOES NOT include this part
+                      // jsonEntry["relatedAssets"] = i18n.t("global.none");
                     }
                   }
                 }
@@ -1075,7 +1080,8 @@ export function json(
                     }
 
                     if (related_asset == 0) {
-                      jsonEntry["relatedAsset"] = i18n.t("global.none");
+                      // For now, the report DOES NOT include this part
+                      // jsonEntry["relatedAsset"] = i18n.t("global.none");
                     }
 
                     jsonEntry["impact"] = threats[k].impact;
@@ -1107,7 +1113,8 @@ export function json(
                     }
 
                     if (related_activity == 0) {
-                      jsonEntry["relatedAcivity"] = i18n.t("global.none");
+                      // For now, the report DOES NOT include this part
+                      // jsonEntry["relatedAcivity"] = i18n.t("global.none");
                     }
 
                     // Adding related asset
@@ -1127,7 +1134,8 @@ export function json(
                     }
 
                     if (related_asset == 0) {
-                      jsonEntry["relatedAsset"] = i18n.t("global.none");
+                      // For now, the report DOES NOT include this part
+                      // jsonEntry["relatedAsset"] = i18n.t("global.none");
                     }
 
                     let reportThreats = getMain.report_threats[0].tasks;
@@ -1155,7 +1163,8 @@ export function json(
                     }
 
                     if (related_threats == 0) {
-                      jsonEntry["relatedThreats"] = i18n.t("global.none");
+                      // For now, the report DOES NOT include this part
+                      // jsonEntry["relatedThreats"] = i18n.t("global.none");
                     }
                   }
                 }
@@ -1211,8 +1220,8 @@ export function json(
                     }
 
                     if (related_vulnerabilities == 0) {
-                      jsonEntry["relatedVulnerabilities"] =
-                        i18n.t("global.none");
+                      // For now, the report DOES NOT include this part
+                      //jsonEntry["relatedVulnerabilities"] = i18n.t("global.none");
                     }
                   }
                 }
