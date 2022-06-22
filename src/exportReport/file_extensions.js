@@ -506,6 +506,7 @@ export function md(
             // Adding: Description
             let description = getMain[item.interest][0].tasks[i].description;
             if (description === null) {
+              // For now, the report DOES NOT include this part
               description = "";
             } else {
               fileContents.push(
@@ -538,7 +539,6 @@ export function md(
                           "\n"
                       );
                     }
-
                   }
                 }
                 break;
@@ -584,13 +584,14 @@ export function md(
                     }
 
                     if (related_assets == 0) {
-                      fileContents.push(
+                      // For now, the report DOES NOT include this part
+                      /*fileContents.push(
                         "\t * **" +
                           i18n.t("global.assets") +
                           ":** " +
                           i18n.t("global.none") +
                           "\n"
-                      );
+                      );*/
                     }
                   }
                 }
@@ -640,13 +641,14 @@ export function md(
                     }
 
                     if (related_asset == 0) {
-                      fileContents.push(
+                      // For now, the report DOES NOT include this part
+                      /*fileContents.push(
                         "\t * **" +
                           i18n.t("global.asset") +
                           ":** " +
                           i18n.t("global.none") +
                           "\n"
-                      );
+                      );*/
                     }
 
                     fileContents.push(
@@ -700,13 +702,14 @@ export function md(
                     }
 
                     if (related_activity == 0) {
-                      fileContents.push(
+                      // For now, the report DOES NOT include this part
+                      /*fileContents.push(
                         "\t * **" +
                           i18n.t("global.assessment_activity") +
                           ":**  " +
                           i18n.t("global.none") +
                           "\n"
-                      );
+                      );*/
                     }
 
                     // Adding related asset
@@ -736,13 +739,14 @@ export function md(
                     }
 
                     if (related_asset == 0) {
-                      fileContents.push(
+                      // For now, the report DOES NOT include this part
+                      /*fileContents.push(
                         "\t * **" +
                           i18n.t("global.asset") +
                           ":** " +
                           i18n.t("global.none") +
                           "\n"
-                      );
+                      );*/
                     }
 
                     let reportThreats = getMain.report_threats[0].tasks;
@@ -779,13 +783,14 @@ export function md(
                     }
 
                     if (related_threats == 0) {
-                      fileContents.push(
+                      // For now, the report DOES NOT include this part
+                      /*fileContents.push(
                         "\t * **" +
                           i18n.t("global.threats") +
                           ":** " +
                           i18n.t("global.none") +
                           "\n"
-                      );
+                      );*/
                     }
                   }
                 }
@@ -862,13 +867,14 @@ export function md(
                     }
 
                     if (related_vulnerabilities == 0) {
-                      fileContents.push(
+                      // For now, the report DOES NOT include this part
+                      /*fileContents.push(
                         "\t * **" +
                           i18n.t("global.vulnerabilities") +
                           ":** " +
                           i18n.t("global.none") +
                           "\n"
-                      );
+                      );*/
                     }
                   }
                 }
