@@ -54,7 +54,7 @@ export function md(
                 fileContents.push("## " + item.title + "\n\n");
                 toc.push("- " + item.title + "\n");
               }
-         
+
               let title = getMain[item.interest][0].tasks[i].title;
               fileContents.push("1. #### " + title + "\n");
               toc.push(
@@ -84,7 +84,7 @@ export function md(
               // Adding description of the threat
               let description = getMain[item.interest][0].tasks[i].description;
               if (description === null) {
-                description = "";
+                // To add usage of description
               } else {
                 fileContents.push(
                   "\t * **" +
@@ -106,15 +106,17 @@ export function md(
                       getMain[item.interest][0].tasks[i].identifier
                     ) {
                       if (threats[k].threat_type_name === undefined) {
-                        threats[k].threat_type_name = i18n.t("global.none");
+                        // For now, the report DOES NOT include this part
+                        // threats[k].threat_type_name = i18n.t("global.none");
+                      } else {
+                        fileContents.push(
+                          "\t\t * **" +
+                            i18n.t("global.threat_type") +
+                            ":** " +
+                            threats[k].threat_type_name +
+                            "\n"
+                        );
                       }
-                      fileContents.push(
-                        "\t\t * **" +
-                          i18n.t("global.threat_type") +
-                          ":** " +
-                          threats[k].threat_type_name +
-                          "\n"
-                      );
 
                       var related_asset = 0;
                       for (
@@ -138,13 +140,14 @@ export function md(
                       }
 
                       if (related_asset == 0) {
-                        fileContents.push(
+                        // For now, the report DOES NOT include this part
+                        /*fileContents.push(
                           "\t\t * **" +
                             i18n.t("global.asset") +
                             ":** " +
                             i18n.t("global.none") +
                             "\n"
-                        );
+                        ); */
                       }
 
                       fileContents.push(
@@ -477,7 +480,8 @@ export function txt(
               // Adding description of the threat
               let description = getMain[item.interest][0].tasks[i].description;
               if (description === null) {
-                description = "";
+                // For now, the report DOES NOT include this part
+                // description = "";
               } else {
                 fileContents.push(
                   "\t\t * " +
@@ -497,16 +501,17 @@ export function txt(
                       getMain[item.interest][0].tasks[i].identifier
                     ) {
                       if (threats[k].threat_type_name === undefined) {
-                        threats[k].threat_type_name = i18n.t("global.none");
+                        // For now, the report DOES NOT include this part
+                        //threats[k].threat_type_name = i18n.t("global.none");
+                      } else {
+                        fileContents.push(
+                          "\t\t * " +
+                            i18n.t("global.threat_type") +
+                            ": " +
+                            threats[k].threat_type_name +
+                            "\n"
+                        );
                       }
-                      fileContents.push(
-                        "\t\t * " +
-                          i18n.t("global.threat_type") +
-                          ": " +
-                          threats[k].threat_type_name +
-                          "\n"
-                      );
-
                       var related_asset = 0;
                       for (
                         var p = 0;
@@ -529,13 +534,14 @@ export function txt(
                       }
 
                       if (related_asset == 0) {
-                        fileContents.push(
+                        // For now, the report DOES NOT include this part
+                        /*fileContents.push(
                           "\t\t * " +
                             i18n.t("global.asset") +
                             ": " +
                             i18n.t("global.none") +
                             "\n"
-                        );
+                        );*/
                       }
 
                       fileContents.push(
