@@ -582,24 +582,6 @@ export function setIPCMainListeners() {
           event.returnValue = [];
         }
         break;
-      case "assessment_activity_asset_associations":
-        try {
-          assessment_activity_asset_associations.queryAllById().then(
-            function (data) {
-              //resolve
-              event.returnValue = data;
-            },
-            function (err) {
-              //reject
-              console.log(err);
-              event.returnValue = err.errno;
-            }
-          );
-        } catch (error) {
-          console.log(error);
-          event.returnValue = [];
-        }
-        break;
       case "threat_types":
         try {
           threat_types.queryAllById().then(
@@ -672,45 +654,9 @@ export function setIPCMainListeners() {
           event.returnValue = [];
         }
         break;
-      case "vulnerability_threat_associations":
-        try {
-          vulnerability_threat_associations.queryAllById().then(
-            function (data) {
-              //resolve
-              event.returnValue = data;
-            },
-            function (err) {
-              //reject
-              console.log(err);
-              event.returnValue = err.errno;
-            }
-          );
-        } catch (error) {
-          console.log(error);
-          event.returnValue = [];
-        }
-        break;
       case "recommendations":
         try {
           recommendations.queryAllById().then(
-            function (data) {
-              //resolve
-              event.returnValue = data;
-            },
-            function (err) {
-              //reject
-              console.log(err);
-              event.returnValue = err.errno;
-            }
-          );
-        } catch (error) {
-          console.log(error);
-          event.returnValue = [];
-        }
-        break;
-      case "recommendation_vulnerability_associations":
-        try {
-          recommendation_vulnerability_associations.queryAllById().then(
             function (data) {
               //resolve
               event.returnValue = data;
