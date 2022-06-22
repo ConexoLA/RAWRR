@@ -1209,7 +1209,8 @@ export function docx(
               // Adding description of the threat
               let description = getMain[item.interest][0].tasks[i].description;
               if (description === null) {
-                description = "";
+                // For now, the report DOES NOT include this part
+                // description = "";
               } else {
                 docxChildren.push(
                   new Paragraph({
@@ -1231,21 +1232,22 @@ export function docx(
                       getMain[item.interest][0].tasks[i].identifier
                     ) {
                       if (threats[k].threat_type_name === undefined) {
-                        threats[k].threat_type_name = i18n.t("global.none");
+                        // For now, the report DOES NOT include this part
+                        // threats[k].threat_type_name = i18n.t("global.none");
+                      } else {
+                        docxChildren.push(
+                          new Paragraph({
+                            text:
+                              i18n.t("global.threat_type") +
+                              ": " +
+                              threats[k].threat_type_name,
+                            numbering: {
+                              reference: "rawrr-numbering",
+                              level: 3,
+                            },
+                          })
+                        ); 
                       }
-
-                      docxChildren.push(
-                        new Paragraph({
-                          text:
-                            i18n.t("global.threat_type") +
-                            ": " +
-                            threats[k].threat_type_name,
-                          numbering: {
-                            reference: "rawrr-numbering",
-                            level: 3,
-                          },
-                        })
-                      );
 
                       var related_asset = 0;
                       for (
@@ -1274,7 +1276,8 @@ export function docx(
                       }
 
                       if (related_asset == 0) {
-                        docxChildren.push(
+                        // For now, the report DOES NOT include this part
+                        /*docxChildren.push(
                           new Paragraph({
                             text:
                               i18n.t("global.asset") +
@@ -1285,7 +1288,7 @@ export function docx(
                               level: 3,
                             },
                           })
-                        );
+                        );*/
                       }
 
                       docxChildren.push(
