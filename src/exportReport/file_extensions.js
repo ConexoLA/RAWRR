@@ -57,10 +57,10 @@ export function txt(
             fileContents.push(
               "  " + j + ") " + i18n.t("global.name") + ": " + title + "\n"
             );
-            
+
             // Adding description
             let description = getMain[item.interest][0].tasks[i].description;
-            if (description === null) {
+            if (description === null || description === "") {
               // For now, the report DOES NOT include this part
               description = "";
             } else {
@@ -72,7 +72,6 @@ export function txt(
                   "\n"
               );
             }
-
 
             switch (item.name) {
               case "Assets":
@@ -153,7 +152,7 @@ export function txt(
                   ) {
                     if (threats[k].threat_type_name === undefined) {
                       // For now, the report DOES NOT include this part
-                      threats[k].threat_type_name = i18n.t("global.none");
+                      //threats[k].threat_type_name = i18n.t("global.none");
                     } else {
                       fileContents.push(
                         "     " +
@@ -187,7 +186,6 @@ export function txt(
 
                     if (related_asset == 0) {
                       // For now, the report DOES NOT include this part
-
                       /* fileContents.push(
                         "     " +
                           i18n.t("global.asset") +
@@ -330,9 +328,12 @@ export function txt(
                     recommentations[k].id ==
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
-                    if (recommentations[k].implementation_cost === null) {
+                    if (
+                      recommentations[k].implementation_cost === null ||
+                      recommentations[k].implementation_cost === ""
+                    ) {
                       // For now, the report DOES NOT include this part
-                      recommentations[k].implementation_cost = "";
+                      //recommentations[k].implementation_cost = "";
                     } else {
                       fileContents.push(
                         "     " +
@@ -342,7 +343,10 @@ export function txt(
                           "\n"
                       );
                     }
-                    if (recommentations[k].implementation_time === null) {
+                    if (
+                      recommentations[k].implementation_time === null ||
+                      recommentations[k].implementation_time === ""
+                    ) {
                       // For now, the report DOES NOT include this part
                       recommentations[k].implementation_time = "";
                     } else {
@@ -359,16 +363,16 @@ export function txt(
                       recommentations[k].vulnerability_name;
                     let reportVulnerabilitiesTasks =
                       getMain.report_vulnerabilities[0].tasks;
-                    
+
                     var related_vulnerabilities = 0;
-                    
+
                     if (reportVulnerabilityName === undefined) {
                       reportVulnerabilityName = [];
                     }
                     if (reportVulnerabilitiesTasks === undefined) {
                       reportVulnerabilitiesTasks = [];
                     }
-                    
+
                     for (var z = 0; z < reportVulnerabilityName.length; z++) {
                       for (
                         var p = 0;
@@ -505,7 +509,7 @@ export function md(
 
             // Adding: Description
             let description = getMain[item.interest][0].tasks[i].description;
-            if (description === null) {
+            if (description === null || description === "") {
               // For now, the report DOES NOT include this part
               description = "";
             } else {
@@ -603,15 +607,17 @@ export function md(
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
                     if (threats[k].threat_type_name === undefined) {
-                      threats[k].threat_type_name = i18n.t("global.none");
+                      // For now, the report DOES NOT include this part
+                      //threats[k].threat_type_name = i18n.t("global.none");
+                    } else {
+                      fileContents.push(
+                        "\t * **" +
+                          i18n.t("global.threat_type") +
+                          ":** " +
+                          threats[k].threat_type_name +
+                          "\n"
+                      );
                     }
-                    fileContents.push(
-                      "\t * **" +
-                        i18n.t("global.threat_type") +
-                        ":** " +
-                        threats[k].threat_type_name +
-                        "\n"
-                    );
 
                     var related_asset = 0;
                     for (
@@ -801,26 +807,35 @@ export function md(
                     recommentations[k].id ==
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
-                    if (recommentations[k].implementation_cost === null) {
-                      recommentations[k].implementation_cost = "";
+                    if (
+                      recommentations[k].implementation_cost === null ||
+                      recommentations[k].implementation_cost === ""
+                    ) {
+                      //recommentations[k].implementation_cost = "";
+                    } else {
+                      fileContents.push(
+                        "\t * **" +
+                          i18n.t("global.implementation_cost") +
+                          ":** " +
+                          recommentations[k].implementation_cost +
+                          "\n"
+                      );
                     }
-                    if (recommentations[k].implementation_time === null) {
-                      recommentations[k].implementation_time = "";
+
+                    if (
+                      recommentations[k].implementation_time === null ||
+                      recommentations[k].implementation_time === ""
+                    ) {
+                      //recommentations[k].implementation_time = "";
+                    } else {
+                      fileContents.push(
+                        "\t * **" +
+                          i18n.t("global.implementation_time") +
+                          ":** " +
+                          recommentations[k].implementation_time +
+                          "\n"
+                      );
                     }
-                    fileContents.push(
-                      "\t * **" +
-                        i18n.t("global.implementation_cost") +
-                        ":** " +
-                        recommentations[k].implementation_cost +
-                        "\n"
-                    );
-                    fileContents.push(
-                      "\t * **" +
-                        i18n.t("global.implementation_time") +
-                        ":** " +
-                        recommentations[k].implementation_time +
-                        "\n"
-                    );
 
                     let reportVulnerabilityName =
                       recommentations[k].vulnerability_name;
@@ -987,7 +1002,7 @@ export function json(
 
             // Adding: Description
             let description = getMain[item.interest][0].tasks[i].description;
-            if (description === null) {
+            if (description === null || description === "") {
               // For now, the report DOES NOT include this part
               description = "";
             } else {
@@ -1008,7 +1023,6 @@ export function json(
                       jsonEntry["assetCategoryName"] =
                         assets[k].asset_category_name;
                     }
-                
                   }
                 }
                 break;
@@ -1060,9 +1074,11 @@ export function json(
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
                     if (threats[k].threat_type_name === undefined) {
-                      threats[k].threat_type_name = i18n.t("global.none");
+                      // For now, the report DOES NOT include this part
+                      //threats[k].threat_type_name = i18n.t("global.none");
+                    } else {
+                      jsonEntry["threadType"] = threats[k].threat_type_name;
                     }
-                    jsonEntry["threadType"] = threats[k].threat_type_name;
 
                     var related_asset = 0;
                     for (
@@ -1175,16 +1191,25 @@ export function json(
                     recommentations[k].id ==
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
-                    if (recommentations[k].implementation_cost === null) {
-                      recommentations[k].implementation_cost = "";
+                    if (
+                      recommentations[k].implementation_cost === null ||
+                      recommentations[k].implementation_cost === ""
+                    ) {
+                      //recommentations[k].implementation_cost = "";
+                    } else {
+                      jsonEntry["implementationCost"] =
+                        recommentations[k].implementation_cost;
                     }
-                    if (recommentations[k].implementation_time === null) {
-                      recommentations[k].implementation_time = "";
+
+                    if (
+                      recommentations[k].implementation_time === null ||
+                      recommentations[k].implementation_time === ""
+                    ) {
+                      //recommentations[k].implementation_time = "";
+                    } else {
+                      jsonEntry["implementationTime"] =
+                        recommentations[k].implementation_time;
                     }
-                    jsonEntry["implementationCost"] =
-                      recommentations[k].implementation_cost;
-                    jsonEntry["implementationTime"] =
-                      recommentations[k].implementation_time;
 
                     let reportVulnerabilityName =
                       recommentations[k].vulnerability_name;
@@ -1338,7 +1363,7 @@ export function docx(
             );
 
             let description = getMain[item.interest][0].tasks[i].description;
-            if (description === null) {
+            if (description === null || description === "") {
               // For now, the report DOES NOT include this part
               // description = "";
             } else {
@@ -1687,7 +1712,10 @@ export function docx(
                     recommentations[k].id ==
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
-                    if (recommentations[k].implementation_cost === null) {
+                    if (
+                      recommentations[k].implementation_cost === null ||
+                      recommentations[k].implementation_cost === ""
+                    ) {
                       // For now, the report DOES NOT include this part
                       // recommentations[k].implementation_cost = "";
                     } else {
@@ -1704,10 +1732,13 @@ export function docx(
                         })
                       );
                     }
-                    if (recommentations[k].implementation_time === null) {
+                    if (
+                      recommentations[k].implementation_time === null ||
+                      recommentations[k].implementation_time === ""
+                    ) {
                       // For now, the report DOES NOT include this part
                       // recommentations[k].implementation_time = "";
-                    } else{
+                    } else {
                       docxChildren.push(
                         new Paragraph({
                           text:
