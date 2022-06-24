@@ -68,6 +68,41 @@ export function queryAll() {
 }
 
 //PARAMETERS:
+//  None.
+//EXPECTED OUTPUT:
+//  Returns a promise.
+//    Resolve: array containing all asset_categories.
+//    Reject: empty array or an error.
+export function queryAllById() {
+  return new Promise(function (resolve, reject) {
+    try {
+      let db = init.open();
+      let asset_categories = [];
+      if (db) {
+        db.serialize(function () {
+          let sql =
+            "SELECT id, name, description, created, last_modified FROM asset_categories ORDER BY id DESC";
+          db.all(sql, [], (err, rows) => {
+            if (err) {
+              reject(err);
+            } else {
+              rows.forEach((row) => {
+                asset_categories.push(row);
+              });
+              resolve(asset_categories);
+            }
+          });
+        });
+      } else {
+        reject(asset_categories);
+      }
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
+//PARAMETERS:
 //  Asset_category is an array with the following structure: ["name", "description", "id"].
 //    name can NOT be null.
 //    id is the table's Primary Key.

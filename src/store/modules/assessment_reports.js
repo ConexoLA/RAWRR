@@ -3,7 +3,7 @@ import i18n from "../../i18n.js";
 
 const state = {
   main: {},
-  created: false,
+  created: false
 };
 
 const getters = {
@@ -12,65 +12,104 @@ const getters = {
       return state.main;
     } else {
       var last_id = 0;
-      for (var asset in rootState.getAllAssets) {
+      var sortedAssets = rootState.getAllAssets.sort(function(a, b) {
+        return a.id - b.id;
+      });
+      for (var asset in sortedAssets) {
         state.main.report_assets[0].tasks.push({
           id: last_id,
-          title: rootState.getAllAssets[asset].name,
-          identifier: rootState.getAllAssets[asset].id,
-          description: rootState.getAllAssets[asset].description,
+          title: sortedAssets[asset].name,
+          identifier: sortedAssets[asset].id,
+          description: sortedAssets[asset].description,
           type: "Assets",
-          type_name: i18n.t("reports.assets"),
+          type_name: i18n.t("reports.assets")
         });
         last_id += 1;
       }
 
-      for (var activity in rootState.getAllAssessmentActivities) {
+      var sortedAssessmentActivities = rootState.getAllAssessmentActivities.sort(
+        function(a, b) {
+          return a.id - b.id;
+        }
+      );
+
+      for (var activity in sortedAssessmentActivities) {
         state.main.report_activities[0].tasks.push({
           id: last_id,
-          title: rootState.getAllAssessmentActivities[activity].name,
-          identifier: rootState.getAllAssessmentActivities[activity].id,
-          description:
-            rootState.getAllAssessmentActivities[activity].description,
+          title: sortedAssessmentActivities[activity].name,
+          identifier: sortedAssessmentActivities[activity].id,
+          description: sortedAssessmentActivities[activity].description,
           type: "Activities",
-          type_name: i18n.t("reports.activities"),
+          type_name: i18n.t("reports.activities")
         });
         last_id += 1;
       }
 
-      for (var threat in rootState.getAllThreats) {
-        state.main.report_threats[0].tasks.push({
-          id: last_id,
-          title: rootState.getAllThreats[threat].name,
-          identifier: rootState.getAllThreats[threat].id,
-          description: rootState.getAllThreats[threat].description,
-          type: "Threats",
-          type_name: i18n.t("reports.threats"),
-        });
-        last_id += 1;
+      var sortedThreats = rootState.getAllThreats.sort(function(a, b) {
+        return a.id - b.id;
+      });
+
+      for (var threat in sortedThreats) {
+        if (
+          sortedThreats[threat].impact > 0 ||
+          sortedThreats[threat].likelihood > 0
+        ) {
+          state.main.report_threats[0].tasks.push({
+            id: last_id,
+            title: sortedThreats[threat].name,
+            identifier: sortedThreats[threat].id,
+            description: sortedThreats[threat].description,
+            type: "Threats",
+            type_name: i18n.t("reports.threats")
+          });
+          last_id += 1;
+        } else {
+          state.main.threats[0].tasks.push({
+            id: last_id,
+            title: sortedThreats[threat].name,
+            identifier: sortedThreats[threat].id,
+            description: sortedThreats[threat].description,
+            type: "Threats",
+            type_name: i18n.t("reports.threats")
+          });
+          last_id += 1;
+        }
       }
 
-      for (var vulnerability in rootState.getAllVulnerabilities) {
+      var sortedVulnerabilities = rootState.getAllVulnerabilities.sort(function(
+        a,
+        b
+      ) {
+        return a.id - b.id;
+      });
+
+      for (var vulnerability in sortedVulnerabilities) {
         state.main.report_vulnerabilities[0].tasks.push({
           id: last_id,
-          title: rootState.getAllVulnerabilities[vulnerability].name,
-          identifier: rootState.getAllVulnerabilities[vulnerability].id,
-          description:
-            rootState.getAllVulnerabilities[vulnerability].description,
+          title: sortedVulnerabilities[vulnerability].name,
+          identifier: sortedVulnerabilities[vulnerability].id,
+          description: sortedVulnerabilities[vulnerability].description,
           type: "Vulnerabilities",
-          type_name: i18n.t("reports.vulnerabilities"),
+          type_name: i18n.t("reports.vulnerabilities")
         });
         last_id += 1;
       }
 
-      for (var recommendation in rootState.getAllRecommendations) {
+      var sortedRecommendations = rootState.getAllRecommendations.sort(function(
+        a,
+        b
+      ) {
+        return a.id - b.id;
+      });
+
+      for (var recommendation in sortedRecommendations) {
         state.main.report_recommendations[0].tasks.push({
           id: last_id,
-          title: rootState.getAllRecommendations[recommendation].name,
-          identifier: rootState.getAllRecommendations[recommendation].id,
-          description:
-            rootState.getAllRecommendations[recommendation].description,
+          title: sortedRecommendations[recommendation].name,
+          identifier: sortedRecommendations[recommendation].id,
+          description: sortedRecommendations[recommendation].description,
           type: "Recommendations",
-          type_name: i18n.t("reports.recommendations"),
+          type_name: i18n.t("reports.recommendations")
         });
         last_id += 1;
       }
@@ -79,7 +118,7 @@ const getters = {
 
       return state.main;
     }
-  },
+  }
 };
 
 const actions = {
@@ -151,169 +190,172 @@ const actions = {
     if (response[0] === "error" || response[0] === "reject") {
       dispatch("setNotification", {
         text: i18n.t("reports.export_error"),
-        color: "error",
+        color: "error"
       });
     } else {
       if (response[1]) {
         dispatch("setNotification", {
-          text: i18n.t("reports.export_success"),
+          text: i18n.t("reports.export_success")
         });
       }
     }
-  },
+  }
 };
 
 const mutations = {
-  mutationMain: (state) => {
+  mutationMain: state => {
     state.created = false;
     state.main = {
       report_assets: [
         {
           title: i18n.t("reports.report_assets"),
           showClass: "reportAssets",
-          tasks: [],
-        },
+          tasks: []
+        }
       ],
       report_activities: [
         {
           title: i18n.t("reports.report_activities"),
           showClass: "reportActivities",
-          tasks: [],
-        },
+          tasks: []
+        }
       ],
       report_recommendations: [
         {
           title: i18n.t("reports.report_recommendations"),
           showClass: "reportRecommendations",
-          tasks: [],
-        },
+          tasks: []
+        }
       ],
       report_vulnerabilities: [
         {
           title: i18n.t("reports.report_vulnerabilities"),
           showClass: "reportVulnerabilities",
-          tasks: [],
-        },
+          tasks: []
+        }
       ],
       report_threats: [
         {
           title: i18n.t("reports.report_threats"),
           showClass: "reportThreats",
-          tasks: [],
-        },
+          tasks: []
+        }
       ],
       assets: [
         {
           title: i18n.t("reports.assets"),
           showClass: "Assets",
-          tasks: [],
-        },
+          tasks: []
+        }
       ],
       activities: [
         {
           title: i18n.t("reports.activities"),
           showClass: "Activities",
-          tasks: [],
-        },
+          tasks: []
+        }
       ],
       recommendations: [
         {
           title: i18n.t("reports.recommendations"),
           showClass: "Recommendations",
-          tasks: [],
-        },
+          tasks: []
+        }
       ],
       vulnerabilities: [
         {
           title: i18n.t("reports.vulnerabilities"),
           showClass: "Vulnerabilities",
-          tasks: [],
-        },
+          tasks: []
+        }
       ],
       threats: [
         {
           title: i18n.t("reports.threats"),
           showClass: "Threats",
-          tasks: [],
-        },
-      ],
+          tasks: []
+        }
+      ]
     };
   },
   mutationPushReportAsset: (state, asset) => {
-    if (!state.main.report_assets[0].tasks.some((e) => e.id === asset.id)) {
+    if (!state.main.report_assets[0].tasks.some(e => e.id === asset.id)) {
       state.main.report_assets[0].tasks.push(asset);
       state.main.assets[0].tasks = state.main.assets[0].tasks.filter(
-        (e) => e.id !== asset.id
+        e => e.id !== asset.id
       );
     }
   },
   mutationPushReportActivity: (state, activity) => {
     if (
-      !state.main.report_activities[0].tasks.some((e) => e.id === activity.id)
+      !state.main.report_activities[0].tasks.some(e => e.id === activity.id)
     ) {
       state.main.report_activities[0].tasks.push(activity);
       state.main.activities[0].tasks = state.main.activities[0].tasks.filter(
-        (e) => e.id !== activity.id
+        e => e.id !== activity.id
       );
     }
   },
   mutationPushReportThreat: (state, threat) => {
-    if (!state.main.report_threats[0].tasks.some((e) => e.id === threat.id)) {
+    if (!state.main.report_threats[0].tasks.some(e => e.id === threat.id)) {
       state.main.report_threats[0].tasks.push(threat);
       state.main.threats[0].tasks = state.main.threats[0].tasks.filter(
-        (e) => e.id !== threat.id
+        e => e.id !== threat.id
       );
     }
   },
   mutationPushReportVulnerability: (state, vulnerability) => {
     if (
       !state.main.report_vulnerabilities[0].tasks.some(
-        (e) => e.id === vulnerability.id
+        e => e.id === vulnerability.id
       )
     ) {
       state.main.report_vulnerabilities[0].tasks.push(vulnerability);
-      state.main.vulnerabilities[0].tasks =
-        state.main.vulnerabilities[0].tasks.filter(
-          (e) => e.id !== vulnerability.id
-        );
+      state.main.vulnerabilities[0].tasks = state.main.vulnerabilities[0].tasks.filter(
+        e => e.id !== vulnerability.id
+      );
     }
   },
   mutationPushReportRecommendation: (state, recommendation) => {
     if (
       !state.main.report_recommendations[0].tasks.some(
-        (e) => e.id === recommendation.id
+        e => e.id === recommendation.id
       )
     ) {
       state.main.report_recommendations[0].tasks.push(recommendation);
-      state.main.recommendations[0].tasks =
-        state.main.recommendations[0].tasks.filter(
-          (e) => e.id !== recommendation.id
-        );
+      state.main.recommendations[0].tasks = state.main.recommendations[0].tasks.filter(
+        e => e.id !== recommendation.id
+      );
     }
   },
   mutationPushAllReportAsset: (state, assets) => {
-    state.main.report_assets[0].tasks =
-      state.main.report_assets[0].tasks.concat(assets);
+    state.main.report_assets[0].tasks = state.main.report_assets[0].tasks.concat(
+      assets
+    );
     state.main.assets[0].tasks = [];
   },
   mutationPushAllReportActivity: (state, activities) => {
-    state.main.report_activities[0].tasks =
-      state.main.report_activities[0].tasks.concat(activities);
+    state.main.report_activities[0].tasks = state.main.report_activities[0].tasks.concat(
+      activities
+    );
     state.main.activities[0].tasks = [];
   },
   mutationPushAllReportThreat: (state, threats) => {
-    state.main.report_threats[0].tasks =
-      state.main.report_threats[0].tasks.concat(threats);
+    state.main.report_threats[0].tasks = state.main.report_threats[0].tasks.concat(
+      threats
+    );
     state.main.threats[0].tasks = [];
   },
   mutationPushAllReportVulnerability: (state, vulnerabilities) => {
-    state.main.report_vulnerabilities[0].tasks =
-      state.main.report_vulnerabilities[0].tasks.concat(vulnerabilities);
+    state.main.report_vulnerabilities[0].tasks = state.main.report_vulnerabilities[0].tasks.concat(
+      vulnerabilities
+    );
     state.main.vulnerabilities[0].tasks = [];
   },
   mutationPushAllReportRecommendation: (state, recommendations) => {
-    state.main.report_recommendations[0].tasks =
-      state.main.report_recommendations[0].tasks.concat(recommendations);
+    state.main.report_recommendations[0].tasks = state.main.report_recommendations[0].tasks.concat(
+      recommendations
+    );
     state.main.recommendations[0].tasks = [];
   },
   mutationSpliceReportAsset: (state, index) => {
@@ -341,8 +383,9 @@ const mutations = {
     state.main.report_assets[0].tasks = [];
   },
   mutationRemoveAllReportActivity: (state, activities) => {
-    state.main.activities[0].tasks =
-      state.main.activities[0].tasks.concat(activities);
+    state.main.activities[0].tasks = state.main.activities[0].tasks.concat(
+      activities
+    );
     state.main.report_activities[0].tasks = [];
   },
   mutationRemoveAllReportThreat: (state, threats) => {
@@ -350,21 +393,23 @@ const mutations = {
     state.main.report_threats[0].tasks = [];
   },
   mutationRemoveAllReportVulnerability: (state, vulnerabilities) => {
-    state.main.vulnerabilities[0].tasks =
-      state.main.vulnerabilities[0].tasks.concat(vulnerabilities);
+    state.main.vulnerabilities[0].tasks = state.main.vulnerabilities[0].tasks.concat(
+      vulnerabilities
+    );
     state.main.report_vulnerabilities[0].tasks = [];
   },
   mutationRemoveAllReportRecommendation: (state, recommendations) => {
-    state.main.recommendations[0].tasks =
-      state.main.recommendations[0].tasks.concat(recommendations);
+    state.main.recommendations[0].tasks = state.main.recommendations[0].tasks.concat(
+      recommendations
+    );
     state.main.report_recommendations[0].tasks = [];
   },
-  backup: (rootState, value) => (rootState.backup = value),
+  backup: (rootState, value) => (rootState.backup = value)
 };
 
 export default {
   state,
   getters,
   actions,
-  mutations,
+  mutations
 };

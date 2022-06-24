@@ -41,7 +41,8 @@
     "search_bar_accessibility": "Esta barra de busqueda filtra elementos de la siguiente tabla",
     "warning": "Advertencia",
     "continue": "Continuar",
-    "delete_history": "Eliminar historial de amenaza"
+    "delete_history": "Eliminar historial de amenaza",
+    "no_internet": "Esta funcionalidad opcional requiere una conexión a internet."
   },
   "header": {
     "home": "Inicio",

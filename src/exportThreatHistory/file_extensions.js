@@ -54,10 +54,7 @@ export function md(
                 fileContents.push("## " + item.title + "\n\n");
                 toc.push("- " + item.title + "\n");
               }
-              let description = getMain[item.interest][0].tasks[i].description;
-              if (description === null) {
-                description = "";
-              }
+
               let title = getMain[item.interest][0].tasks[i].title;
               fileContents.push("1. #### " + title + "\n");
               toc.push(
@@ -85,13 +82,20 @@ export function md(
               );
 
               // Adding description of the threat
-              fileContents.push(
-                "\t\t * **" +
-                  i18n.t("global.description") +
-                  ":** " +
-                  description +
-                  "\n"
-              );
+              let description = getMain[item.interest][0].tasks[i].description;
+              if (description === null) {
+                // To add usage of description
+              } else {
+                fileContents.push(
+                  "\t * **" +
+                    i18n.t("global.description") +
+                    ":**\n\t\t```\n\t\t" +
+                    description
+                      .replace(/\n\-/g, "\n\t\t -")
+                      .replace(/\n\*/g, "\n\t\t -") +
+                    " \n \t\t```\n"
+                );
+              }
 
               // Getting related asset, impact and likelihood
               switch (item.name) {
@@ -102,15 +106,17 @@ export function md(
                       getMain[item.interest][0].tasks[i].identifier
                     ) {
                       if (threats[k].threat_type_name === undefined) {
-                        threats[k].threat_type_name = i18n.t("global.none");
+                        // For now, the report DOES NOT include this part
+                        // threats[k].threat_type_name = i18n.t("global.none");
+                      } else {
+                        fileContents.push(
+                          "\t\t * **" +
+                            i18n.t("global.threat_type") +
+                            ":** " +
+                            threats[k].threat_type_name +
+                            "\n"
+                        );
                       }
-                      fileContents.push(
-                        "\t\t * **" +
-                          i18n.t("global.threat_type") +
-                          ":** " +
-                          threats[k].threat_type_name +
-                          "\n"
-                      );
 
                       var related_asset = 0;
                       for (
@@ -134,13 +140,14 @@ export function md(
                       }
 
                       if (related_asset == 0) {
-                        fileContents.push(
+                        // For now, the report DOES NOT include this part
+                        /*fileContents.push(
                           "\t\t * **" +
                             i18n.t("global.asset") +
                             ":** " +
                             i18n.t("global.none") +
                             "\n"
-                        );
+                        ); */
                       }
 
                       fileContents.push(
@@ -451,10 +458,7 @@ export function txt(
                 fileContents.push(item.title + "\n\n");
                 toc.push("- " + item.title + "\n");
               }
-              let description = getMain[item.interest][0].tasks[i].description;
-              if (description === null) {
-                description = "";
-              }
+
               let title = getMain[item.interest][0].tasks[i].title;
               var threat_number = i + 1;
               fileContents.push(threat_number.toString() + ". " + title + "\n");
@@ -474,13 +478,19 @@ export function txt(
               );
 
               // Adding description of the threat
-              fileContents.push(
-                "\t\t * " +
-                  i18n.t("global.description") +
-                  ": " +
-                  description +
-                  "\n"
-              );
+              let description = getMain[item.interest][0].tasks[i].description;
+              if (description === null) {
+                // For now, the report DOES NOT include this part
+                // description = "";
+              } else {
+                fileContents.push(
+                  "\t\t * " +
+                    i18n.t("global.description") +
+                    ": " +
+                    description +
+                    "\n"
+                );
+              }
 
               // Getting related asset, impact and likelihood
               switch (item.name) {
@@ -491,16 +501,17 @@ export function txt(
                       getMain[item.interest][0].tasks[i].identifier
                     ) {
                       if (threats[k].threat_type_name === undefined) {
-                        threats[k].threat_type_name = i18n.t("global.none");
+                        // For now, the report DOES NOT include this part
+                        //threats[k].threat_type_name = i18n.t("global.none");
+                      } else {
+                        fileContents.push(
+                          "\t\t * " +
+                            i18n.t("global.threat_type") +
+                            ": " +
+                            threats[k].threat_type_name +
+                            "\n"
+                        );
                       }
-                      fileContents.push(
-                        "\t\t * " +
-                          i18n.t("global.threat_type") +
-                          ": " +
-                          threats[k].threat_type_name +
-                          "\n"
-                      );
-
                       var related_asset = 0;
                       for (
                         var p = 0;
@@ -523,13 +534,14 @@ export function txt(
                       }
 
                       if (related_asset == 0) {
-                        fileContents.push(
+                        // For now, the report DOES NOT include this part
+                        /*fileContents.push(
                           "\t\t * " +
                             i18n.t("global.asset") +
                             ": " +
                             i18n.t("global.none") +
                             "\n"
-                        );
+                        );*/
                       }
 
                       fileContents.push(
@@ -880,11 +892,12 @@ export function json(
 
               let description = getMain[item.interest][0].tasks[i].description;
               if (description === null) {
-                description = "";
+                // For now, the report DOES NOT include this part
+                // description = "";
+              } else {
+                // Adding description of the threat
+                threatSection[i18n.t("global.description")] = description;
               }
-
-              // Adding description of the threat
-              threatSection[i18n.t("global.description")] = description;
 
               // Getting related asset, impact and likelihood
               switch (item.name) {
@@ -917,8 +930,8 @@ export function json(
                       }
 
                       if (related_asset == 0) {
-                        threatSection[i18n.t("global.asset")] =
-                          i18n.t("global.none");
+                        // For now, the report DOES NOT include this part
+                        // threatSection[i18n.t("global.asset")] = i18n.t("global.none");
                       }
 
                       threatSection[i18n.t("global.impact")] =
@@ -1168,11 +1181,6 @@ export function docx(
                   })
                 );
               }
-              let description = getMain[item.interest][0].tasks[i].description;
-              if (description === null) {
-                description = "";
-              }
-
               docxChildren.push(
                 new Paragraph({
                   text: i18n.t("threats.current_threats_values"),
@@ -1199,15 +1207,21 @@ export function docx(
               );
 
               // Adding description of the threat
-              docxChildren.push(
-                new Paragraph({
-                  text: i18n.t("global.description") + ": " + description,
-                  numbering: {
-                    reference: "rawrr-numbering",
-                    level: 3,
-                  },
-                })
-              );
+              let description = getMain[item.interest][0].tasks[i].description;
+              if (description === null) {
+                // For now, the report DOES NOT include this part
+                // description = "";
+              } else {
+                docxChildren.push(
+                  new Paragraph({
+                    text: i18n.t("global.description") + ": " + description,
+                    numbering: {
+                      reference: "rawrr-numbering",
+                      level: 3,
+                    },
+                  })
+                );
+              }
 
               // Getting related asset, impact and likelihood
               switch (item.name) {
@@ -1218,21 +1232,22 @@ export function docx(
                       getMain[item.interest][0].tasks[i].identifier
                     ) {
                       if (threats[k].threat_type_name === undefined) {
-                        threats[k].threat_type_name = i18n.t("global.none");
+                        // For now, the report DOES NOT include this part
+                        // threats[k].threat_type_name = i18n.t("global.none");
+                      } else {
+                        docxChildren.push(
+                          new Paragraph({
+                            text:
+                              i18n.t("global.threat_type") +
+                              ": " +
+                              threats[k].threat_type_name,
+                            numbering: {
+                              reference: "rawrr-numbering",
+                              level: 3,
+                            },
+                          })
+                        ); 
                       }
-
-                      docxChildren.push(
-                        new Paragraph({
-                          text:
-                            i18n.t("global.threat_type") +
-                            ": " +
-                            threats[k].threat_type_name,
-                          numbering: {
-                            reference: "rawrr-numbering",
-                            level: 3,
-                          },
-                        })
-                      );
 
                       var related_asset = 0;
                       for (
@@ -1261,7 +1276,8 @@ export function docx(
                       }
 
                       if (related_asset == 0) {
-                        docxChildren.push(
+                        // For now, the report DOES NOT include this part
+                        /*docxChildren.push(
                           new Paragraph({
                             text:
                               i18n.t("global.asset") +
@@ -1272,7 +1288,7 @@ export function docx(
                               level: 3,
                             },
                           })
-                        );
+                        );*/
                       }
 
                       docxChildren.push(

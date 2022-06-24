@@ -207,16 +207,24 @@
         </v-card-title>
 
         <GChart
+          v-if="onLine"
           :settings="{ packages: ['corechart'] }"
           type="BubbleChart"
           @ready="onChartReady"
           style="width: 500px; height: 500px"
         />
 
+        <v-row v-if="!onLine">
+          <v-col>
+            <v-card-subtitle> {{ $t("global.no_internet") }} </v-card-subtitle>
+          </v-col>
+        </v-row>
+
         <v-spacer></v-spacer>
 
         <v-card-actions class="justify-center">
           <v-btn
+            v-if="onLine"
             ref="svi"
             text
             color="primary"
@@ -413,33 +421,35 @@ export default {
       ];
 
       for (var i = 0; i < this.threats.length; i++) {
-        data.push([
-          String(this.threats[i].id),
-          {
-            v: this.getCircleX(
-              this.threats[i].likelihood,
-              0.5,
-              counter[this.threats[i].likelihood][this.threats[i].impact],
-              matrix[this.threats[i].likelihood][this.threats[i].impact]
-            ),
-            f: this.threats[i].likelihood,
-          },
-          {
-            v: this.getCircleY(
-              this.threats[i].impact,
-              0.5,
-              counter[this.threats[i].likelihood][this.threats[i].impact],
-              matrix[this.threats[i].likelihood][this.threats[i].impact]
-            ),
-            f: this.threats[i].impact,
-          },
-          this.threats[i].impact * this.threats[i].likelihood,
-          {
-            v: 2,
-            f: this.threats[i].name,
-          },
-        ]);
-        counter[this.threats[i].likelihood][this.threats[i].impact] += 1;
+        if (this.threats[i].likelihood > 0 || this.threats[i].impact > 0) {
+          data.push([
+            String(this.threats[i].id),
+            {
+              v: this.getCircleX(
+                this.threats[i].likelihood,
+                0.5,
+                counter[this.threats[i].likelihood][this.threats[i].impact],
+                matrix[this.threats[i].likelihood][this.threats[i].impact]
+              ),
+              f: this.threats[i].likelihood,
+            },
+            {
+              v: this.getCircleY(
+                this.threats[i].impact,
+                0.5,
+                counter[this.threats[i].likelihood][this.threats[i].impact],
+                matrix[this.threats[i].likelihood][this.threats[i].impact]
+              ),
+              f: this.threats[i].impact,
+            },
+            this.threats[i].impact * this.threats[i].likelihood,
+            {
+              v: 2,
+              f: this.threats[i].name,
+            },
+          ]);
+          counter[this.threats[i].likelihood][this.threats[i].impact] += 1;
+        }
       }
 
       // Transform the Array into a proper DataTable
@@ -597,6 +607,7 @@ export default {
       },
       title: ".",
     },
+    onLine: navigator.onLine,
     matrix: false,
     sheet: false,
     search: "",

@@ -25,3 +25,5 @@ yarn-error.log*
 
 rawrr.db
 package-lock.json
+
+public/risk_matrix/*

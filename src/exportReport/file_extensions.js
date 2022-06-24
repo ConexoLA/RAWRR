@@ -52,18 +52,26 @@ export function txt(
             if (i == 0) {
               fileContents.push(item.title + "\n");
             }
-            let description = getMain[item.interest][0].tasks[i].description;
-            if (description === null) {
-              description = "";
-            }
             let title = getMain[item.interest][0].tasks[i].title;
             const j = i + 1;
             fileContents.push(
               "  " + j + ") " + i18n.t("global.name") + ": " + title + "\n"
             );
-            fileContents.push(
-              "     " + i18n.t("global.description") + ": " + description + "\n"
-            );
+
+            // Adding description
+            let description = getMain[item.interest][0].tasks[i].description;
+            if (description === null || description === "") {
+              // For now, the report DOES NOT include this part
+              description = "";
+            } else {
+              fileContents.push(
+                "     " +
+                  i18n.t("global.description") +
+                  ": " +
+                  description +
+                  "\n"
+              );
+            }
 
             switch (item.name) {
               case "Assets":
@@ -73,15 +81,17 @@ export function txt(
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
                     if (assets[k].asset_category_name === undefined) {
+                      // For now, the report DOES NOT include this part
                       assets[k].asset_category_name = i18n.t("global.none");
+                    } else {
+                      fileContents.push(
+                        "     " +
+                          i18n.t("global.asset_category") +
+                          ": " +
+                          assets[k].asset_category_name +
+                          "\n"
+                      );
                     }
-                    fileContents.push(
-                      "     " +
-                        i18n.t("global.asset_category") +
-                        ": " +
-                        assets[k].asset_category_name +
-                        "\n"
-                    );
                   }
                 }
                 break;
@@ -120,6 +130,8 @@ export function txt(
                     }
 
                     if (related_assets == 0) {
+                      // For now, the report DOES NOT include this part
+                      /*
                       fileContents.push(
                         "     " +
                           i18n.t("global.assets") +
@@ -127,6 +139,7 @@ export function txt(
                           i18n.t("global.none") +
                           "\n"
                       );
+                      */
                     }
                   }
                 }
@@ -138,15 +151,18 @@ export function txt(
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
                     if (threats[k].threat_type_name === undefined) {
-                      threats[k].threat_type_name = i18n.t("global.none");
+                      // For now, the report DOES NOT include this part
+                      //threats[k].threat_type_name = i18n.t("global.none");
+                    } else {
+                      fileContents.push(
+                        "     " +
+                          i18n.t("global.threat_type") +
+                          ": " +
+                          threats[k].threat_type_name +
+                          "\n"
+                      );
                     }
-                    fileContents.push(
-                      "     " +
-                        i18n.t("global.threat_type") +
-                        ": " +
-                        threats[k].threat_type_name +
-                        "\n"
-                    );
+
                     var related_asset = 0;
                     for (
                       var p = 0;
@@ -169,14 +185,16 @@ export function txt(
                     }
 
                     if (related_asset == 0) {
-                      fileContents.push(
+                      // For now, the report DOES NOT include this part
+                      /* fileContents.push(
                         "     " +
                           i18n.t("global.asset") +
                           ": " +
                           i18n.t("global.none") +
                           "\n"
-                      );
+                      );*/
                     }
+
                     fileContents.push(
                       "     " +
                         i18n.t("global.impact") +
@@ -223,13 +241,14 @@ export function txt(
                       }
                     }
                     if (related_activity == 0) {
-                      fileContents.push(
+                      // For now, the report DOES NOT include this part
+                      /*fileContents.push(
                         "     " +
                           i18n.t("global.assessment_activity") +
                           ": " +
                           i18n.t("global.none") +
                           "\n"
-                      );
+                      );*/
                     }
 
                     // Adding related asset
@@ -254,13 +273,14 @@ export function txt(
                     }
 
                     if (related_asset == 0) {
-                      fileContents.push(
+                      // For now, the report DOES NOT include this part
+                      /*fileContents.push(
                         "     " +
                           i18n.t("global.asset") +
                           ": " +
                           i18n.t("global.none") +
                           "\n"
-                      );
+                      );*/
                     }
 
                     // Adding related threats
@@ -290,13 +310,14 @@ export function txt(
                     }
 
                     if (related_threats == 0) {
-                      fileContents.push(
+                      // For now, the report DOES NOT include this part
+                      /*fileContents.push(
                         "     " +
                           i18n.t("global.threats") +
                           ": " +
                           i18n.t("global.none") +
                           "\n"
-                      );
+                      );*/
                     }
                   }
                 }
@@ -307,38 +328,51 @@ export function txt(
                     recommentations[k].id ==
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
-                    if (recommentations[k].implementation_cost === null) {
-                      recommentations[k].implementation_cost = "";
+                    if (
+                      recommentations[k].implementation_cost === null ||
+                      recommentations[k].implementation_cost === ""
+                    ) {
+                      // For now, the report DOES NOT include this part
+                      //recommentations[k].implementation_cost = "";
+                    } else {
+                      fileContents.push(
+                        "     " +
+                          i18n.t("global.implementation_cost") +
+                          ": " +
+                          recommentations[k].implementation_cost +
+                          "\n"
+                      );
                     }
-                    if (recommentations[k].implementation_time === null) {
+                    if (
+                      recommentations[k].implementation_time === null ||
+                      recommentations[k].implementation_time === ""
+                    ) {
+                      // For now, the report DOES NOT include this part
                       recommentations[k].implementation_time = "";
+                    } else {
+                      fileContents.push(
+                        "     " +
+                          i18n.t("global.implementation_time") +
+                          ": " +
+                          recommentations[k].implementation_time +
+                          "\n"
+                      );
                     }
-                    fileContents.push(
-                      "     " +
-                        i18n.t("global.implementation_cost") +
-                        ": " +
-                        recommentations[k].implementation_cost +
-                        "\n"
-                    );
-                    fileContents.push(
-                      "     " +
-                        i18n.t("global.implementation_time") +
-                        ": " +
-                        recommentations[k].implementation_time +
-                        "\n"
-                    );
 
                     let reportVulnerabilityName =
                       recommentations[k].vulnerability_name;
                     let reportVulnerabilitiesTasks =
                       getMain.report_vulnerabilities[0].tasks;
+
                     var related_vulnerabilities = 0;
+
                     if (reportVulnerabilityName === undefined) {
                       reportVulnerabilityName = [];
                     }
                     if (reportVulnerabilitiesTasks === undefined) {
                       reportVulnerabilitiesTasks = [];
                     }
+
                     for (var z = 0; z < reportVulnerabilityName.length; z++) {
                       for (
                         var p = 0;
@@ -363,13 +397,15 @@ export function txt(
                     }
 
                     if (related_vulnerabilities == 0) {
+                      // For now, the report DOES NOT include this part
+                      /*
                       fileContents.push(
                         "     " +
                           i18n.t("global.vulnerabilities") +
                           ": " +
                           i18n.t("global.none") +
                           "\n"
-                      );
+                      );*/
                     }
                   }
                 }
@@ -458,10 +494,8 @@ export function md(
                   ")\n"
               );
             }
-            let description = getMain[item.interest][0].tasks[i].description;
-            if (description === null) {
-              description = "";
-            }
+
+            // Adding: Title
             let title = getMain[item.interest][0].tasks[i].title;
             const j = i + 1;
             fileContents.push("1. #### " + title + "\n");
@@ -472,13 +506,23 @@ export function md(
                 title.toLowerCase().split(" ").join("-") +
                 ")\n"
             );
-            fileContents.push(
-              "\t * **" +
-                i18n.t("global.description") +
-                ":** " +
-                description +
-                "\n"
-            );
+
+            // Adding: Description
+            let description = getMain[item.interest][0].tasks[i].description;
+            if (description === null || description === "") {
+              // For now, the report DOES NOT include this part
+              description = "";
+            } else {
+              fileContents.push(
+                "\t * **" +
+                  i18n.t("global.description") +
+                  ":**\n\t\t```\n\t\t" +
+                  description
+                    .replace(/\n\-/g, "\n\t\t -")
+                    .replace(/\n\*/g, "\n\t\t -") +
+                  " \n \t\t```\n"
+              );
+            }
 
             switch (item.name) {
               case "Assets":
@@ -488,15 +532,17 @@ export function md(
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
                     if (assets[k].asset_category_name === undefined) {
+                      // For now, the report DOES NOT include this part.
                       assets[k].asset_category_name = i18n.t("global.none");
+                    } else {
+                      fileContents.push(
+                        "\t * **" +
+                          i18n.t("global.asset_category") +
+                          ":** " +
+                          assets[k].asset_category_name +
+                          "\n"
+                      );
                     }
-                    fileContents.push(
-                      "\t * **" +
-                        i18n.t("global.asset_category") +
-                        ":** " +
-                        assets[k].asset_category_name +
-                        "\n"
-                    );
                   }
                 }
                 break;
@@ -542,13 +588,14 @@ export function md(
                     }
 
                     if (related_assets == 0) {
-                      fileContents.push(
+                      // For now, the report DOES NOT include this part
+                      /*fileContents.push(
                         "\t * **" +
                           i18n.t("global.assets") +
                           ":** " +
                           i18n.t("global.none") +
                           "\n"
-                      );
+                      );*/
                     }
                   }
                 }
@@ -560,15 +607,17 @@ export function md(
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
                     if (threats[k].threat_type_name === undefined) {
-                      threats[k].threat_type_name = i18n.t("global.none");
+                      // For now, the report DOES NOT include this part
+                      //threats[k].threat_type_name = i18n.t("global.none");
+                    } else {
+                      fileContents.push(
+                        "\t * **" +
+                          i18n.t("global.threat_type") +
+                          ":** " +
+                          threats[k].threat_type_name +
+                          "\n"
+                      );
                     }
-                    fileContents.push(
-                      "\t * **" +
-                        i18n.t("global.threat_type") +
-                        ":** " +
-                        threats[k].threat_type_name +
-                        "\n"
-                    );
 
                     var related_asset = 0;
                     for (
@@ -598,13 +647,14 @@ export function md(
                     }
 
                     if (related_asset == 0) {
-                      fileContents.push(
+                      // For now, the report DOES NOT include this part
+                      /*fileContents.push(
                         "\t * **" +
                           i18n.t("global.asset") +
                           ":** " +
                           i18n.t("global.none") +
                           "\n"
-                      );
+                      );*/
                     }
 
                     fileContents.push(
@@ -658,13 +708,14 @@ export function md(
                     }
 
                     if (related_activity == 0) {
-                      fileContents.push(
+                      // For now, the report DOES NOT include this part
+                      /*fileContents.push(
                         "\t * **" +
                           i18n.t("global.assessment_activity") +
                           ":**  " +
                           i18n.t("global.none") +
                           "\n"
-                      );
+                      );*/
                     }
 
                     // Adding related asset
@@ -694,13 +745,14 @@ export function md(
                     }
 
                     if (related_asset == 0) {
-                      fileContents.push(
+                      // For now, the report DOES NOT include this part
+                      /*fileContents.push(
                         "\t * **" +
                           i18n.t("global.asset") +
                           ":** " +
                           i18n.t("global.none") +
                           "\n"
-                      );
+                      );*/
                     }
 
                     let reportThreats = getMain.report_threats[0].tasks;
@@ -737,13 +789,14 @@ export function md(
                     }
 
                     if (related_threats == 0) {
-                      fileContents.push(
+                      // For now, the report DOES NOT include this part
+                      /*fileContents.push(
                         "\t * **" +
                           i18n.t("global.threats") +
                           ":** " +
                           i18n.t("global.none") +
                           "\n"
-                      );
+                      );*/
                     }
                   }
                 }
@@ -754,26 +807,35 @@ export function md(
                     recommentations[k].id ==
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
-                    if (recommentations[k].implementation_cost === null) {
-                      recommentations[k].implementation_cost = "";
+                    if (
+                      recommentations[k].implementation_cost === null ||
+                      recommentations[k].implementation_cost === ""
+                    ) {
+                      //recommentations[k].implementation_cost = "";
+                    } else {
+                      fileContents.push(
+                        "\t * **" +
+                          i18n.t("global.implementation_cost") +
+                          ":** " +
+                          recommentations[k].implementation_cost +
+                          "\n"
+                      );
                     }
-                    if (recommentations[k].implementation_time === null) {
-                      recommentations[k].implementation_time = "";
+
+                    if (
+                      recommentations[k].implementation_time === null ||
+                      recommentations[k].implementation_time === ""
+                    ) {
+                      //recommentations[k].implementation_time = "";
+                    } else {
+                      fileContents.push(
+                        "\t * **" +
+                          i18n.t("global.implementation_time") +
+                          ":** " +
+                          recommentations[k].implementation_time +
+                          "\n"
+                      );
                     }
-                    fileContents.push(
-                      "\t * **" +
-                        i18n.t("global.implementation_cost") +
-                        ":** " +
-                        recommentations[k].implementation_cost +
-                        "\n"
-                    );
-                    fileContents.push(
-                      "\t * **" +
-                        i18n.t("global.implementation_time") +
-                        ":** " +
-                        recommentations[k].implementation_time +
-                        "\n"
-                    );
 
                     let reportVulnerabilityName =
                       recommentations[k].vulnerability_name;
@@ -820,13 +882,14 @@ export function md(
                     }
 
                     if (related_vulnerabilities == 0) {
-                      fileContents.push(
+                      // For now, the report DOES NOT include this part
+                      /*fileContents.push(
                         "\t * **" +
                           i18n.t("global.vulnerabilities") +
                           ":** " +
                           i18n.t("global.none") +
                           "\n"
-                      );
+                      );*/
                     }
                   }
                 }
@@ -932,13 +995,19 @@ export function json(
             if (i == 0) {
               jsonSection["sectionName"] = item.title;
             }
-            let description = getMain[item.interest][0].tasks[i].description;
-            if (description === null) {
-              description = "";
-            }
-            jsonEntry["description"] = description;
+
+            // Adding: Title
             jsonEntry["title"] = getMain[item.interest][0].tasks[i].title;
             const j = i + 1;
+
+            // Adding: Description
+            let description = getMain[item.interest][0].tasks[i].description;
+            if (description === null || description === "") {
+              // For now, the report DOES NOT include this part
+              description = "";
+            } else {
+              jsonEntry["description"] = description;
+            }
 
             switch (item.name) {
               case "Assets":
@@ -948,10 +1017,12 @@ export function json(
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
                     if (assets[k].asset_category_name === undefined) {
+                      // For now, the report DOES NOT include this part
                       assets[k].asset_category_name = i18n.t("global.none");
+                    } else {
+                      jsonEntry["assetCategoryName"] =
+                        assets[k].asset_category_name;
                     }
-                    jsonEntry["assetCategoryName"] =
-                      assets[k].asset_category_name;
                   }
                 }
                 break;
@@ -990,7 +1061,8 @@ export function json(
                     }
 
                     if (related_assets == 0) {
-                      jsonEntry["relatedAssets"] = i18n.t("global.none");
+                      // For now, the report DOES NOT include this part
+                      // jsonEntry["relatedAssets"] = i18n.t("global.none");
                     }
                   }
                 }
@@ -1002,9 +1074,11 @@ export function json(
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
                     if (threats[k].threat_type_name === undefined) {
-                      threats[k].threat_type_name = i18n.t("global.none");
+                      // For now, the report DOES NOT include this part
+                      //threats[k].threat_type_name = i18n.t("global.none");
+                    } else {
+                      jsonEntry["threadType"] = threats[k].threat_type_name;
                     }
-                    jsonEntry["threadType"] = threats[k].threat_type_name;
 
                     var related_asset = 0;
                     for (
@@ -1022,7 +1096,8 @@ export function json(
                     }
 
                     if (related_asset == 0) {
-                      jsonEntry["relatedAsset"] = i18n.t("global.none");
+                      // For now, the report DOES NOT include this part
+                      // jsonEntry["relatedAsset"] = i18n.t("global.none");
                     }
 
                     jsonEntry["impact"] = threats[k].impact;
@@ -1054,7 +1129,8 @@ export function json(
                     }
 
                     if (related_activity == 0) {
-                      jsonEntry["relatedAcivity"] = i18n.t("global.none");
+                      // For now, the report DOES NOT include this part
+                      // jsonEntry["relatedAcivity"] = i18n.t("global.none");
                     }
 
                     // Adding related asset
@@ -1074,7 +1150,8 @@ export function json(
                     }
 
                     if (related_asset == 0) {
-                      jsonEntry["relatedAsset"] = i18n.t("global.none");
+                      // For now, the report DOES NOT include this part
+                      // jsonEntry["relatedAsset"] = i18n.t("global.none");
                     }
 
                     let reportThreats = getMain.report_threats[0].tasks;
@@ -1102,7 +1179,8 @@ export function json(
                     }
 
                     if (related_threats == 0) {
-                      jsonEntry["relatedThreats"] = i18n.t("global.none");
+                      // For now, the report DOES NOT include this part
+                      // jsonEntry["relatedThreats"] = i18n.t("global.none");
                     }
                   }
                 }
@@ -1113,16 +1191,25 @@ export function json(
                     recommentations[k].id ==
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
-                    if (recommentations[k].implementation_cost === null) {
-                      recommentations[k].implementation_cost = "";
+                    if (
+                      recommentations[k].implementation_cost === null ||
+                      recommentations[k].implementation_cost === ""
+                    ) {
+                      //recommentations[k].implementation_cost = "";
+                    } else {
+                      jsonEntry["implementationCost"] =
+                        recommentations[k].implementation_cost;
                     }
-                    if (recommentations[k].implementation_time === null) {
-                      recommentations[k].implementation_time = "";
+
+                    if (
+                      recommentations[k].implementation_time === null ||
+                      recommentations[k].implementation_time === ""
+                    ) {
+                      //recommentations[k].implementation_time = "";
+                    } else {
+                      jsonEntry["implementationTime"] =
+                        recommentations[k].implementation_time;
                     }
-                    jsonEntry["implementationCost"] =
-                      recommentations[k].implementation_cost;
-                    jsonEntry["implementationTime"] =
-                      recommentations[k].implementation_time;
 
                     let reportVulnerabilityName =
                       recommentations[k].vulnerability_name;
@@ -1158,8 +1245,8 @@ export function json(
                     }
 
                     if (related_vulnerabilities == 0) {
-                      jsonEntry["relatedVulnerabilities"] =
-                        i18n.t("global.none");
+                      // For now, the report DOES NOT include this part
+                      //jsonEntry["relatedVulnerabilities"] = i18n.t("global.none");
                     }
                   }
                 }
@@ -1261,10 +1348,7 @@ export function docx(
                 })
               );
             }
-            let description = getMain[item.interest][0].tasks[i].description;
-            if (description === null) {
-              description = "";
-            }
+
             let title = getMain[item.interest][0].tasks[i].title;
             const j = i + 1;
             docxChildren.push(
@@ -1277,15 +1361,22 @@ export function docx(
                 },
               })
             );
-            docxChildren.push(
-              new Paragraph({
-                text: i18n.t("global.description") + ": " + description,
-                numbering: {
-                  reference: "rawrr-numbering",
-                  level: 2,
-                },
-              })
-            );
+
+            let description = getMain[item.interest][0].tasks[i].description;
+            if (description === null || description === "") {
+              // For now, the report DOES NOT include this part
+              // description = "";
+            } else {
+              docxChildren.push(
+                new Paragraph({
+                  text: i18n.t("global.description") + ": " + description,
+                  numbering: {
+                    reference: "rawrr-numbering",
+                    level: 2,
+                  },
+                })
+              );
+            }
 
             switch (item.name) {
               case "Assets":
@@ -1295,20 +1386,22 @@ export function docx(
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
                     if (assets[k].asset_category_name === undefined) {
-                      assets[k].asset_category_name = i18n.t("global.none");
+                      // For now, the report DOES NOT include this part
+                      // assets[k].asset_category_name = i18n.t("global.none");
+                    } else {
+                      docxChildren.push(
+                        new Paragraph({
+                          text:
+                            i18n.t("global.asset_category") +
+                            ": " +
+                            assets[k].asset_category_name,
+                          numbering: {
+                            reference: "rawrr-numbering",
+                            level: 2,
+                          },
+                        })
+                      );
                     }
-                    docxChildren.push(
-                      new Paragraph({
-                        text:
-                          i18n.t("global.asset_category") +
-                          ": " +
-                          assets[k].asset_category_name,
-                        numbering: {
-                          reference: "rawrr-numbering",
-                          level: 2,
-                        },
-                      })
-                    );
                   }
                 }
                 break;
@@ -1360,7 +1453,8 @@ export function docx(
                     }
 
                     if (related_assets == 0) {
-                      docxChildren.push(
+                      // For now, the report DOES NOT include this part
+                      /*docxChildren.push(
                         new Paragraph({
                           text:
                             i18n.t("global.assets") +
@@ -1371,7 +1465,7 @@ export function docx(
                             level: 2,
                           },
                         })
-                      );
+                      );*/
                     }
                   }
                 }
@@ -1383,20 +1477,23 @@ export function docx(
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
                     if (threats[k].threat_type_name === undefined) {
-                      threats[k].threat_type_name = i18n.t("global.none");
+                      // For now, the report DOES NOT include this part
+                      // threats[k].threat_type_name = i18n.t("global.none");
+                    } else {
+                      docxChildren.push(
+                        new Paragraph({
+                          text:
+                            i18n.t("global.threat_type") +
+                            ": " +
+                            threats[k].threat_type_name,
+                          numbering: {
+                            reference: "rawrr-numbering",
+                            level: 2,
+                          },
+                        })
+                      );
                     }
-                    docxChildren.push(
-                      new Paragraph({
-                        text:
-                          i18n.t("global.threat_type") +
-                          ": " +
-                          threats[k].threat_type_name,
-                        numbering: {
-                          reference: "rawrr-numbering",
-                          level: 2,
-                        },
-                      })
-                    );
+
                     var related_asset = 0;
                     for (
                       var p = 0;
@@ -1424,7 +1521,8 @@ export function docx(
                     }
 
                     if (related_asset == 0) {
-                      docxChildren.push(
+                      // For now, the report DOES NOT include this part
+                      /*docxChildren.push(
                         new Paragraph({
                           text:
                             i18n.t("global.asset") +
@@ -1435,7 +1533,7 @@ export function docx(
                             level: 2,
                           },
                         })
-                      );
+                      );*/
                     }
 
                     docxChildren.push(
@@ -1500,25 +1598,14 @@ export function docx(
                     }
 
                     if (related_activity == 0) {
-                      docxChildren.push(
-                        new Paragraph({
-                          text:
-                            i18n.t("global.likelihood") +
-                            ": " +
-                            threats[k].likelihood,
-                          numbering: {
-                            reference: "rawrr-numbering",
-                            level: 2,
-                          },
-                        })
-                      );
-                      fileContents.push(
+                      // For now, the report DOES NOT include this part
+                      /*fileContents.push(
                         "     " +
                           i18n.t("global.assessment_activity") +
                           ": " +
                           i18n.t("global.none") +
                           "\n"
-                      );
+                      );*/
                     }
 
                     // Adding related asset
@@ -1548,7 +1635,8 @@ export function docx(
                     }
 
                     if (related_asset == 0) {
-                      docxChildren.push(
+                      // For now, the report DOES NOT include this part
+                      /*docxChildren.push(
                         new Paragraph({
                           text:
                             i18n.t("global.asset") +
@@ -1559,7 +1647,7 @@ export function docx(
                             level: 2,
                           },
                         })
-                      );
+                      );*/
                     }
 
                     // Adding related threats
@@ -1601,7 +1689,8 @@ export function docx(
                     }
 
                     if (related_threats == 0) {
-                      docxChildren.push(
+                      // For now, the report DOES NOT include this part
+                      /*docxChildren.push(
                         new Paragraph({
                           text:
                             i18n.t("global.threats") +
@@ -1612,7 +1701,7 @@ export function docx(
                             level: 2,
                           },
                         })
-                      );
+                      );*/
                     }
                   }
                 }
@@ -1623,36 +1712,46 @@ export function docx(
                     recommentations[k].id ==
                     getMain[item.interest][0].tasks[i].identifier
                   ) {
-                    if (recommentations[k].implementation_cost === null) {
-                      recommentations[k].implementation_cost = "";
+                    if (
+                      recommentations[k].implementation_cost === null ||
+                      recommentations[k].implementation_cost === ""
+                    ) {
+                      // For now, the report DOES NOT include this part
+                      // recommentations[k].implementation_cost = "";
+                    } else {
+                      docxChildren.push(
+                        new Paragraph({
+                          text:
+                            i18n.t("global.implementation_cost") +
+                            ": " +
+                            recommentations[k].implementation_cost,
+                          numbering: {
+                            reference: "rawrr-numbering",
+                            level: 2,
+                          },
+                        })
+                      );
                     }
-                    if (recommentations[k].implementation_time === null) {
-                      recommentations[k].implementation_time = "";
+                    if (
+                      recommentations[k].implementation_time === null ||
+                      recommentations[k].implementation_time === ""
+                    ) {
+                      // For now, the report DOES NOT include this part
+                      // recommentations[k].implementation_time = "";
+                    } else {
+                      docxChildren.push(
+                        new Paragraph({
+                          text:
+                            i18n.t("global.implementation_time") +
+                            ": " +
+                            recommentations[k].implementation_time,
+                          numbering: {
+                            reference: "rawrr-numbering",
+                            level: 2,
+                          },
+                        })
+                      );
                     }
-                    docxChildren.push(
-                      new Paragraph({
-                        text:
-                          i18n.t("global.implementation_cost") +
-                          ": " +
-                          recommentations[k].implementation_cost,
-                        numbering: {
-                          reference: "rawrr-numbering",
-                          level: 2,
-                        },
-                      })
-                    );
-                    docxChildren.push(
-                      new Paragraph({
-                        text:
-                          i18n.t("global.implementation_time") +
-                          ": " +
-                          recommentations[k].implementation_time,
-                        numbering: {
-                          reference: "rawrr-numbering",
-                          level: 2,
-                        },
-                      })
-                    );
 
                     let reportVulnerabilityName =
                       recommentations[k].vulnerability_name;
@@ -1701,7 +1800,8 @@ export function docx(
                     }
 
                     if (related_vulnerabilities == 0) {
-                      docxChildren.push(
+                      // For now, the report DOES NOT include this part
+                      /*docxChildren.push(
                         new Paragraph({
                           text:
                             i18n.t("global.vulnerabilities") +
@@ -1712,7 +1812,7 @@ export function docx(
                             level: 2,
                           },
                         })
-                      );
+                      );*/
                     }
                   }
                 }

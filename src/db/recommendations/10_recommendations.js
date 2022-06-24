@@ -68,6 +68,41 @@ export function queryAll() {
 }
 
 //PARAMETERS:
+//  None.
+//EXPECTED OUTPUT:
+//  Returns a promise.
+//    Resolve: array containing all recommendations.
+//    Reject: empty array or an error.
+export function queryAllById() {
+  return new Promise(function (resolve, reject) {
+    try {
+      let db = init.open();
+      let recommendations = [];
+      if (db) {
+        db.serialize(function () {
+          let sql =
+            "SELECT id, name, description, implementation_cost, implementation_time, created, last_modified FROM recommendations ORDER BY id DESC";
+          db.all(sql, [], (err, rows) => {
+            if (err) {
+              reject(err);
+            } else {
+              rows.forEach((row) => {
+                recommendations.push(row);
+              });
+              resolve(recommendations);
+            }
+          });
+        });
+      } else {
+        reject(recommendations);
+      }
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
+//PARAMETERS:
 //  Recommendation is an array with the following structure: ["name", "description", "implementation_cost", "implementation_time", "id"].
 //    name can NOT be null.
 //    id is the table's Primary Key.
