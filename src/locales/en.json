@@ -41,7 +41,8 @@
     "search_bar_accessibility": "This search bar is meant to filter elements from the table bellow",
     "warning": "Warning",
     "continue": "Continue",
-    "delete_history": "Delete Threat History"
+    "delete_history": "Delete Threat History",
+    "no_internet": "This optional feature requires an internet connection."
   },
   "header": {
     "home": "Home",

@@ -207,16 +207,24 @@
         </v-card-title>
 
         <GChart
+          v-if="onLine"
           :settings="{ packages: ['corechart'] }"
           type="BubbleChart"
           @ready="onChartReady"
           style="width: 500px; height: 500px"
         />
 
+        <v-row v-if="!onLine">
+          <v-col>
+            <v-card-subtitle> {{ $t("global.no_internet") }} </v-card-subtitle>
+          </v-col>
+        </v-row>
+
         <v-spacer></v-spacer>
 
         <v-card-actions class="justify-center">
           <v-btn
+            v-if="onLine"
             ref="svi"
             text
             color="primary"
@@ -599,6 +607,7 @@ export default {
       },
       title: ".",
     },
+    onLine: navigator.onLine,
     matrix: false,
     sheet: false,
     search: "",

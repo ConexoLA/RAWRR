@@ -41,7 +41,8 @@
     "search_bar_accessibility": "Esta barra de pesquisa serve para filtrar os elementos da tabela abaixo",
     "warning": "Aviso",
     "continue": "Continuar",
-    "delete_history": "Excluir histórico de ameaças"
+    "delete_history": "Excluir histórico de ameaças",
+    "no_internet": "Este recurso opcional requer uma conexão com a Internet."
   },
   "header": {
     "home": "Início",
