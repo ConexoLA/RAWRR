@@ -42,7 +42,8 @@
     "warning": "Aviso",
     "continue": "Continuar",
     "delete_history": "Excluir histórico de ameaças",
-    "no_internet": "Este recurso opcional requer uma conexão com a Internet."
+    "no_internet": "Este recurso opcional requer uma conexão com a Internet.",
+    "connecting": "Tentando estabelecer conexão... "
   },
   "header": {
     "home": "Início",

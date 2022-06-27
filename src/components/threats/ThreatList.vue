@@ -216,7 +216,11 @@
 
         <v-row v-if="!onLine">
           <v-col>
-            <v-card-subtitle> {{ $t("global.no_internet") }} </v-card-subtitle>
+            <v-card-subtitle>
+              {{ $t("global.no_internet") }} <br />
+              {{ $t("global.connecting") }}
+              <v-progress-circular indeterminate></v-progress-circular
+            ></v-card-subtitle>
           </v-col>
         </v-row>
 
@@ -381,6 +385,14 @@ export default {
       "deleteAuditElements",
       "exportImage",
     ]),
+    onOffline() {
+      if (this.onLine != true) {
+        this.onLine = navigator.onLine;
+      }
+    },
+    onOnline() {
+      this.onLine = navigator.onLine;
+    },
     onChartReady(chart, google) {
       // Initialize Risk matrix and Counter Matrix
       var matrix = [];
@@ -620,6 +632,14 @@ export default {
       y: 0,
     },
   }),
+  created() {
+    window.addEventListener("offline", this.onOffline);
+    window.addEventListener("online", this.onOnline);
+  },
+  destroyed() {
+    window.removeEventListener("offline", this.onOffline);
+    window.removeEventListener("online", this.onOnline);
+  },
 };
 </script>
 

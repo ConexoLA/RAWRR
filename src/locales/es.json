@@ -42,7 +42,8 @@
     "warning": "Advertencia",
     "continue": "Continuar",
     "delete_history": "Eliminar historial de amenaza",
-    "no_internet": "Esta funcionalidad opcional requiere una conexión a internet."
+    "no_internet": "Esta funcionalidad opcional requiere una conexión a internet.",
+    "connecting": "Intentando establecer conexión... "
   },
   "header": {
     "home": "Inicio",

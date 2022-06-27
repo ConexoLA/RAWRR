@@ -42,7 +42,8 @@
     "warning": "Warning",
     "continue": "Continue",
     "delete_history": "Delete Threat History",
-    "no_internet": "This optional feature requires an internet connection."
+    "no_internet": "This optional feature requires an internet connection.",
+    "connecting": "Trying to connect... "
   },
   "header": {
     "home": "Home",
