@@ -318,7 +318,7 @@ export default {
     },
     showEditDialog(recommendation) {
       this.fetchAllRecommendations();
-      this.formData.title = this.$t("recommendations.form_edit");
+      this.formData.title = this.$t("recommendations.form_edit") + ": " + recommendation.name;
       this.formData.type = "Edit";
       this.formData.recommendation = recommendation;
       this.formData.recommendation_aux = Object.assign({}, recommendation);
