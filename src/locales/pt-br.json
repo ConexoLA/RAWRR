@@ -147,7 +147,8 @@
       "old": "Velha:",
       "delete": "Excluir histórico de alterações",
       "confirm_delete": "Esta ação removerá o item selecionado do histórico de ameaças",
-      "confirm_delete_all": "Esta ação excluirá todo o histórico da ameaça"
+      "confirm_delete_all": "Esta ação excluirá todo o histórico da ameaça",
+      "history_changes": "Listar histórico de alterações"
     },
     "risk_matrix": {
       "vcard_name": "Matriz de risco",
