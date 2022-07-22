@@ -287,7 +287,7 @@ export default {
     },
     showEditDialog(activity) {
       this.fetchAllAssessmentActivities();
-      this.formData.title = this.$t("activities.form_edit");
+      this.formData.title = this.$t("activities.form_edit") + ": " + activity.name;
       this.formData.type = "Edit";
       this.formData.assessmentActivity = activity;
       this.formData.assessmentActivity_aux = Object.assign({}, activity);

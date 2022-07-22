@@ -270,7 +270,7 @@ export default {
     },
     showEditDialog(asset) {
       this.fetchAllAssets();
-      this.formData.title = this.$t("assets.form_edit");
+      this.formData.title = this.$t("assets.form_edit") + ": " + asset.name;
       this.formData.type = "Edit";
       this.formData.asset = asset;
       this.formData.asset_aux = Object.assign({}, asset);
