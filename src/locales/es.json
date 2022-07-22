@@ -131,7 +131,7 @@
     "insert_error": "La amenaza no pudo ser insertada. Por favor compruebe que el nombre sea único",
     "threat_history": {
       "identifier": "ID",
-      "name": "Histórico de cambios':",
+      "name": "Histórico de cambios:",
       "changes_history_empty": "Ningun cambio encontrado.",
       "change_number": "Cambio ",
       "created": "Creación",
@@ -147,7 +147,8 @@
       "old": "Viejo:",
       "delete": "Eliminar histórico de cambios",
       "confirm_delete": "Esta acción eliminará el elemento seleccionado del histórico de la amenaza",
-      "confirm_delete_all": "Esta acción eliminará todo el histórico de la amenaza"
+      "confirm_delete_all": "Esta acción eliminará todo el histórico de la amenaza",
+      "history_changes": "Listar historico de cambios"
     },
     "risk_matrix": {
       "vcard_name": "Matriz de riesgo",
