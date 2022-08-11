@@ -490,7 +490,11 @@ export function md(
                 "- [" +
                   item.title +
                   "](#" +
-                  item.title.toLowerCase().split(" ").join("-") +
+                  item.title
+                    .toLowerCase()
+                    .split(" ")
+                    .join("-")
+                    .replace(/\'|\`|\~|:|\.|\"|\(|\)|&|@|#|\^|\*|-|\+|=/g, "") +
                   ")\n"
               );
             }
@@ -503,7 +507,7 @@ export function md(
               "  * [" +
                 title +
                 "](#" +
-                title.toLowerCase().split(" ").join("-") +
+                title.toLowerCase().split(" ").join("-").replace(/\'|\`|\~|:|\.|\"|\(|\)|&|@|#|\^|\*|-|\+|=/g, "")  +
                 ")\n"
             );
 
@@ -580,7 +584,8 @@ export function md(
                               activities[k].asset_name[z]
                                 .toLowerCase()
                                 .split(" ")
-                                .join("-") +
+                                .join("-")
+                                .replace(/\'|\`|\~|:|\.|\"|\(|\)|&|@|#|\^|\*|-|\+|=/g, "")  +
                               ")\n"
                           );
                         }
@@ -640,7 +645,8 @@ export function md(
                             threats[k].asset_name
                               .toLowerCase()
                               .split(" ")
-                              .join("-") +
+                              .join("-")
+                              .replace(/\'|\`|\~|:|\.|\"|\(|\)|&|@|#|\^|\*|-|\+|=/g, "")  +
                             ")\n"
                         );
                       }
@@ -701,7 +707,8 @@ export function md(
                             vulnerabilities[k].assessment_activity_name
                               .toLowerCase()
                               .split(" ")
-                              .join("-") +
+                              .join("-")
+                              .replace(/\'|\`|\~|:|\.|\"|\(|\)|&|@|#|\^|\*|-|\+|=/g, "")  +
                             ")\n"
                         );
                       }
@@ -738,7 +745,8 @@ export function md(
                             vulnerabilities[k].asset_name
                               .toLowerCase()
                               .split(" ")
-                              .join("-") +
+                              .join("-")
+                              .replace(/\'|\`|\~|:|\.|\"|\(|\)|&|@|#|\^|\*|-|\+|=/g, "")  +
                             ")\n"
                         );
                       }
@@ -781,7 +789,8 @@ export function md(
                               reportThreatName[z]
                                 .toLowerCase()
                                 .split(" ")
-                                .join("-") +
+                                .join("-")
+                                .replace(/\'|\`|\~|:|\.|\"|\(|\)|&|@|#|\^|\*|-|\+|=/g, "")  +
                               ")\n"
                           );
                         }
@@ -874,7 +883,8 @@ export function md(
                               reportVulnerabilityName[z]
                                 .toLowerCase()
                                 .split(" ")
-                                .join("-") +
+                                .join("-")
+                                .replace(/\'|\`|\~|:|\.|\"|\(|\)|&|@|#|\^|\*|-|\+|=/g, "")  +
                               ")\n"
                           );
                         }
