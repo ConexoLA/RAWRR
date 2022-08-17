@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b>{{ formDataTemp.title }}</b>
+    <b tabindex="0">{{ formDataTemp.title }}</b>
     <div class="assetForm">
       <v-container>
         <v-form ref="form" v-model="valid">

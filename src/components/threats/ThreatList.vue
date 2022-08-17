@@ -524,7 +524,7 @@ export default {
     },
     showEditDialog(threat) {
       this.fetchAllThreats();
-      this.formData.title = this.$t("threats.form_edit");
+      this.formData.title = this.$t("threats.form_edit") + ": " + threat.name;
       this.formData.type = "Edit";
       this.formData.threat = threat;
       this.formData.threat_aux = Object.assign({}, threat);
