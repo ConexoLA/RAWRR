@@ -103,6 +103,7 @@
               text
               icon
               color="accent"
+              :aria-placeholder="$t('global.edit') + ': ' + `${props.item.name}`"
               @click="showEditDialog(props.item)"
               v-bind:ref="`ref-${props.item.id}`"
             >
@@ -113,6 +114,7 @@
               text
               icon
               color="accent"
+              :aria-placeholder="$t('global.delete') + ': ' + `${props.item.name}`"
               @click="showDeleteDialog([props.item])"
             >
               <v-icon>mdi-delete</v-icon>

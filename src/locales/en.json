@@ -147,7 +147,8 @@
       "old": "Old:",
       "delete": "Delete threat history",
       "confirm_delete": "This action will delete the selected element from this threat's history",
-      "confirm_delete_all": "This action will wipe this threat's history"
+      "confirm_delete_all": "This action will wipe this threat's history",
+      "history_changes": "List history of changes"
     },
     "risk_matrix": {
       "vcard_name": "Risk matrix",

@@ -142,6 +142,7 @@
               icon
               color="accent"
               @click="showEditDialog(props.item)"
+              :aria-placeholder="$t('global.edit') + ': ' + `${props.item.name}`"
               v-bind:ref="`ref-${props.item.id}`"
             >
               <v-icon>mdi-pencil</v-icon>
@@ -150,6 +151,7 @@
               text
               icon
               color="accent"
+              :aria-placeholder="$t('global.delete') + ': ' + `${props.item.name}`"
               @click="showDeleteDialog([props.item])"
             >
               <v-icon>mdi-delete</v-icon>
@@ -158,6 +160,7 @@
               text
               icon
               color="accent"
+              :aria-placeholder="$t('threats.threat_history.history_changes') + ': ' + `${props.item.name}`"
               @click="selectActiveThreatH(props.item)"
             >
               <v-icon>mdi-history</v-icon>
