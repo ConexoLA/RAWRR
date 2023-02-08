@@ -77,6 +77,7 @@
           :items-per-page="-1"
           show-select
           :search="search"
+          @click:row="handleRowClick"
         >
           <template v-slot:[`item.id`]="{ item }">
             <span class="d-inline-block text-truncate" :title="item.id">
@@ -152,6 +153,7 @@
               icon
               color="accent"
               :aria-placeholder="$t('global.delete') + ': ' + `${props.item.name}`"
+              @click.stop
               @click="showDeleteDialog([props.item])"
             >
               <v-icon>mdi-delete</v-icon>
@@ -161,6 +163,7 @@
               icon
               color="accent"
               :aria-placeholder="$t('threats.threat_history.history_changes') + ': ' + `${props.item.name}`"
+              @click.stop
               @click="selectActiveThreatH(props.item)"
             >
               <v-icon>mdi-history</v-icon>
@@ -530,6 +533,9 @@ export default {
       this.formData.threat_aux = Object.assign({}, threat);
       this.formData.resetFormValidation = false;
       this.sheet = !this.sheet;
+    },
+    handleRowClick(threat) {
+      this.showEditDialog(threat);
     },
     showDeleteDialog(element) {
       if (element) {

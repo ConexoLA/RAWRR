@@ -61,6 +61,7 @@
           :search="search"
           checkbox-color="accent"
           item-class="red--text"
+          @click:row="handleRowClick"
         >
           <template v-slot:[`item.id`]="{ item }">
             <span class="d-inline-block text-truncate" :title="item.id">
@@ -104,6 +105,7 @@
               icon
               color="accent"
               :aria-placeholder="$t('global.edit') + ': ' + `${props.item.name}`"
+              @click.stop
               @click="showEditDialog(props.item)"
               v-bind:ref="`ref-${props.item.id}`"
             >
@@ -115,6 +117,7 @@
               icon
               color="accent"
               :aria-placeholder="$t('global.delete') + ': ' + `${props.item.name}`"
+              @click.stop
               @click="showDeleteDialog([props.item])"
             >
               <v-icon>mdi-delete</v-icon>
@@ -278,6 +281,9 @@ export default {
       this.formData.asset_aux = Object.assign({}, asset);
       this.formData.resetFormValidation = false;
       this.sheet = !this.sheet;
+    },
+    handleRowClick(asset) {
+      this.showEditDialog(asset);
     },
     showDeleteDialog(element) {
       if (element) {
